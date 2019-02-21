@@ -32,4 +32,8 @@ public class State {
         this.state = state;
     }
 
+    public boolean equals(@StateDef int state) {
+        return this.state == state;
+    }
+
 }

@@ -8,18 +8,28 @@ public class ProcedureRoom {
     private int travelTime;
     //the time needed after an operation for the room to be available again
     private int cooldownTime;
+    //time left in cooldown
+    private int cooldownTimeLeft;
 
     //cooldown time decreases with each tick of time
     public void tick() {
-        cooldownTime--;
+        cooldownTimeLeft--;
+    }
+
+    public void startCooldown() {
+        cooldownTimeLeft = cooldownTime;
     }
 
     public boolean isAvailable() {
-        return !isOccupied() && cooldownTime == 0;
+        return !isOccupied() && cooldownTimeLeft == 0;
     }
 
     public boolean isOccupied() {
         return occupied;
+    }
+
+    public int getCooldownTimeLeft() {
+        return cooldownTimeLeft;
     }
 
     public void setOccupied(boolean occupied) {

@@ -8,6 +8,7 @@ public class Simulation_Manager {
     //the time the simulated hospital should open
     private int startTime;
     private int endTime;
+
     private int waitTime;
 
     public Simulation_Manager(int startTime, int endTime, int waitTime) {
@@ -19,22 +20,18 @@ public class Simulation_Manager {
     }
 
     //run a tick of time
-    //TODO: making a client leave the procedure room after operation is done, setting up times for client and procedure room
     public boolean runTick() {
         ProcedureRoom openRoom = procedureRoomManager.getProcedureRoom();
-        while (!openRoom.equals(null)) {
+        while (openRoom != null) {
             Client nextClient = clientManager.getNextClient();
             if (nextClient == null) {
                 break;
             }
             nextClient.setProcedureRoom(openRoom);
-            nextClient.beginProcedure();
             openRoom = procedureRoomManager.getProcedureRoom();
         }
         clientManager.runTick();
         procedureRoomManager.runTick();
         return false;
     }
-
-
 }

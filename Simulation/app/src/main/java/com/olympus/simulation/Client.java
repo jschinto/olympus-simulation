@@ -15,9 +15,9 @@ public class Client {
     //how much time is left in the client's current task/state
     private int timeLeft;
 
-    public Client(Procedure procedure, State state) {
+    public Client(Procedure procedure) {
         this.procedure = procedure;
-        this.state = state;
+        setState(State.STATE_WAIT);
         procedureRoom = null;
         timeLeft = 0;
 
@@ -25,14 +25,27 @@ public class Client {
 
     public void tick() {
         timeLeft--;
+        //client is done with operation
+        if (timeLeft <= 0 && state.equals(State.STATE_OPERATION)) {
+            setState(State.STATE_DONE);
+            procedureRoom.setOccupied(false);
+            procedureRoom.startCooldown();
+
+        }
+        //client is done traveling to operation room
+        if (timeLeft <= 0 && state.equals(State.STATE_TRAVEL)) {
+            setState(State.STATE_OPERATION);
+            beginProcedure();
+        }
     }
 
     //start the operation, pick a random time between min and max procedure times
     //set appropriate state and time left to client
     public void beginProcedure() {
+        //check procedure constraints
         int minTime = procedure.getMinTime();
         int maxTime = procedure.getMaxTime();
-        timeLeft = (int) (maxTime + Math.random()*(maxTime-minTime));
+        timeLeft = (int) (minTime + Math.random()*(maxTime-minTime));
         setState(State.STATE_OPERATION);
     }
 
@@ -50,6 +63,8 @@ public class Client {
 
     public void setProcedureRoom(ProcedureRoom procedureRoom) {
         this.procedureRoom = procedureRoom;
+        procedureRoom.setOccupied(true);
+        timeLeft = procedureRoom.getTravelTime();
     }
 
     public State getState() {

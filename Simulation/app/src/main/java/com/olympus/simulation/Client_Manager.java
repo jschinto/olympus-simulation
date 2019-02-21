@@ -10,6 +10,7 @@ public class Client_Manager {
 
     public Client_Manager() {
         queue = new ArrayList<Client>();
+        operating = new ArrayList<Client>();
     }
     //run the operations for a tick of time
     public void runTick() {
@@ -22,7 +23,6 @@ public class Client_Manager {
 
     //add at the end of the queue
     public void addClient(Client client) {
-        client.setState(State.STATE_WAIT);
         queue.add(client);
     }
 
