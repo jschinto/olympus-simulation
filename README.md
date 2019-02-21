@@ -1,2 +1,2 @@
-# Simulation
+# olympus-simulation
 Olympus capstone project
