@@ -13,7 +13,7 @@ public class ProcedureRoom_Manager {
     //run the operations for a tick of time
     public void runTick() {
         for (int i=0; i < roomList.size(); i++) {
-            if (roomList.get(i).getCooldownTime() > 0) {
+            if (roomList.get(i).getCooldownTimeLeft() > 0) {
                 roomList.get(i).tick();
             }
         }

@@ -20,7 +20,6 @@ public class Client {
         setState(State.STATE_WAIT);
         procedureRoom = null;
         timeLeft = 0;
-
     }
 
     public void tick() {
@@ -64,11 +63,12 @@ public class Client {
     public void setProcedureRoom(ProcedureRoom procedureRoom) {
         this.procedureRoom = procedureRoom;
         procedureRoom.setOccupied(true);
+        setState(State.STATE_TRAVEL);
         timeLeft = procedureRoom.getTravelTime();
     }
 
-    public State getState() {
-        return state;
+    public int getState() {
+        return state.state;
     }
 
     public void setState(@State.StateDef int state) {

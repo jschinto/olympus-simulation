@@ -32,7 +32,6 @@ public class Client_Manager {
             return null;
         }
         Client nextClient = queue.remove(0);
-        nextClient.setState(State.STATE_TRAVEL);
         operating.add(nextClient);
         return nextClient;
     }

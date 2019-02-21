@@ -11,6 +11,13 @@ public class ProcedureRoom {
     //time left in cooldown
     private int cooldownTimeLeft;
 
+    public ProcedureRoom(int travelTime, int cooldownTime) {
+        this.occupied = false;
+        this.travelTime = travelTime;
+        this.cooldownTime = cooldownTime;
+        this.cooldownTimeLeft = 0;
+    }
+
     //cooldown time decreases with each tick of time
     public void tick() {
         cooldownTimeLeft--;

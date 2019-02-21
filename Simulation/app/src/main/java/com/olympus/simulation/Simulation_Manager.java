@@ -34,4 +34,12 @@ public class Simulation_Manager {
         procedureRoomManager.runTick();
         return false;
     }
+
+    public void addClient(Client client) {
+        clientManager.addClient(client);
+    }
+
+    public void addProcedureRoom(ProcedureRoom room) {
+        procedureRoomManager.addProcedureRoom(room);
+    }
 }
