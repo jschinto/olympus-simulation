@@ -9,110 +9,163 @@
     tools:context=".SimulationActivity">
 
     <LinearLayout
-        android:id="@+id/LinearLayoutWaiting"
+        android:id="@+id/LinearLayoutMenus"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:background="@drawable/border"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        android:layout_height="680dp"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/LinearLayoutWaitingLeft"
+            android:id="@+id/LinearLayoutWaiting"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_height="150dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/border"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textWaiting"
+            <LinearLayout
+                android:id="@+id/LinearLayoutWaitingLeft"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textWaiting"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/textWaiting"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <HorizontalScrollView
+                    android:id="@+id/scrollViewWaiting"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:id="@+id/LinearLayoutClients"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"></LinearLayout>
+                </HorizontalScrollView>
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/plusIconWaiting"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/textWaiting"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
-
-            <HorizontalScrollView
-                android:id="@+id/scrollViewWaiting"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:id="@+id/LinearLayoutClients"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"></LinearLayout>
-            </HorizontalScrollView>
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:onClick="clickPlusIcon"
+                app:srcCompat="@drawable/plus_button" />
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/plusIconWaiting"
-            android:layout_width="150dp"
+        <LinearLayout
+            android:id="@+id/LinearLayoutProcedure"
+            android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:onClick="clickPlusIcon"
-            android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
-            app:srcCompat="@drawable/plus_button" />
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/border"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/LinearLayoutProcedureLeft"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textProcedure"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/textProcedure"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <HorizontalScrollView
+                    android:id="@+id/scrollViewProcedure"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:id="@+id/LinearLayoutRooms"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"></LinearLayout>
+                </HorizontalScrollView>
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/plusIconProcedure"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:onClick="clickPlusIcon"
+                app:srcCompat="@drawable/plus_button" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/LinearLayoutProcedure"
+        android:id="@+id/LinearLayoutInfo"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="250dp"
+        android:layout_weight="1"
         android:background="@drawable/border"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/LinearLayoutProcedureLeft"
+            android:id="@+id/LinearLayoutButtons"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_height="50dp"
+            android:orientation="vertical"
+            android:background="@drawable/border"
+            >
 
-            <TextView
-                android:id="@+id/textProcedure"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/textProcedure"
-                android:textSize="18sp"
-                android:textColor="@color/black"/>
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <HorizontalScrollView
-                android:id="@+id/scrollViewProcedure"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:id="@+id/LinearLayoutRooms"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"></LinearLayout>
-            </HorizontalScrollView>
-
+                <TextView
+                    android:id="@+id/textName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:text="@string/textDefault"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/plusIconProcedure"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:onClick="clickPlusIcon"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            app:srcCompat="@drawable/plus_button" />
+        <LinearLayout
+            android:id="@+id/LinearLayoutData"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="vertical"
+            ></LinearLayout>
     </LinearLayout>
+
 </LinearLayout>
