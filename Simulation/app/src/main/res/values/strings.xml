@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Simulation</string>
     <string name="buttonStart">Start Simulation</string>
+    <string name="textWaiting">Waiting Room</string>
+    <string name="textProcedure">Procedure Rooms</string>
 </resources>
