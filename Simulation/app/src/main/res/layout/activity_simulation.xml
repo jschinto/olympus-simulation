@@ -135,37 +135,30 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/LinearLayoutButtons"
+            android:id="@+id/LinearLayoutInfo-Header"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:orientation="vertical"
             android:background="@drawable/border"
-            >
+            android:orientation="horizontal">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/textInfo-Name"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="@string/textDefault"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/textName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="@string/textDefault"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
-            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/LinearLayoutData"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:orientation="vertical"
-            ></LinearLayout>
+            android:orientation="horizontal"></LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
