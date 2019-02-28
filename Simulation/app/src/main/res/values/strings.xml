@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Simulation</string>
+    <string name="buttonStart">Start Simulation</string>
 </resources>
