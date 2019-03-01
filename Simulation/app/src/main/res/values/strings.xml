@@ -4,4 +4,9 @@
     <string name="textWaiting">Waiting Room</string>
     <string name="textProcedure">Procedure Rooms</string>
     <string name="textDefault">Default</string>
+    <string name="buttonAdd">Add</string>
+    <string name="buttonDelete">Delete</string>
+    <string name="buttonEdit">Edit</string>
+    <string name="textData">Attribute</string>
+    <string name="editData">Value</string>
 </resources>
