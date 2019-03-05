@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SimulationActivity">
+    tools:context=".SimulationActivity"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
 
     <LinearLayout
         android:id="@+id/LinearLayoutMenus"
@@ -173,7 +175,7 @@
         <LinearLayout
             android:id="@+id/LinearLayoutData"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="201dp"
             android:orientation="horizontal"
             android:background="@drawable/border">
 
@@ -188,7 +190,7 @@
                 <LinearLayout
                     android:id="@+id/LinearLayoutDataLeftTop"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="67dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -211,13 +213,38 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/LinearLayoutDataLeftBottom"
+                    android:id="@+id/LinearLayoutLeftMiddle"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="67dp"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/textData2"
+                        android:layout_width="170dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/textData"
+                        android:layout_marginLeft="10dp"/>
+
+                    <EditText
+                        android:id="@+id/editData2"
+                        android:layout_width="170dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:text="@string/editData"
+                        android:layout_marginRight="10dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/LinearLayoutDataLeftBottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="67dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textData3"
                         android:layout_width="170dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -225,7 +252,7 @@
                         android:text="@string/textData" />
 
                     <EditText
-                        android:id="@+id/editData2"
+                        android:id="@+id/editData3"
                         android:layout_width="170dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
@@ -248,32 +275,7 @@
                 <LinearLayout
                     android:id="@+id/LinearLayoutRightTop"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/textData3"
-                        android:layout_width="170dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_weight="1"
-                        android:text="@string/textData" />
-
-                    <EditText
-                        android:id="@+id/editData3"
-                        android:layout_width="170dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:inputType="textPersonName"
-                        android:text="@string/editData" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/LinearLayoutRightBottom"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="67dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -286,6 +288,56 @@
 
                     <EditText
                         android:id="@+id/editData4"
+                        android:layout_width="170dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:text="@string/editData" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/LinearLayoutRightMiddle"
+                    android:layout_width="match_parent"
+                    android:layout_height="67dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textData5"
+                        android:layout_width="170dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/textData"
+                        android:layout_marginLeft="10dp"/>
+
+                    <EditText
+                        android:id="@+id/editData5"
+                        android:layout_width="170dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:text="@string/editData"
+                        android:layout_marginRight="10dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/LinearLayoutRightBottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="67dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textData6"
+                        android:layout_width="170dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:text="@string/textData" />
+
+                    <EditText
+                        android:id="@+id/editData6"
                         android:layout_width="170dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
