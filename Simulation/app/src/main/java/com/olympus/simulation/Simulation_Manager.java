@@ -53,6 +53,10 @@ public class Simulation_Manager {
         return clientManager.getClientNum();
     }
 
+    public int getProcedureRoomNum() {
+        return procedureRoomManager.getProcedureRoomNum();
+    }
+
     public Client getClient(int index) {
         return clientManager.getClientByIndex(index);
     }

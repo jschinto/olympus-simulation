@@ -44,6 +44,10 @@ public class ProcedureRoom_Manager {
         roomList.remove(index);
     }
 
+    public int getProcedureRoomNum(){
+        return roomList.size();
+    }
+
     //when getting a room, find the first room (least travel time) that is not occupied
     public ProcedureRoom getProcedureRoom() {
         ProcedureRoom room;
