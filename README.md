@@ -1,8 +1,7 @@
 # olympus-simulation
-Olympus capstone project
+Olympus capstone project           
 
-                                                                                
-                                                                                
+                                                                                                                                               
                                       .                                         
                                    I77$$Z                                       
                                   $777$$ZZ777$                                  
