@@ -4,7 +4,7 @@ package com.olympus.simulation;
 /*
 class to represent a Client in the simulation
  */
-public class Client {
+public class Client implements Comparable<Client>{
 
     //the procedure that a client is going to have done
     private Procedure procedure;
@@ -14,12 +14,15 @@ public class Client {
     private State state;
     //how much time is left in the client's current task/state
     private int timeLeft;
+    //when the client enters the waiting room
+    private int arrivalTime;
 
-    public Client(Procedure procedure) {
+    public Client(Procedure procedure, int arrivalTime) {
         this.procedure = procedure;
         setState(State.STATE_WAIT);
         procedureRoom = null;
         timeLeft = 0;
+        this.arrivalTime = arrivalTime;
     }
 
     public void tick() {
@@ -27,6 +30,7 @@ public class Client {
         //client is done with operation
         if (timeLeft <= 0 && state.equals(State.STATE_OPERATION)) {
             setState(State.STATE_DONE);
+            this.procedureRoom = null;
             procedureRoom.setOccupied(false);
             procedureRoom.startCooldown();
 
@@ -83,4 +87,16 @@ public class Client {
         this.timeLeft = timeLeft;
     }
 
+    public int getArrivalTime() { return arrivalTime; }
+
+    public void setArrivalTime(int arrivalTime) { this.arrivalTime = arrivalTime; }
+
+    @Override
+    public int compareTo(Client o) {
+        if(this.getState() != o.getState())
+        {
+            return this.getState() - o.getState();
+        }
+        return this.arrivalTime - o.getArrivalTime();
+    }
 }

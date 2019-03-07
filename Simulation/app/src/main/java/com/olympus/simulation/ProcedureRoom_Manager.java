@@ -31,6 +31,19 @@ public class ProcedureRoom_Manager {
         roomList.add(room);
     }
 
+    public ProcedureRoom getProcedureRoomByIndex(int index)
+    {
+        return roomList.get(index);
+    }
+
+    public void setProcedureRoom(ProcedureRoom room, int index) {
+        roomList.set(index, room);
+    }
+
+    public void deleteProcedureRoom(int index){
+        roomList.remove(index);
+    }
+
     //when getting a room, find the first room (least travel time) that is not occupied
     public ProcedureRoom getProcedureRoom() {
         ProcedureRoom room;

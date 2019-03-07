@@ -56,13 +56,13 @@ public class ExampleUnitTest {
     @Test
     public void addGetClient() {
         Client_Manager man = new Client_Manager();
-        Client client = new Client(new Procedure("Operation", 60, 180));
+        Client client = new Client(new Procedure("Operation", 60, 180), 0);
 
         man.addClient(client);
 
         assertEquals(State.STATE_WAIT, client.getState());
 
-        Client clientCheck = man.getNextClient();
+        Client clientCheck = man.getNextClient(0);
 
         assertEquals(client, clientCheck);
         assertEquals("Operation", clientCheck.getProcedure().getName());
@@ -71,11 +71,11 @@ public class ExampleUnitTest {
     @Test
     public void setProcedureRoom(){
         Client_Manager man = new Client_Manager();
-        Client client = new Client(new Procedure("Operation", 60, 180));
+        Client client = new Client(new Procedure("Operation", 60, 180), 0);
 
         man.addClient(client);
 
-        man.getNextClient();
+        man.getNextClient(0);
 
         ProcedureRoom room = new ProcedureRoom(10, 20);
 
@@ -101,7 +101,7 @@ public class ExampleUnitTest {
     public void simulationMatch(){
         Simulation_Manager simMan = new Simulation_Manager(0, 60, 1);
 
-        Client client = new Client(new Procedure("Operation", 60, 180));
+        Client client = new Client(new Procedure("Operation", 60, 180), 0);
 
         ProcedureRoom room1 = new ProcedureRoom(60, 10);
         ProcedureRoom room2 = new ProcedureRoom(30, 10);
@@ -117,7 +117,7 @@ public class ExampleUnitTest {
         assertTrue(room1.isAvailable());
         assertFalse(room2.isAvailable());
 
-        Client client2 = new Client(new Procedure("Operator", 60, 180));
+        Client client2 = new Client(new Procedure("Operator", 60, 180), 0);
 
         simMan.addClient(client2);
 

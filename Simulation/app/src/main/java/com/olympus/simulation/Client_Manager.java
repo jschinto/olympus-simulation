@@ -1,6 +1,7 @@
 package com.olympus.simulation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Client_Manager {
     //the queue of clients entering and exiting the waiting room
@@ -15,24 +16,49 @@ public class Client_Manager {
     //run the operations for a tick of time
     public void runTick() {
         for (int i=0; i < operating.size(); i++) {
-            if (operating.get(i).getTimeLeft() > 0) {
+            if (operating.get(i).getState() == State.STATE_DONE) {
+                operating.remove(i);
+                i--;
+            }
+            else if (operating.get(i).getTimeLeft() > 0) {
                 operating.get(i).tick();
             }
         }
     }
 
+    public void sortQueue() {
+        Collections.sort(queue);
+    }
+
     //add at the end of the queue
     public void addClient(Client client) {
         queue.add(client);
+        sortQueue();
+    }
+
+    public Client getClientByIndex(int index) {
+        return queue.get(index);
     }
 
     //remove at the beginning of the queue, change state and add to operating list
-    public Client getNextClient() {
-        if (queue.isEmpty()) {
+    public Client getNextClient(int currTime) {
+        if (queue.isEmpty() || queue.get(0).getArrivalTime() > currTime || queue.get(0).getState() != State.STATE_WAIT) {
             return null;
         }
-        Client nextClient = queue.remove(0);
+        Client nextClient = queue.get(0);
         operating.add(nextClient);
         return nextClient;
+    }
+
+    public void setClient(Client client, int index) {
+        queue.set(index, client);
+    }
+
+    public void deleteClient(int index) {
+        queue.remove(index);
+    }
+
+    public int getClientNum() {
+        return queue.size();
     }
 }
