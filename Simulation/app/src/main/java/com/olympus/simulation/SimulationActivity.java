@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,61 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_simulation);
         simulation_manager = new Simulation_Manager(0,100,1);
         currentClicked = null;
+    }
+
+
+    // create an action bar button
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    // handle button activities
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.addProcedureType) {
+            TextView headerView =  findViewById(R.id.textInfo_Name);
+            headerView.setText("Procedure Type");
+
+            TextView textData1 = findViewById(R.id.textData1);
+            EditText editData1 = findViewById(R.id.editData1);
+            TextView textData2 = findViewById(R.id.textData2);
+            EditText editData2 = findViewById(R.id.editData2);
+            TextView textData3 = findViewById(R.id.textData3);
+            EditText editData3 = findViewById(R.id.editData3);
+            TextView textData4 = findViewById(R.id.textData4);
+            Spinner spinner4 = findViewById(R.id.spinner4);
+            TextView textData5 = findViewById(R.id.textData5);
+            EditText editData5 = findViewById(R.id.editData5);
+            TextView textData6 = findViewById(R.id.textData6);
+            EditText editData6 = findViewById(R.id.editData6);
+
+            textData1.setVisibility(View.VISIBLE);
+            editData1.setVisibility(View.VISIBLE);
+            textData2.setVisibility(View.VISIBLE);
+            editData2.setVisibility(View.VISIBLE);
+            textData3.setVisibility(View.VISIBLE);
+            editData3.setVisibility(View.VISIBLE);
+
+            textData1.setText("Procedure Name");
+            editData1.setText("");
+            textData2.setText("Min Completion Time");
+            editData2.setText("");
+            textData3.setText("Max Completion Time");
+            editData3.setText("");
+
+            textData4.setVisibility(View.INVISIBLE);
+            spinner4.setVisibility(View.INVISIBLE);
+            textData5.setVisibility(View.INVISIBLE);
+            editData5.setVisibility(View.INVISIBLE);
+            textData6.setVisibility(View.INVISIBLE);
+            editData6.setVisibility(View.INVISIBLE);
+
+
+            findViewById(R.id.buttonEdit).setVisibility(View.INVISIBLE);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void clickPlusIcon(View view) {
@@ -41,7 +98,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             TextView textData3 = findViewById(R.id.textData3);
             EditText editData3 = findViewById(R.id.editData3);
             TextView textData4 = findViewById(R.id.textData4);
-            EditText editData4 = findViewById(R.id.editData4);
+            Spinner spinner4 = findViewById(R.id.spinner4);
             TextView textData5 = findViewById(R.id.textData5);
             EditText editData5 = findViewById(R.id.editData5);
             TextView textData6 = findViewById(R.id.textData6);
@@ -51,35 +108,28 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             editData1.setVisibility(View.VISIBLE);
             textData2.setVisibility(View.VISIBLE);
             editData2.setVisibility(View.VISIBLE);
-            textData3.setVisibility(View.VISIBLE);
-            editData3.setVisibility(View.VISIBLE);
+            textData4.setVisibility(View.VISIBLE);
 
-            textData1.setText("Procedure:");
+            textData1.setText("Arrival Time:");
             editData1.setText("");
 
-            textData2.setText("Arrival Time:");
+            textData2.setText("Amount to Add:");
             editData2.setText("");
 
-            textData3.setText("Amount to Add:");
-            editData3.setText("");
+            String[] procedureNames = simulation_manager.getProcedureNames();
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, procedureNames);
+            spinner4.setAdapter(adapter);
 
-            textData4.setVisibility(View.INVISIBLE);
-            editData4.setVisibility(View.INVISIBLE);
+            spinner4.setVisibility(View.VISIBLE);
+
+            textData3.setVisibility(View.INVISIBLE);
+            editData3.setVisibility(View.INVISIBLE);
             textData5.setVisibility(View.INVISIBLE);
             editData5.setVisibility(View.INVISIBLE);
             textData6.setVisibility(View.INVISIBLE);
             editData6.setVisibility(View.INVISIBLE);
 
             findViewById(R.id.buttonEdit).setVisibility(View.INVISIBLE);
-            /*
-            LinearLayout linearLayoutClients = findViewById(R.id.LinearLayoutClients);
-            ImageView clientImage = new ImageView(getApplicationContext());
-            clientImage.setImageResource(R.drawable.client);
-
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(78, 100);
-            clientImage.setLayoutParams(layoutParams);
-            linearLayoutClients.addView(clientImage);
-            */
         }
         else if (view.getId() == R.id.plusIconProcedure) {
             TextView headerView =  findViewById(R.id.textInfo_Name);
@@ -92,7 +142,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             TextView textData3 = findViewById(R.id.textData3);
             EditText editData3 = findViewById(R.id.editData3);
             TextView textData4 = findViewById(R.id.textData4);
-            EditText editData4 = findViewById(R.id.editData4);
+            Spinner spinner4 = findViewById(R.id.spinner4);
             TextView textData5 = findViewById(R.id.textData5);
             EditText editData5 = findViewById(R.id.editData5);
             TextView textData6 = findViewById(R.id.textData6);
@@ -112,7 +162,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             textData3.setVisibility(View.INVISIBLE);
             editData3.setVisibility(View.INVISIBLE);
             textData4.setVisibility(View.INVISIBLE);
-            editData4.setVisibility(View.INVISIBLE);
+            spinner4.setVisibility(View.INVISIBLE);
             textData5.setVisibility(View.INVISIBLE);
             editData5.setVisibility(View.INVISIBLE);
             textData6.setVisibility(View.INVISIBLE);
@@ -166,14 +216,10 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
                 roomImage.setTag(tag);
 
-                //roomImage.setTag(0, new Integer(index));
-                //roomImage.setTag(1,"Procedure Room");
-
                 linearLayoutRooms.addView(roomImage);
             }
             else if (header.equals("Client")){
-                //Remove the setting of procedure here once you can set it from edittext
-                Procedure procedure = new Procedure("Upper", 10, 100);
+
                 int arrivalTime = 0;
                 int amount = 0;
                 try {
@@ -181,10 +227,10 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     EditText editData1 = findViewById(R.id.editData1);
                     Get Procedure from EditText
                     */
+                    EditText editData1 = findViewById(R.id.editData1);
+                    arrivalTime = Integer.parseInt(editData1.getText().toString());
                     EditText editData2 = findViewById(R.id.editData2);
-                    arrivalTime = Integer.parseInt(editData2.getText().toString());
-                    EditText editData3 = findViewById(R.id.editData3);
-                    amount = Integer.parseInt(editData3.getText().toString());
+                    amount = Integer.parseInt(editData2.getText().toString());
                 } catch (NumberFormatException e) {
                     Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
                     return;
@@ -193,7 +239,8 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
                     return;
                 }
-
+                //TODO: procedure stuffs
+                Procedure procedure = new Procedure("Upper", 20,40);
                 for(int i = 0; i < amount; i++) {
                     Client client = new Client(procedure, arrivalTime);
                     simulation_manager.addClient(client);
@@ -211,11 +258,38 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
                     clientImage.setTag(tag);
 
-                    //roomImage.setTag(0, new Integer(index));
-                    //roomImage.setTag(1,"Procedure Room");
-
                     linearLayoutClients.addView(clientImage);
                 }
+            }
+            else if (header.equals("Procedure Type")) {
+                String name = null;
+                int minTime = 0;
+                int maxTime = 0;
+                try {
+                    EditText editData1 = findViewById(R.id.editData1);
+                    name = editData1.getText().toString();
+                    EditText editData2 = findViewById(R.id.editData2);
+                    minTime = Integer.parseInt(editData2.getText().toString());
+                    EditText editData3 = findViewById(R.id.editData3);
+                    maxTime = Integer.parseInt(editData3.getText().toString());
+                } catch (NumberFormatException e) {
+                    Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (name == null) {
+                    Toast.makeText(getApplicationContext(), "Invalid Name!", Toast.LENGTH_LONG).show();
+                }
+                if (minTime <= 0 || maxTime <= 0) {
+                    Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (minTime > maxTime) {
+                    Toast.makeText(getApplicationContext(), "min time can't be greater than max time!", Toast.LENGTH_LONG).show();
+                }
+
+                Procedure procedure = new Procedure(name, minTime, maxTime);
+                simulation_manager.addProcedure(procedure);
+
             }
         }
         else if(buttonName.equals("Delete")){
@@ -251,24 +325,6 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-
-    // create an action bar button
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-    // handle button activities
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.addClient) {
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-
     //TODO: Error occurs if you rapidly click on delete and an element in the procedure room list.
     public void onClick (View view) {
 
@@ -295,7 +351,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             TextView textData3 = findViewById(R.id.textData3);
             EditText editData3 = findViewById(R.id.editData3);
             TextView textData4 = findViewById(R.id.textData4);
-            EditText editData4 = findViewById(R.id.editData4);
+            Spinner spinner4 = findViewById(R.id.spinner4);
             TextView textData5 = findViewById(R.id.textData5);
             EditText editData5 = findViewById(R.id.editData5);
             TextView textData6 = findViewById(R.id.textData6);
@@ -310,7 +366,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             textData3.setVisibility(View.INVISIBLE);
             editData3.setVisibility(View.INVISIBLE);
             textData4.setVisibility(View.INVISIBLE);
-            editData4.setVisibility(View.INVISIBLE);
+            spinner4.setVisibility(View.INVISIBLE);
             textData5.setVisibility(View.INVISIBLE);
             editData5.setVisibility(View.INVISIBLE);
             textData6.setVisibility(View.INVISIBLE);
@@ -329,7 +385,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             TextView textData3 = findViewById(R.id.textData3);
             EditText editData3 = findViewById(R.id.editData3);
             TextView textData4 = findViewById(R.id.textData4);
-            EditText editData4 = findViewById(R.id.editData4);
+            Spinner spinner4 = findViewById(R.id.spinner4);
             TextView textData5 = findViewById(R.id.textData5);
             EditText editData5 = findViewById(R.id.editData5);
             TextView textData6 = findViewById(R.id.textData6);
@@ -344,7 +400,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             textData3.setVisibility(View.INVISIBLE);
             editData3.setVisibility(View.INVISIBLE);
             textData4.setVisibility(View.INVISIBLE);
-            editData4.setVisibility(View.INVISIBLE);
+            spinner4.setVisibility(View.INVISIBLE);
             textData5.setVisibility(View.INVISIBLE);
             editData5.setVisibility(View.INVISIBLE);
             textData6.setVisibility(View.INVISIBLE);

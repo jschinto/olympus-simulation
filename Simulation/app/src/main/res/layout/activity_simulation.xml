@@ -287,15 +287,12 @@
                         android:layout_weight="1"
                         android:text="@string/textData" />
 
-                    <EditText
-                        android:id="@+id/editData4"
+                    <Spinner
+                        android:id="@+id/spinner4"
                         android:layout_width="170dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:inputType="textPersonName"
-                        android:text="@string/editData" />
+                        android:background="@android:drawable/btn_dropdown"
+                        android:spinnerMode="dropdown"/>
                 </LinearLayout>
 
                 <LinearLayout

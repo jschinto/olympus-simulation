@@ -1,9 +1,12 @@
 package com.olympus.simulation;
 
+import java.util.ArrayList;
+
 public class Simulation_Manager {
     //the ProcedureRoom and Client Managers needed to run the simulation
     private ProcedureRoom_Manager procedureRoomManager;
     private Client_Manager clientManager;
+    private Procedure_Manager procedureManager;
 
     //the time the simulated hospital should open
     private int startTime;
@@ -16,6 +19,7 @@ public class Simulation_Manager {
     public Simulation_Manager(int startTime, int endTime, int waitTime) {
         procedureRoomManager = new ProcedureRoom_Manager();
         clientManager = new Client_Manager();
+        procedureManager = new Procedure_Manager();
         this.startTime = startTime;
         this.endTime = endTime;
         this.waitTime = waitTime;
@@ -49,6 +53,10 @@ public class Simulation_Manager {
         procedureRoomManager.addProcedureRoom(room);
     }
 
+    public void addProcedure(Procedure procedure) {
+        procedureManager.addProcedure(procedure);
+    }
+
     public int getClientNum() {
         return clientManager.getClientNum();
     }
@@ -63,6 +71,12 @@ public class Simulation_Manager {
 
     public ProcedureRoom getProcedureRoom(int index){
         return procedureRoomManager.getProcedureRoomByIndex(index);
+    }
+
+    public String[] getProcedureNames() {
+        ArrayList<String> procedureNames = procedureManager.getProcedureNames();
+        String[] procedureNamesArray = new String[procedureNames.size()];
+        return procedureNames.toArray(procedureNamesArray);
     }
 
     public void editClient(Client client, int index) {
