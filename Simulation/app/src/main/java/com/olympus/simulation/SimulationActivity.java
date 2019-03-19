@@ -40,44 +40,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.addProcedureType) {
-            TextView headerView =  findViewById(R.id.textInfo_Name);
-            headerView.setText("Procedure Type");
-
-            TextView textData1 = findViewById(R.id.textData1);
-            EditText editData1 = findViewById(R.id.editData1);
-            TextView textData2 = findViewById(R.id.textData2);
-            EditText editData2 = findViewById(R.id.editData2);
-            TextView textData3 = findViewById(R.id.textData3);
-            EditText editData3 = findViewById(R.id.editData3);
-            TextView textData4 = findViewById(R.id.textData4);
-            Spinner spinner4 = findViewById(R.id.spinner4);
-            TextView textData5 = findViewById(R.id.textData5);
-            EditText editData5 = findViewById(R.id.editData5);
-            TextView textData6 = findViewById(R.id.textData6);
-            EditText editData6 = findViewById(R.id.editData6);
-
-            textData1.setVisibility(View.VISIBLE);
-            editData1.setVisibility(View.VISIBLE);
-            textData2.setVisibility(View.VISIBLE);
-            editData2.setVisibility(View.VISIBLE);
-            textData3.setVisibility(View.VISIBLE);
-            editData3.setVisibility(View.VISIBLE);
-
-            textData1.setText("Procedure Name");
-            editData1.setText("");
-            textData2.setText("Min Completion Time");
-            editData2.setText("");
-            textData3.setText("Max Completion Time");
-            editData3.setText("");
-
-            textData4.setVisibility(View.INVISIBLE);
-            spinner4.setVisibility(View.INVISIBLE);
-            textData5.setVisibility(View.INVISIBLE);
-            editData5.setVisibility(View.INVISIBLE);
-            textData6.setVisibility(View.INVISIBLE);
-            editData6.setVisibility(View.INVISIBLE);
-
-
+            procedureInfoBox("","","");
             findViewById(R.id.buttonEdit).setVisibility(View.INVISIBLE);
         }
         return super.onOptionsItemSelected(item);
@@ -88,88 +51,12 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         buttonAddDelete.setText("Add");
 
         if (view.getId() == R.id.plusIconWaiting) {
-            TextView headerView =  findViewById(R.id.textInfo_Name);
-            headerView.setText("Client");
-
-            TextView textData1 = findViewById(R.id.textData1);
-            EditText editData1 = findViewById(R.id.editData1);
-            TextView textData2 = findViewById(R.id.textData2);
-            EditText editData2 = findViewById(R.id.editData2);
-            TextView textData3 = findViewById(R.id.textData3);
-            EditText editData3 = findViewById(R.id.editData3);
-            TextView textData4 = findViewById(R.id.textData4);
-            Spinner spinner4 = findViewById(R.id.spinner4);
-            TextView textData5 = findViewById(R.id.textData5);
-            EditText editData5 = findViewById(R.id.editData5);
-            TextView textData6 = findViewById(R.id.textData6);
-            EditText editData6 = findViewById(R.id.editData6);
-
-            textData1.setVisibility(View.VISIBLE);
-            editData1.setVisibility(View.VISIBLE);
-            textData2.setVisibility(View.VISIBLE);
-            editData2.setVisibility(View.VISIBLE);
-            textData4.setVisibility(View.VISIBLE);
-
-            textData1.setText("Arrival Time:");
-            editData1.setText("");
-
-            textData2.setText("Amount to Add:");
-            editData2.setText("");
-
-            String[] procedureNames = simulation_manager.getProcedureNames();
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, procedureNames);
-            spinner4.setAdapter(adapter);
-
-            spinner4.setVisibility(View.VISIBLE);
-
-            textData3.setVisibility(View.INVISIBLE);
-            editData3.setVisibility(View.INVISIBLE);
-            textData5.setVisibility(View.INVISIBLE);
-            editData5.setVisibility(View.INVISIBLE);
-            textData6.setVisibility(View.INVISIBLE);
-            editData6.setVisibility(View.INVISIBLE);
-
+            clientInfoBox("","1",-1);
             findViewById(R.id.buttonEdit).setVisibility(View.INVISIBLE);
         }
         else if (view.getId() == R.id.plusIconProcedure) {
-            TextView headerView =  findViewById(R.id.textInfo_Name);
-            headerView.setText("Procedure Room");
-
-            TextView textData1 = findViewById(R.id.textData1);
-            EditText editData1 = findViewById(R.id.editData1);
-            TextView textData2 = findViewById(R.id.textData2);
-            EditText editData2 = findViewById(R.id.editData2);
-            TextView textData3 = findViewById(R.id.textData3);
-            EditText editData3 = findViewById(R.id.editData3);
-            TextView textData4 = findViewById(R.id.textData4);
-            Spinner spinner4 = findViewById(R.id.spinner4);
-            TextView textData5 = findViewById(R.id.textData5);
-            EditText editData5 = findViewById(R.id.editData5);
-            TextView textData6 = findViewById(R.id.textData6);
-            EditText editData6 = findViewById(R.id.editData6);
-
-            textData1.setVisibility(View.VISIBLE);
-            editData1.setVisibility(View.VISIBLE);
-            textData2.setVisibility(View.VISIBLE);
-            editData2.setVisibility(View.VISIBLE);
-
-            textData1.setText("Travel Time:");
-            editData1.setText("");
-
-            textData2.setText("Cooldown Time:");
-            editData2.setText("");
-
-            textData3.setVisibility(View.INVISIBLE);
-            editData3.setVisibility(View.INVISIBLE);
-            textData4.setVisibility(View.INVISIBLE);
-            spinner4.setVisibility(View.INVISIBLE);
-            textData5.setVisibility(View.INVISIBLE);
-            editData5.setVisibility(View.INVISIBLE);
-            textData6.setVisibility(View.INVISIBLE);
-            editData6.setVisibility(View.INVISIBLE);
-
+            procedureRoomInfoBox("","");
             findViewById(R.id.buttonEdit).setVisibility(View.INVISIBLE);
-
         }
     }
 
@@ -339,72 +226,142 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         String type = tag.type;
 
         if (type.equals("Procedure Room")) {
-            TextView headerView =  findViewById(R.id.textInfo_Name);
-            headerView.setText("Procedure Room");
-
             ProcedureRoom room = simulation_manager.getProcedureRoom(index);
-
-            TextView textData1 = findViewById(R.id.textData1);
-            EditText editData1 = findViewById(R.id.editData1);
-            TextView textData2 = findViewById(R.id.textData2);
-            EditText editData2 = findViewById(R.id.editData2);
-            TextView textData3 = findViewById(R.id.textData3);
-            EditText editData3 = findViewById(R.id.editData3);
-            TextView textData4 = findViewById(R.id.textData4);
-            Spinner spinner4 = findViewById(R.id.spinner4);
-            TextView textData5 = findViewById(R.id.textData5);
-            EditText editData5 = findViewById(R.id.editData5);
-            TextView textData6 = findViewById(R.id.textData6);
-            EditText editData6 = findViewById(R.id.editData6);
-
-            textData1.setText("Travel Time:");
-            editData1.setText(""+ room.getTravelTime());
-
-            textData2.setText("Cooldown Time:");
-            editData2.setText(""+ room.getCooldownTime());
-
-            textData3.setVisibility(View.INVISIBLE);
-            editData3.setVisibility(View.INVISIBLE);
-            textData4.setVisibility(View.INVISIBLE);
-            spinner4.setVisibility(View.INVISIBLE);
-            textData5.setVisibility(View.INVISIBLE);
-            editData5.setVisibility(View.INVISIBLE);
-            textData6.setVisibility(View.INVISIBLE);
-            editData6.setVisibility(View.INVISIBLE);
+            procedureRoomInfoBox(""+room.getTravelTime(), ""+room.getCooldownTime());
         }
+
         else if(type.equals("Client")){
-            TextView headerView =  findViewById(R.id.textInfo_Name);
-            headerView.setText("Client");
-
             Client client = simulation_manager.getClient(index);
-
-            TextView textData1 = findViewById(R.id.textData1);
-            EditText editData1 = findViewById(R.id.editData1);
-            TextView textData2 = findViewById(R.id.textData2);
-            EditText editData2 = findViewById(R.id.editData2);
-            TextView textData3 = findViewById(R.id.textData3);
-            EditText editData3 = findViewById(R.id.editData3);
-            TextView textData4 = findViewById(R.id.textData4);
-            Spinner spinner4 = findViewById(R.id.spinner4);
-            TextView textData5 = findViewById(R.id.textData5);
-            EditText editData5 = findViewById(R.id.editData5);
-            TextView textData6 = findViewById(R.id.textData6);
-            EditText editData6 = findViewById(R.id.editData6);
-
-            textData1.setText("Procedure:");
-            editData1.setText(""+client.getProcedure().getName());
-
-            textData2.setText("Arrival Time:");
-            editData2.setText(""+client.getArrivalTime());
-
-            textData3.setVisibility(View.INVISIBLE);
-            editData3.setVisibility(View.INVISIBLE);
-            textData4.setVisibility(View.INVISIBLE);
-            spinner4.setVisibility(View.INVISIBLE);
-            textData5.setVisibility(View.INVISIBLE);
-            editData5.setVisibility(View.INVISIBLE);
-            textData6.setVisibility(View.INVISIBLE);
-            editData6.setVisibility(View.INVISIBLE);
+            //TODO: indexing procedure types in array???????/
+            clientInfoBox(""+client.getArrivalTime(), "", -1);
         }
     }
+
+    public void procedureRoomInfoBox(String travelTime, String cooldownTime) {
+        setInfoBox("Travel Time:", travelTime, "Cooldown Time:", cooldownTime, "", "", "", null, -1, "", "", "", "");
+        TextView headerView =  findViewById(R.id.textInfo_Name);
+        headerView.setText("Procedure Room");
+    }
+    public void clientInfoBox(String arrivalTime, String amountToAdd, int procedureType) {
+        String[] procedureNames = simulation_manager.getProcedureNames();
+        if (amountToAdd.isEmpty()) {
+            setInfoBox("Arrival Time:", arrivalTime, "", "", "", "", "Procedure Type:", procedureNames, procedureType, "", "", "", "");
+        }
+        else {
+            setInfoBox("Arrival Time:", arrivalTime, "Amount To Add:", ""+amountToAdd, "", "", "Procedure Type:", procedureNames, procedureType, "", "", "", "");
+        }
+        TextView headerView =  findViewById(R.id.textInfo_Name);
+        headerView.setText("Client");
+    }
+    public void procedureInfoBox(String procedureName, String minCompletionTime, String maxCompletionTime) {
+        setInfoBox("Procedure Name", procedureName, "Min Completion Time", minCompletionTime, "Max Completion Time", maxCompletionTime, "", null, -1, "", "","","");
+        TextView headerView =  findViewById(R.id.textInfo_Name);
+        headerView.setText("Procedure Type");
+    }
+
+    public void clearInfoBox() {
+        TextView headerView =  findViewById(R.id.textInfo_Name);
+        headerView.setText("");
+
+        TextView textData1 = findViewById(R.id.textData1);
+        EditText editData1 = findViewById(R.id.editData1);
+        TextView textData2 = findViewById(R.id.textData2);
+        EditText editData2 = findViewById(R.id.editData2);
+        TextView textData3 = findViewById(R.id.textData3);
+        EditText editData3 = findViewById(R.id.editData3);
+        TextView textData4 = findViewById(R.id.textData4);
+        Spinner spinner4 = findViewById(R.id.spinner4);
+        TextView textData5 = findViewById(R.id.textData5);
+        EditText editData5 = findViewById(R.id.editData5);
+        TextView textData6 = findViewById(R.id.textData6);
+        EditText editData6 = findViewById(R.id.editData6);
+        textData1.setVisibility(View.INVISIBLE);
+        editData1.setVisibility(View.INVISIBLE);
+        textData2.setVisibility(View.INVISIBLE);
+        editData2.setVisibility(View.INVISIBLE);
+        textData3.setVisibility(View.INVISIBLE);
+        editData3.setVisibility(View.INVISIBLE);
+        textData4.setVisibility(View.INVISIBLE);
+        spinner4.setVisibility(View.INVISIBLE);
+        textData5.setVisibility(View.INVISIBLE);
+        editData5.setVisibility(View.INVISIBLE);
+        textData6.setVisibility(View.INVISIBLE);
+        editData6.setVisibility(View.INVISIBLE);
+    }
+    public void setInfoBox(String attribute1, String value1, String attribute2, String value2, String attribute3, String value3,
+                           String attribute4, String[] value4, int index4, String attribute5, String value5, String attribute6, String value6) {
+        clearInfoBox();
+
+        if (!attribute1.isEmpty()) {
+            TextView textData1 = findViewById(R.id.textData1);
+            textData1.setVisibility(View.VISIBLE);
+            textData1.setText(attribute1);
+
+            EditText editData1 = findViewById(R.id.editData1);
+            editData1.setVisibility(View.VISIBLE);
+            editData1.setText(value1);
+        }
+
+        if (!attribute2.isEmpty()) {
+            TextView textData2 = findViewById(R.id.textData2);
+            textData2.setVisibility(View.VISIBLE);
+            textData2.setText(attribute2);
+
+            EditText editData2 = findViewById(R.id.editData2);
+            editData2.setVisibility(View.VISIBLE);
+            editData2.setText(value2);
+        }
+
+        if (!attribute3.isEmpty()) {
+            TextView textData3 = findViewById(R.id.textData3);
+            textData3.setVisibility(View.VISIBLE);
+            textData3.setText(attribute3);
+
+            EditText editData3 = findViewById(R.id.editData3);
+            editData3.setVisibility(View.VISIBLE);
+            editData3.setText(value3);
+        }
+
+        if (!attribute4.isEmpty()) {
+            TextView textData4 = findViewById(R.id.textData4);
+            textData4.setVisibility(View.VISIBLE);
+            textData4.setText(attribute4);
+
+            Spinner spinner4 = findViewById(R.id.spinner4);
+            spinner4.setVisibility(View.VISIBLE);
+            if (value4 != null) {
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, value4);
+                spinner4.setAdapter(adapter);
+                if (index4!=-1) {
+                    spinner4.setSelection(index4);
+                }
+            }
+            else {
+                spinner4.setVisibility(View.INVISIBLE);
+            }
+        }
+
+        if (!attribute5.isEmpty()) {
+            TextView textData5 = findViewById(R.id.textData5);
+            textData5.setVisibility(View.VISIBLE);
+            textData5.setText(attribute5);
+
+            EditText editData5 = findViewById(R.id.editData5);
+            editData5.setVisibility(View.VISIBLE);
+            editData5.setText(value5);
+        }
+
+        if (!attribute6.isEmpty()) {
+            TextView textData6 = findViewById(R.id.textData6);
+            textData6.setVisibility(View.VISIBLE);
+            textData6.setText(attribute6);
+
+            EditText editData6 = findViewById(R.id.editData6);
+            editData6.setVisibility(View.VISIBLE);
+            editData6.setText(value6);
+        }
+
+    }
+
+
 }
