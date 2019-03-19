@@ -25,6 +25,7 @@ public class Client implements Comparable<Client>{
         this.arrivalTime = arrivalTime;
     }
 
+    //alters appropriate variables based on passage of time(tick)
     public void tick() {
         timeLeft--;
         //client is done with operation
@@ -64,6 +65,7 @@ public class Client implements Comparable<Client>{
         return procedureRoom;
     }
 
+    //assigns client to given procedure room
     public void setProcedureRoom(ProcedureRoom procedureRoom) {
         this.procedureRoom = procedureRoom;
         procedureRoom.setOccupied(true);
@@ -91,6 +93,7 @@ public class Client implements Comparable<Client>{
 
     public void setArrivalTime(int arrivalTime) { this.arrivalTime = arrivalTime; }
 
+    //compareTo function to help in organizing queues
     @Override
     public int compareTo(Client o) {
         if(this.getState() != o.getState())

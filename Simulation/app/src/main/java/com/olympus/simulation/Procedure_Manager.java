@@ -13,6 +13,7 @@ public class Procedure_Manager {
         procedureList.add(procedure);
     }
 
+    //deletes first instance of the given procedure name
     public void deleteProcedure(String name) {
         for (int i=0; i < procedureList.size(); i++) {
             if (procedureList.get(i).getName().equals(name)) {
@@ -26,6 +27,7 @@ public class Procedure_Manager {
         procedureList.remove(index);
     }
 
+    //returns a list of the procedure names from the list of created procedures
     public ArrayList<String> getProcedureNames() {
         ArrayList<String> names = new ArrayList<String>();
         for (int i=0; i < procedureList.size(); i++) {

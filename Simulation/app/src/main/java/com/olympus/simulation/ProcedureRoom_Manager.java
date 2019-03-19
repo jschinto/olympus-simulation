@@ -14,7 +14,7 @@ public class ProcedureRoom_Manager {
     public void runTick() {
         for (int i=0; i < roomList.size(); i++) {
             if (roomList.get(i).getCooldownTimeLeft() > 0) {
-                roomList.get(i).tick();
+                roomList.get(i).tick();//call tick on each room
             }
         }
     }
