@@ -13,7 +13,10 @@ public class Client_Manager {
         queue = new ArrayList<Client>();
         operating = new ArrayList<Client>();
     }
-    //run the operations for a tick of time
+    /*Runs a tick of time for every client currently operating
+      Any client that is marked as done is removed from the operating list entirely
+      Clients not completed are themselves ticked, which reduces their timeLeft for the current activity.
+     */
     public void runTick() {
         for (int i=0; i < operating.size(); i++) {
             if (operating.get(i).getState() == State.STATE_DONE) {
@@ -26,6 +29,7 @@ public class Client_Manager {
         }
     }
 
+    //Sorts the queue first based on their state, than their arrival time
     public void sortQueue() {
         Collections.sort(queue);
     }
@@ -36,11 +40,15 @@ public class Client_Manager {
         sortQueue();
     }
 
+    //Returns a client based on the given index.
     public Client getClientByIndex(int index) {
         return queue.get(index);
     }
 
-    //remove at the beginning of the queue, change state and add to operating list
+    /*
+        Returns the next client ready to be given a room.
+        Ignores any clients that have either not arrived or are not actually in the waiting room
+     */
     public Client getNextClient(int currTime) {
         if (queue.isEmpty() || queue.get(0).getArrivalTime() > currTime || queue.get(0).getState() != State.STATE_WAIT) {
             return null;
@@ -50,15 +58,23 @@ public class Client_Manager {
         return nextClient;
     }
 
+    //Sets the client at the given index to the given Client
     public void setClient(Client client, int index) {
         queue.set(index, client);
     }
 
+    //Removes the client at the given index
     public void deleteClient(int index) {
         queue.remove(index);
     }
 
+    //Returns the number of clients in the queue, including those who have not arrived or are operating.
     public int getClientNum() {
         return queue.size();
+    }
+
+    //Returns the client with the latest arrival time as a default for creating new clients
+    public int getLatestTime() {
+        return queue.get(queue.size() - 1).getArrivalTime();
     }
 }
