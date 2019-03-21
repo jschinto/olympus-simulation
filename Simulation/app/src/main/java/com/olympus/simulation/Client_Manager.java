@@ -76,6 +76,10 @@ public class Client_Manager {
 
     //Returns the client with the latest arrival time as a default for creating new clients
     public int getLatestTime() {
+        if(queue.size() == 0)
+        {
+            return 0;
+        }
         return queue.get(queue.size() - 1).getArrivalTime();
     }
 }

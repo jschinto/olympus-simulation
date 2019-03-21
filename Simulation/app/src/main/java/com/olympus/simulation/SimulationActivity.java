@@ -46,7 +46,10 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             findViewById(R.id.buttonEdit).setVisibility(View.INVISIBLE);
         }
         if (id == R.id.addClient) {
-            clientInfoBox("00:00","1",-1);
+            int latest = simulation_manager.getLatestClientTime();
+            String latestString = Time.convertToString(latest);
+
+            clientInfoBox(latestString,"1",-1);
             findViewById(R.id.buttonEdit).setVisibility(View.INVISIBLE);
         }
         if (id == R.id.addProcedureRoom) {

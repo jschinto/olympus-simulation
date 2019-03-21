@@ -116,4 +116,8 @@ public class Simulation_Manager {
         procedureRoomManager.deleteProcedureRoom(index);
     }
 
+    public int getLatestClientTime() {
+        return clientManager.getLatestTime();
+    }
+
 }
