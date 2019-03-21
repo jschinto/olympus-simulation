@@ -36,4 +36,14 @@ public class Procedure_Manager {
         return names;
     }
 
+    public Procedure getProcedureByName(String name) {
+        for(Procedure p : procedureList){
+            if(p.getName().equals(name)) {
+                return p;
+            }
+        }
+
+        return null;
+    }
+
 }
