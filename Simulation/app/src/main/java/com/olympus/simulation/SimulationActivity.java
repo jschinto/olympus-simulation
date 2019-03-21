@@ -39,25 +39,21 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        Button buttonAddDelete = findViewById(R.id.buttonAddDelete);
+        buttonAddDelete.setText("Add");
         if (id == R.id.addProcedureType) {
             procedureInfoBox("","","");
             findViewById(R.id.buttonEdit).setVisibility(View.INVISIBLE);
         }
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void clickPlusIcon(View view) {
-        Button buttonAddDelete = findViewById(R.id.buttonAddDelete);
-        buttonAddDelete.setText("Add");
-
-        if (view.getId() == R.id.plusIconWaiting) {
+        if (id == R.id.addClient) {
             clientInfoBox("00:00","1",-1);
             findViewById(R.id.buttonEdit).setVisibility(View.INVISIBLE);
         }
-        else if (view.getId() == R.id.plusIconProcedure) {
+        if (id == R.id.addProcedureRoom) {
             procedureRoomInfoBox("","");
             findViewById(R.id.buttonEdit).setVisibility(View.INVISIBLE);
         }
+        return super.onOptionsItemSelected(item);
     }
 
     public boolean validateTime(String time){
