@@ -56,60 +56,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         return super.onOptionsItemSelected(item);
     }
 
-    public boolean validateTime(String time){
-        int hour;
-        int minute;
-        try{
-            if(time.charAt(1) == ':'){
-                hour = Integer.parseInt(time.charAt(0) + "");
-                minute = Integer.parseInt(time.charAt(2) + "" + time.charAt(3));
-            }
-            else if(time.charAt(2) == ':'){
-                hour = Integer.parseInt(time.charAt(0) + "" + time.charAt(1));
-                minute = Integer.parseInt(time.charAt(3) + "" + time.charAt(4));
-            }
-            else {
-                return false;
-            }
-        }
-        catch(NumberFormatException e){
-            return false;
-        }
 
-        if(hour < 0 || hour > 23){
-            return false;
-        }
-        else if(minute < 0 || minute > 59) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public int convertToInt(String time) {
-        int hour;
-        int minute;
-        if(time.charAt(1) == ':'){
-            hour = Integer.parseInt((time.charAt(0) + ""));
-            minute = Integer.parseInt(time.charAt(2) + "" + time.charAt(3));
-        }
-        else{
-            hour = Integer.parseInt(time.charAt(0) + "" + time.charAt(1));
-            minute = Integer.parseInt(time.charAt(3) + "" + time.charAt(4));
-        }
-
-        //TODO: Account for cases where the start time is not 00:00
-
-        return (hour * 60) + minute;
-    }
-
-    public String convertToString(int time) {
-        int hours = time / 60;
-        int minutes = time % 60;
-
-	    //TODO: Account for cases where start time is not 00:00
-        return "" + hours + ":" + minutes;
-    }
 
     public void onAddDeleteClick(View view){
         Button buttonAddDelete = findViewById(R.id.buttonAddDelete);
@@ -173,11 +120,11 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if(!validateTime(arrivalString)) {
+                if(!Time.validateTime(arrivalString)) {
                     Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                int arrivalTime = convertToInt(arrivalString);
+                int arrivalTime = Time.convertToInt(arrivalString);
 
                 if (arrivalTime < 0 || amount <= 0 || amount >= 101) {
                     Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
@@ -283,11 +230,11 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 return;
             }
 
-            if(!validateTime(arrivalString)) {
+            if(!Time.validateTime(arrivalString)) {
                 Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
                 return;
             }
-            int arrivalTime = convertToInt(arrivalString);
+            int arrivalTime = Time.convertToInt(arrivalString);
 
             if (arrivalTime < 0) {
                 Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
@@ -348,7 +295,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             //TODO: indexing procedure types in array???????/
 
             int arrivalTime = client.getArrivalTime();
-            String arrivalString = convertToString(arrivalTime);
+            String arrivalString = Time.convertToString(arrivalTime);
 
 
             clientInfoBox(arrivalString, "", -1);
