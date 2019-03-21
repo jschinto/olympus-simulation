@@ -96,6 +96,10 @@ public class Simulation_Manager {
         return procedureNames.toArray(procedureNamesArray);
     }
 
+    public Procedure getProcedureByName(String name){
+        return procedureManager.getProcedureByName(name);
+    }
+
     //Updates the client at the position of the given index with the given Client
     public void editClient(Client client, int index) {
         clientManager.setClient(client, index);

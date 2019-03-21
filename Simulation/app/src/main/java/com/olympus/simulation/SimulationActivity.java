@@ -133,8 +133,14 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                //TODO: procedure stuffs
-                Procedure procedure = new Procedure("Upper", 20,40);
+
+                Spinner spinner4 = findViewById(R.id.spinner4);
+                Procedure procedure = simulation_manager.getProcedureByName((String)spinner4.getSelectedItem());
+
+                if (procedure == null) {
+                    Toast.makeText(getApplicationContext(), "A customer needs a valid procedure", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 for(int i = 0; i < amount; i++) {
                     Client client = new Client(procedure, arrivalTime);
                     simulation_manager.addClient(client);
