@@ -250,8 +250,13 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 return;
             }
 
-            //TODO: procedure stuffs
-            Procedure procedure = new Procedure("Upper", 20, 40);
+            Spinner spinner4 = findViewById(R.id.spinner4);
+            Procedure procedure = simulation_manager.getProcedureByName((String)spinner4.getSelectedItem());
+
+            if (procedure == null) {
+                Toast.makeText(getApplicationContext(), "A customer needs a valid procedure", Toast.LENGTH_LONG).show();
+                return;
+            }
 
             Client update = new Client(procedure, arrivalTime);
 

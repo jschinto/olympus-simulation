@@ -123,5 +123,4 @@ public class Simulation_Manager {
     public int getLatestClientTime() {
         return clientManager.getLatestTime();
     }
-
 }
