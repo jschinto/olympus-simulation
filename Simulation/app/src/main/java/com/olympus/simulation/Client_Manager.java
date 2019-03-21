@@ -61,6 +61,7 @@ public class Client_Manager {
     //Sets the client at the given index to the given Client
     public void setClient(Client client, int index) {
         queue.set(index, client);
+        sortQueue();
     }
 
     //Removes the client at the given index

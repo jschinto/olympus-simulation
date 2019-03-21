@@ -51,13 +51,68 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         buttonAddDelete.setText("Add");
 
         if (view.getId() == R.id.plusIconWaiting) {
-            clientInfoBox("","1",-1);
+            clientInfoBox("00:00","1",-1);
             findViewById(R.id.buttonEdit).setVisibility(View.INVISIBLE);
         }
         else if (view.getId() == R.id.plusIconProcedure) {
             procedureRoomInfoBox("","");
             findViewById(R.id.buttonEdit).setVisibility(View.INVISIBLE);
         }
+    }
+
+    public boolean validateTime(String time){
+        int hour;
+        int minute;
+        try{
+            if(time.charAt(1) == ':'){
+                hour = Integer.parseInt(time.charAt(0) + "");
+                minute = Integer.parseInt(time.charAt(2) + "" + time.charAt(3));
+            }
+            else if(time.charAt(2) == ':'){
+                hour = Integer.parseInt(time.charAt(0) + "" + time.charAt(1));
+                minute = Integer.parseInt(time.charAt(3) + "" + time.charAt(4));
+            }
+            else {
+                return false;
+            }
+        }
+        catch(NumberFormatException e){
+            return false;
+        }
+
+        if(hour < 0 || hour > 23){
+            return false;
+        }
+        else if(minute < 0 || minute > 59) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public int convertToInt(String time) {
+        int hour;
+        int minute;
+        if(time.charAt(1) == ':'){
+            hour = Integer.parseInt((time.charAt(0) + ""));
+            minute = Integer.parseInt(time.charAt(2) + "" + time.charAt(3));
+        }
+        else{
+            hour = Integer.parseInt(time.charAt(0) + "" + time.charAt(1));
+            minute = Integer.parseInt(time.charAt(3) + "" + time.charAt(4));
+        }
+
+        //TODO: Account for cases where the start time is not 00:00
+
+        return (hour * 60) + minute;
+    }
+
+    public String convertToString(int time) {
+        int hours = time / 60;
+        int minutes = time % 60;
+
+	    //TODO: Account for cases where start time is not 00:00
+        return "" + hours + ":" + minutes;
     }
 
     public void onAddDeleteClick(View view){
@@ -107,7 +162,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             }
             else if (header.equals("Client")){
 
-                int arrivalTime = 0;
+                String arrivalString = "";
                 int amount = 0;
                 try {
                     /*
@@ -115,13 +170,19 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     Get Procedure from EditText
                     */
                     EditText editData1 = findViewById(R.id.editData1);
-                    arrivalTime = Integer.parseInt(editData1.getText().toString());
+                    arrivalString = editData1.getText().toString();
                     EditText editData2 = findViewById(R.id.editData2);
                     amount = Integer.parseInt(editData2.getText().toString());
                 } catch (NumberFormatException e) {
                     Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
                     return;
                 }
+                if(!validateTime(arrivalString)) {
+                    Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                int arrivalTime = convertToInt(arrivalString);
+
                 if (arrivalTime < 0 || amount <= 0 || amount >= 101) {
                     Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
                     return;
@@ -212,6 +273,62 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    public void onUpdate (View view) {
+        int index = currentClicked.index;
+        String type = currentClicked.type;
+
+        if(type.equals("Client")) {
+            String arrivalString = "";
+            try {
+                EditText editData1 = findViewById(R.id.editData1);
+                arrivalString = editData1.getText().toString();
+            } catch (NumberFormatException e) {
+                Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            if(!validateTime(arrivalString)) {
+                Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
+                return;
+            }
+            int arrivalTime = convertToInt(arrivalString);
+
+            if (arrivalTime < 0) {
+                Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            //TODO: procedure stuffs
+            Procedure procedure = new Procedure("Upper", 20, 40);
+
+            Client update = new Client(procedure, arrivalTime);
+
+            simulation_manager.editClient(update, index);
+        }
+        else if(type.equals("Procedure Room"))
+        {
+            int travelTime = 0;
+            int cooldownTime = 0;
+            try {
+                EditText editData1 = findViewById(R.id.editData1);
+                travelTime = Integer.parseInt(editData1.getText().toString());
+                EditText editData2 = findViewById(R.id.editData2);
+                cooldownTime = Integer.parseInt(editData2.getText().toString());
+            } catch (NumberFormatException e) {
+                Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (cooldownTime <= 0 || travelTime <= 0) {
+                Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            ProcedureRoom procedureRoom = new ProcedureRoom(travelTime, cooldownTime);
+
+            simulation_manager.editProcedure(procedureRoom, index);
+        }
+    }
+
     //TODO: Error occurs if you rapidly click on delete and an element in the procedure room list.
     public void onClick (View view) {
 
@@ -233,7 +350,12 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         else if(type.equals("Client")){
             Client client = simulation_manager.getClient(index);
             //TODO: indexing procedure types in array???????/
-            clientInfoBox(""+client.getArrivalTime(), "", -1);
+
+            int arrivalTime = client.getArrivalTime();
+            String arrivalString = convertToString(arrivalTime);
+
+
+            clientInfoBox(arrivalString, "", -1);
         }
     }
 

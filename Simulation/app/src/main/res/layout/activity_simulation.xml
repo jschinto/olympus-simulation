@@ -158,9 +158,10 @@
                 android:id="@+id/buttonEdit"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
                 android:layout_weight="1"
-                android:text="@string/buttonEdit"
-                android:layout_marginRight="5dp"/>
+                android:onClick="onUpdate"
+                android:text="@string/buttonEdit" />
 
             <Button
                 android:id="@+id/buttonAddDelete"
