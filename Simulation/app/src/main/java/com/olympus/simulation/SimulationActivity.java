@@ -1,5 +1,7 @@
 package com.olympus.simulation;
 
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +26,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simulation);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//set orientation to lock on portrait
         simulation_manager = new Simulation_Manager(0,100,1);
         currentClicked = null;
     }
@@ -42,6 +45,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         Button buttonAddDelete = findViewById(R.id.buttonAddDelete);
         buttonAddDelete.setText("Add");
         if (id == R.id.addProcedureType) {
+
             procedureInfoBox("","","");
             findViewById(R.id.buttonEdit).setVisibility(View.INVISIBLE);
         }
@@ -53,6 +57,10 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             findViewById(R.id.buttonEdit).setVisibility(View.INVISIBLE);
         }
         if (id == R.id.addProcedureRoom) {
+
+            Intent procedureRoomIntent = new Intent(getApplicationContext(), ProcedureRoomActivity.class);
+            startActivity(procedureRoomIntent);
+
             procedureRoomInfoBox("","");
             findViewById(R.id.buttonEdit).setVisibility(View.INVISIBLE);
         }

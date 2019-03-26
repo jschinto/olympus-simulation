@@ -9,4 +9,5 @@
     <string name="buttonEdit">Update</string>
     <string name="textData">Attribute</string>
     <string name="editData">Value</string>
+    <string name="textProcedureRoomTitle">Procedure Room</string>
 </resources>
