@@ -31,10 +31,9 @@ public class Client implements Comparable<Client>{
         //client is done with operation
         if (timeLeft <= 0 && state.equals(State.STATE_OPERATION)) {
             setState(State.STATE_DONE);
-            this.procedureRoom = null;
             procedureRoom.setOccupied(false);
             procedureRoom.startCooldown();
-
+            this.procedureRoom = null;
         }
         //client is done traveling to operation room
         if (timeLeft <= 0 && state.equals(State.STATE_TRAVEL)) {

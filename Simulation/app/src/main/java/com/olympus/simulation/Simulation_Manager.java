@@ -1,8 +1,12 @@
 package com.olympus.simulation;
 
 import android.widget.Toast;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import java.util.ArrayList;
+
+import static java.lang.Thread.sleep;
 
 public class Simulation_Manager {
     //the ProcedureRoom and Client Managers needed to run the simulation
@@ -19,6 +23,9 @@ public class Simulation_Manager {
     //Current time of the simulation
     private int currTime;
 
+    static boolean isRunning = false;
+    static boolean isPaused = false;
+
     //Initializes the simulation using the startTime, endTime, and waitTime
     public Simulation_Manager(int startTime, int endTime, int waitTime) {
         procedureRoomManager = new ProcedureRoom_Manager();
@@ -31,7 +38,25 @@ public class Simulation_Manager {
     }
 
     public void startSimulation() {
+        currTime = 0;
+        Timer time = new Timer();
+        time.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if(!isRunning && !isPaused) {
+                    isRunning = true;
+                    runTick();
+                    currTime++;
 
+                    if (currTime >= endTime) {
+                        this.cancel();
+                    }
+
+                    isRunning = false;
+                    System.out.println("Loop " + (currTime - 1));
+                }
+            }
+        }, 0, 1);
     }
 
     /*
@@ -54,7 +79,6 @@ public class Simulation_Manager {
         }
         clientManager.runTick();
         procedureRoomManager.runTick();
-        currTime++;
 
         clientManager.sortQueue();
         return false;
