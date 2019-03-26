@@ -5,7 +5,9 @@
         app:showAsAction="always"
         android:title="">
         <menu>
-
+            <item
+                android:id="@+id/startSimulation"
+                android:title="Confirm Start" />
         </menu>
     </item>
     <item

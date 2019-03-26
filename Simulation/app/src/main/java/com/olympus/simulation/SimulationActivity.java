@@ -56,6 +56,9 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             procedureRoomInfoBox("","");
             findViewById(R.id.buttonEdit).setVisibility(View.INVISIBLE);
         }
+        if(id == R.id.startSimulation) {
+            simulation_manager.startSimulation();
+        }
         return super.onOptionsItemSelected(item);
     }
 

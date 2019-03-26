@@ -1,5 +1,7 @@
 package com.olympus.simulation;
 
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
 public class Simulation_Manager {
@@ -26,6 +28,10 @@ public class Simulation_Manager {
         this.endTime = endTime;
         this.waitTime = waitTime;
         this.currTime = this.startTime;
+    }
+
+    public void startSimulation() {
+
     }
 
     /*
