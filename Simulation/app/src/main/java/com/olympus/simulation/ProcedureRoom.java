@@ -1,6 +1,8 @@
 package com.olympus.simulation;
 
-public class ProcedureRoom {
+import java.io.Serializable;
+
+public class ProcedureRoom implements Serializable {
 
     //whether the room is currently being used or not
     private boolean occupied;
@@ -11,16 +13,34 @@ public class ProcedureRoom {
     //time left in cooldown
     private int cooldownTimeLeft;
 
+    private Client client;
+
     public ProcedureRoom(int travelTime, int cooldownTime) {
         this.occupied = false;
         this.travelTime = travelTime;
         this.cooldownTime = cooldownTime;
         this.cooldownTimeLeft = 0;
+        this.client = null;
     }
 
     //cooldown time decreases with each tick of time
     public void tick() {
         cooldownTimeLeft--;
+    }
+
+    public Client getClient() {
+        return this.client;
+    }
+
+    public void setClient(Client client) {
+        setOccupied(true);
+        this.client = client;
+    }
+
+    public void removeClient() {
+        setOccupied(false);
+        this.client = null;
+        startCooldown();
     }
 
     //Starts the process of the cooldown by setting the timeLeft to the cooldown time

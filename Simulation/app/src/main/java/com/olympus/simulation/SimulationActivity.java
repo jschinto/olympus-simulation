@@ -22,6 +22,15 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     Simulation_Manager simulation_manager;
     Tag currentClicked;
 
+    static final int procedureRoom_Request = 1;
+    static final int client_Request = 2;
+    static final int procedure_Request = 3;
+
+    static final int Result_deleted = -1;
+    static final int Result_none = 0;
+    static final int Result_added = 1;
+    static final int Result_edited = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,16 +68,29 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         if (id == R.id.addProcedureRoom) {
 
             Intent procedureRoomIntent = new Intent(getApplicationContext(), ProcedureRoomActivity.class);
-            startActivity(procedureRoomIntent);
-
-            procedureRoomInfoBox("","");
-            findViewById(R.id.buttonEdit).setVisibility(View.INVISIBLE);
+            ProcedureRoom procedureRoom = new ProcedureRoom(0,0);
+            procedureRoomIntent.putExtra("procedureRoom", procedureRoom);
+            startActivityForResult(procedureRoomIntent, procedureRoom_Request);
         }
         if(id == R.id.startSimulation) {
             simulation_manager.startSimulation();
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == procedureRoom_Request) { //returned from ProcedureRoomActivity
+            if (resultCode == RESULT_FIRST_USER) { //added a procedureRoom
+
+            } else if (resultCode == RESULT_OK) {//looked at or edited a procedureRoom
+            } else if (resultCode == RESULT_CANCELED) {
+
+            }
+        }
+    }
+
+
 
 
 

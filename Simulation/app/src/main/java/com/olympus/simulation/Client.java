@@ -1,10 +1,12 @@
 package com.olympus.simulation;
 
 
+import java.io.Serializable;
+
 /*
 class to represent a Client in the simulation
  */
-public class Client implements Comparable<Client>{
+public class Client implements Comparable<Client>, Serializable {
 
     //the procedure that a client is going to have done
     private Procedure procedure;
@@ -31,8 +33,7 @@ public class Client implements Comparable<Client>{
         //client is done with operation
         if (timeLeft <= 0 && state.equals(State.STATE_OPERATION)) {
             setState(State.STATE_DONE);
-            procedureRoom.setOccupied(false);
-            procedureRoom.startCooldown();
+            procedureRoom.removeClient();
             this.procedureRoom = null;
         }
         //client is done traveling to operation room
@@ -67,9 +68,10 @@ public class Client implements Comparable<Client>{
     //assigns client to given procedure room
     public void setProcedureRoom(ProcedureRoom procedureRoom) {
         this.procedureRoom = procedureRoom;
-        procedureRoom.setOccupied(true);
         setState(State.STATE_TRAVEL);
         timeLeft = procedureRoom.getTravelTime();
+
+        procedureRoom.setClient(this);
     }
 
     public int getState() {

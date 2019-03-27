@@ -1,6 +1,8 @@
 package com.olympus.simulation;
 
-public class Procedure {
+import java.io.Serializable;
+
+public class Procedure implements Serializable {
 
     //name given to the operation
     private String name;

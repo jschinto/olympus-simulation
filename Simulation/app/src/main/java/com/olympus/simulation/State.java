@@ -2,6 +2,7 @@ package com.olympus.simulation;
 
 import android.support.annotation.IntDef;
 
+import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -9,7 +10,7 @@ import java.lang.annotation.RetentionPolicy;
 /*
 enumerated type for the different states that Clients can have during the simulation
  */
-public class State {
+public class State implements Serializable {
 
     public int state;
 

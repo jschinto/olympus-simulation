@@ -10,4 +10,6 @@
     <string name="textData">Attribute</string>
     <string name="editData">Value</string>
     <string name="textProcedureRoomTitle">Procedure Room</string>
+    <string name="travelTime">Travel Time:</string>
+    <string name="cooldownTime">Cooldown Time:</string>
 </resources>
