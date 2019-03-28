@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ProcedureRoomActivity">
+    tools:context=".ClientActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,33 +13,31 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/procedureRoomTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/textProcedureRoomTitle" />
-
-        <Button
-            android:id="@+id/procedureRoomButtonEdit"
+            android:id="@+id/clientTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="buttonClick"
+            android:text="@string/textClientTitle" />
+
+        <Button
+            android:id="@+id/clientButtonEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/buttonEdit" />
 
         <Button
-            android:id="@+id/procedureRoomButtonAddDelete"
+            android:id="@+id/clientButtonAddDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="buttonClick"
             android:text="@string/buttonAdd" />
 
         <Button
-            android:id="@+id/procedureRoomButtonExit"
+            android:id="@+id/clientButtonExit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="buttonClick"
             android:text="@string/buttonExit" />
     </LinearLayout>
 
@@ -49,40 +47,18 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/procedureRoomText1"
+            android:id="@+id/clientText1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/travelTime" />
+            android:text="@string/ArrivalTime" />
 
         <EditText
-            android:id="@+id/procedureRoomEdit1"
+            android:id="@+id/clientEdit1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
             android:inputType="textPersonName" />
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/procedureRoomText2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/cooldownTime" />
-
-        <EditText
-            android:id="@+id/procedureRoomEdit2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="textPersonName" />
-    </LinearLayout>
-
 </LinearLayout>

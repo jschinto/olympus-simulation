@@ -12,4 +12,7 @@
     <string name="textProcedureRoomTitle">Procedure Room</string>
     <string name="travelTime">Travel Time:</string>
     <string name="cooldownTime">Cooldown Time:</string>
+    <string name="buttonExit">Exit</string>
+    <string name="textClientTitle">Client</string>
+    <string name="ArrivalTime">Arrival Time:</string>
 </resources>

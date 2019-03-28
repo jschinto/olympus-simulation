@@ -22,14 +22,9 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     Simulation_Manager simulation_manager;
     Tag currentClicked;
 
-    static final int procedureRoom_Request = 1;
-    static final int client_Request = 2;
-    static final int procedure_Request = 3;
-
-    static final int Result_deleted = -1;
-    static final int Result_none = 0;
-    static final int Result_added = 1;
-    static final int Result_edited = 2;
+    public static final int procedureRoom_Request = 1;
+    public static final int client_Request = 2;
+    public static final int procedure_Request = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,15 +75,62 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == procedureRoom_Request) { //returned from ProcedureRoomActivity
-            if (resultCode == RESULT_FIRST_USER) { //added a procedureRoom
+        //returned from ProcedureRoomActivity
+        if (requestCode == procedureRoom_Request) {
+            //added a procedureRoom
+            if (resultCode == RESULT_FIRST_USER) {
 
-            } else if (resultCode == RESULT_OK) {//looked at or edited a procedureRoom
+                ProcedureRoom procedureRoom = (ProcedureRoom)data.getSerializableExtra("procedureRoom");
+                simulation_manager.addProcedureRoom(procedureRoom);
+
+                LinearLayout linearLayoutRooms = findViewById(R.id.LinearLayoutRooms);
+                ImageView roomImage = new ImageView(getApplicationContext());
+                roomImage.setImageResource(R.drawable.procedure_room);
+
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
+                roomImage.setLayoutParams(layoutParams);
+                roomImage.setPadding(10, 0, 0, 0);
+                roomImage.setOnClickListener(this);
+
+                int index = simulation_manager.getProcedureRoomNum() - 1;
+                Tag tag = new Tag(index, "Procedure Room");
+
+                roomImage.setTag(tag);
+
+                linearLayoutRooms.addView(roomImage);
+
+                //edited or deleted a procedureRoom
+            } else if (resultCode == RESULT_OK) {
+                ProcedureRoom procedureRoom = (ProcedureRoom)data.getSerializableExtra("procedureRoom");
+                int index = currentClicked.index;
+
+                //deleting a procedureRoom TODO: error on delete, add, delete in same position
+                if (procedureRoom.getTravelTime() <= 0 || procedureRoom.getCooldownTime() <= 0) {
+                    simulation_manager.deleteProcedureRoom(index);
+
+                    LinearLayout linearLayoutRooms = findViewById(R.id.LinearLayoutRooms);
+                    View room = linearLayoutRooms.getChildAt(simulation_manager.getProcedureRoomNum());
+                    room.setVisibility(View.GONE);
+
+                    //editing a procedureRoom
+                } else {
+                    simulation_manager.editProcedure(procedureRoom, index);
+                }
+                //nothing to be done, represents just viewing or canceling an add to procedureRoom
             } else if (resultCode == RESULT_CANCELED) {
-
+                return;
             }
         }
     }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -104,6 +146,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             String header = headerView.getText().toString();
             //press add button for procedure room
             if (header.equals("Procedure Room")) {
+                //////////////////////////
                 int travelTime = 0;
                 int cooldownTime = 0;
                 try {
@@ -319,7 +362,6 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    //TODO: Error occurs if you rapidly click on delete and an element in the procedure room list.
     public void onClick (View view) {
 
         findViewById(R.id.buttonEdit).setVisibility(View.VISIBLE);
@@ -333,8 +375,12 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         String type = tag.type;
 
         if (type.equals("Procedure Room")) {
-            ProcedureRoom room = simulation_manager.getProcedureRoom(index);
-            procedureRoomInfoBox(""+room.getTravelTime(), ""+room.getCooldownTime());
+            ProcedureRoom procedureRoom = simulation_manager.getProcedureRoom(index);
+
+            Intent procedureRoomIntent = new Intent(getApplicationContext(), ProcedureRoomActivity.class);
+            procedureRoomIntent.putExtra("procedureRoom", procedureRoom);
+            startActivityForResult(procedureRoomIntent, procedureRoom_Request);
+           // procedureRoomInfoBox(""+room.getTravelTime(), ""+room.getCooldownTime());
         }
 
         else if(type.equals("Client")){
