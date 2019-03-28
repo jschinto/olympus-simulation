@@ -562,9 +562,14 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     simulation_manager.incrementCurrTime();
 
                     if (simulation_manager.getCurrTime() >= simulation_manager.getEndTime()) {
-                        item.setTitle("Confirm Start");
-                        ActionMenuItemView playImage = findViewById(R.id.playButton);
-                        playImage.setIcon(getResources().getDrawable(R.drawable.play_button));
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                item.setTitle("Confirm Start");
+                                ActionMenuItemView playImage = findViewById(R.id.playButton);
+                                playImage.setIcon(getResources().getDrawable(R.drawable.play_button));
+                            }
+                        });
                         this.cancel();
                     }
                     runOnUiThread(new Runnable() {
