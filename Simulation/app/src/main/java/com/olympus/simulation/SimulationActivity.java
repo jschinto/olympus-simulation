@@ -1,12 +1,15 @@
 package com.olympus.simulation;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.view.menu.ActionMenuItemView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,6 +51,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         return super.onCreateOptionsMenu(menu);
     }
     // handle button activities
+    @SuppressLint("RestrictedApi")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -73,7 +77,22 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             startActivityForResult(procedureRoomIntent, procedureRoom_Request);
         }
         if(id == R.id.startSimulation) {
-            startSimulation();
+            ActionMenuItemView playImage = findViewById(R.id.playButton);
+            if(item.getTitle().equals("Confirm Start")) {
+                startSimulation(item);
+                item.setTitle("Pause");
+                playImage.setIcon(getResources().getDrawable(R.drawable.pause_button));
+            }
+            else if(item.getTitle().equals("Pause")){
+                isPaused = true;
+                item.setTitle("Resume");
+                playImage.setIcon(getResources().getDrawable(R.drawable.play_button));
+            }
+            else {
+                isPaused = false;
+                item.setTitle("Pause");
+                playImage.setIcon(getResources().getDrawable(R.drawable.pause_button));
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -530,10 +549,11 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     static boolean isPaused = false;
 
 
-    public void startSimulation() {
+    public void startSimulation(final MenuItem item) {
         simulation_manager.setCurrTime(0);
         Timer time = new Timer();
         time.scheduleAtFixedRate(new TimerTask() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void run() {
                 if(!isRunning && !isPaused) {
@@ -542,6 +562,9 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     simulation_manager.incrementCurrTime();
 
                     if (simulation_manager.getCurrTime() >= simulation_manager.getEndTime()) {
+                        item.setTitle("Confirm Start");
+                        ActionMenuItemView playImage = findViewById(R.id.playButton);
+                        playImage.setIcon(getResources().getDrawable(R.drawable.play_button));
                         this.cancel();
                     }
                     runOnUiThread(new Runnable() {
