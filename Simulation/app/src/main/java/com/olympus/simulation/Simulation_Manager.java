@@ -81,6 +81,7 @@ public class Simulation_Manager {
             }
             nextClient.setProcedureRoom(openRoom);
             openRoom = procedureRoomManager.getProcedureRoom();
+            clientManager.sortQueue();
         }
         clientManager.runTick();
         procedureRoomManager.runTick();

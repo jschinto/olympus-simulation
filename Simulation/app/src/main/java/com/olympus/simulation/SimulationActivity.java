@@ -2,6 +2,7 @@ package com.olympus.simulation;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.media.Image;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
@@ -543,20 +544,58 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     if (simulation_manager.getCurrTime() >= simulation_manager.getEndTime()) {
                         this.cancel();
                     }
-                    isRunning = false;
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             updateUI();
+                            isRunning = false;
                         }
                     });
-                    //System.err.println("Loop " + (simulation_manager.getCurrTime() - 1));
+                    System.err.println("Loop " + (simulation_manager.getCurrTime() - 1));
                 }
             }
-        }, 0, 100);
+        }, 0, 1000);
     }
 
     public void updateUI() {
+        int numClients = simulation_manager.getClientNum();
+        int numProcedureRoom = simulation_manager.getProcedureRoomNum();
 
+        LinearLayout linearLayoutClients = findViewById(R.id.LinearLayoutClients);
+        for(int i = 0; i < numClients; i++)
+        {
+            Client client = simulation_manager.getClient(i);
+            View clientImg = linearLayoutClients.getChildAt(i);
+
+            if(client.getState() == State.STATE_WAIT) {
+                clientImg.setBackgroundColor(Color.BLUE);
+            }
+            else if(client.getState() == State.STATE_TRAVEL) {
+                clientImg.setBackgroundColor(Color.CYAN);
+            }
+            else if(client.getState() == State.STATE_OPERATION) {
+                clientImg.setBackgroundColor(Color.YELLOW);
+            }
+            else if(client.getState() == State.STATE_DONE)
+            {
+                clientImg.setBackgroundColor(Color.GREEN);
+            }
+        }
+        LinearLayout linearLayoutRooms = findViewById(R.id.LinearLayoutRooms);
+        for(int i = 0; i < numProcedureRoom; i++)
+        {
+            ProcedureRoom room = simulation_manager.getProcedureRoom(i);
+            View roomImg = linearLayoutRooms.getChildAt(i);
+
+            if(room.isAvailable()) {
+                roomImg.setBackgroundColor(Color.BLUE);
+            }
+            else if(room.isOccupied()) {
+                roomImg.setBackgroundColor(Color.CYAN);
+            }
+            else {
+                roomImg.setBackgroundColor(Color.YELLOW);
+            }
+        }
     }
 }
