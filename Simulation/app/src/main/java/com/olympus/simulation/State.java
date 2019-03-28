@@ -14,9 +14,9 @@ public class State implements Serializable {
 
     public int state;
 
-    public static final int STATE_WAIT = 0;
-    public static final int STATE_TRAVEL = 1;
-    public static final int STATE_OPERATION = 2;
+    public static final int STATE_WAIT = 2;
+    public static final int STATE_TRAVEL = 0;
+    public static final int STATE_OPERATION = 1;
     public static final int STATE_DONE = 3;
 
     @Retention(RetentionPolicy.SOURCE)

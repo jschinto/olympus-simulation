@@ -50,10 +50,10 @@ public class Client_Manager {
         Ignores any clients that have either not arrived or are not actually in the waiting room
      */
     public Client getNextClient(int currTime) {
-        if (queue.isEmpty() || queue.get(0).getArrivalTime() > currTime || queue.get(0).getState() != State.STATE_WAIT) {
+        if (queue.isEmpty() || queue.get(operating.size()).getArrivalTime() > currTime || queue.get(operating.size()).getState() != State.STATE_WAIT) {
             return null;
         }
-        Client nextClient = queue.get(0);
+        Client nextClient = queue.get(operating.size());
         operating.add(nextClient);
         return nextClient;
     }
