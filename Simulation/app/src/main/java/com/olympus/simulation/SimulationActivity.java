@@ -115,7 +115,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
                     LinearLayout linearLayoutRooms = findViewById(R.id.LinearLayoutRooms);
                     View room = linearLayoutRooms.getChildAt(simulation_manager.getProcedureRoomNum());
-                    room.setVisibility(View.GONE);
+                    linearLayoutRooms.removeView(room);
 
                     //editing a procedureRoom
                 } else {
@@ -289,7 +289,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
                     View room = linearLayoutRooms.getChildAt(simulation_manager.getProcedureRoomNum());
 
-                    room.setVisibility(View.GONE);
+                    linearLayoutRooms.removeView(room);
                 }
                 else if(type.equals("Client")){
                     simulation_manager.deleteClient(index);
@@ -298,7 +298,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
                     View client = linearLayoutClients.getChildAt(simulation_manager.getClientNum());
 
-                    client.setVisibility(View.GONE);
+                    linearLayoutClients.removeView(client);
                 }
 
                 currentClicked = null;
