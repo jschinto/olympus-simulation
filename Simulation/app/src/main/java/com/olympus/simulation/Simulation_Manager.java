@@ -17,14 +17,41 @@ public class Simulation_Manager {
     //the time the simulated hospital should open and close
     //Represented as a integer from 0 - some value
     private int startTime;
+
+    public int getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(int startTime) {
+        this.startTime = startTime;
+    }
+
+    public int getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(int endTime) {
+        this.endTime = endTime;
+    }
+
     private int endTime;
     //Time the system should wait between ticks.
     private int waitTime;
+
+    public int getCurrTime() {
+        return currTime;
+    }
+
+    public void setCurrTime(int currTime) {
+        this.currTime = currTime;
+    }
+
+    public void incrementCurrTime() {
+        this.currTime++;
+    }
+
     //Current time of the simulation
     private int currTime;
-
-    static boolean isRunning = false;
-    static boolean isPaused = false;
 
     //Initializes the simulation using the startTime, endTime, and waitTime
     public Simulation_Manager(int startTime, int endTime, int waitTime) {
@@ -35,28 +62,6 @@ public class Simulation_Manager {
         this.endTime = endTime;
         this.waitTime = waitTime;
         this.currTime = this.startTime;
-    }
-
-    public void startSimulation() {
-        currTime = 0;
-        Timer time = new Timer();
-        time.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                if(!isRunning && !isPaused) {
-                    isRunning = true;
-                    runTick();
-                    currTime++;
-
-                    if (currTime >= endTime) {
-                        this.cancel();
-                    }
-
-                    isRunning = false;
-                    System.out.println("Loop " + (currTime - 1));
-                }
-            }
-        }, 0, 1);
     }
 
     /*

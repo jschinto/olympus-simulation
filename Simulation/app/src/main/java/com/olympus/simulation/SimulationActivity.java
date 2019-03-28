@@ -3,6 +3,7 @@ package com.olympus.simulation;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.Image;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,6 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SimulationActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -68,7 +72,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             startActivityForResult(procedureRoomIntent, procedureRoom_Request);
         }
         if(id == R.id.startSimulation) {
-            simulation_manager.startSimulation();
+            startSimulation();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -521,5 +525,38 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
     }
 
+    static boolean isRunning = false;
+    static boolean isPaused = false;
 
+
+    public void startSimulation() {
+        simulation_manager.setCurrTime(0);
+        Timer time = new Timer();
+        time.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if(!isRunning && !isPaused) {
+                    isRunning = true;
+                    simulation_manager.runTick();
+                    simulation_manager.incrementCurrTime();
+
+                    if (simulation_manager.getCurrTime() >= simulation_manager.getEndTime()) {
+                        this.cancel();
+                    }
+                    isRunning = false;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateUI();
+                        }
+                    });
+                    //System.err.println("Loop " + (simulation_manager.getCurrTime() - 1));
+                }
+            }
+        }, 0, 100);
+    }
+
+    public void updateUI() {
+
+    }
 }
