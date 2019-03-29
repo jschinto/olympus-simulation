@@ -64,10 +64,11 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         }
         if (id == R.id.addClient) {
             int latest = simulation_manager.getLatestClientTime();
-            String latestString = Time.convertToString(latest);
 
-            clientInfoBox(latestString,"1",-1);
-            findViewById(R.id.buttonEdit).setVisibility(View.INVISIBLE);
+            Intent clientIntent = new Intent(getApplicationContext(), ClientActivity.class);
+            Client client = new Client(null, latest);
+            clientIntent.putExtra("client", client);
+            startActivityForResult(clientIntent, client_Request);
         }
         if (id == R.id.addProcedureRoom) {
 
@@ -99,6 +100,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         //returned from ProcedureRoomActivity
         if (requestCode == procedureRoom_Request) {
             //added a procedureRoom
@@ -128,7 +130,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 ProcedureRoom procedureRoom = (ProcedureRoom)data.getSerializableExtra("procedureRoom");
                 int index = currentClicked.index;
 
-                //deleting a procedureRoom TODO: error on delete, add, delete in same position
+                //deleting a procedureRoom
                 if (procedureRoom.getTravelTime() <= 0 || procedureRoom.getCooldownTime() <= 0) {
                     simulation_manager.deleteProcedureRoom(index);
 
@@ -141,6 +143,54 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     simulation_manager.editProcedure(procedureRoom, index);
                 }
                 //nothing to be done, represents just viewing or canceling an add to procedureRoom
+            } else if (resultCode == RESULT_CANCELED) {
+                return;
+            }
+        }
+
+        //returned from ClientActivity
+        if (requestCode == client_Request) {
+            //added a client
+            if (resultCode == RESULT_FIRST_USER) {
+                Client client = (Client)data.getSerializableExtra("client");
+                int amount = data.getIntExtra("amount",1);
+                for (int i=0; i < amount; i++) {
+                    simulation_manager.addClient(new Client(client));
+
+                    LinearLayout linearLayoutClients = findViewById(R.id.LinearLayoutClients);
+                    ImageView clientImage = new ImageView(getApplicationContext());
+                    clientImage.setImageResource(R.drawable.client);
+
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(78, 100);
+                    clientImage.setLayoutParams(layoutParams);
+                    clientImage.setOnClickListener(this);
+
+                    int index = simulation_manager.getClientNum() - 1;
+                    Tag tag = new Tag(index, "Client");
+
+                    clientImage.setTag(tag);
+
+                    linearLayoutClients.addView(clientImage);
+                }
+
+                //edited or deleted a client
+            } else if (resultCode == RESULT_OK) {
+                Client client = (Client)data.getSerializableExtra("client");
+                int index = currentClicked.index;
+
+                //deleting a client
+                if (client.getProcedure() == null || client.getArrivalTime() < 0) {
+                    simulation_manager.deleteClient(index);
+
+                    LinearLayout linearLayoutClients = findViewById(R.id.LinearLayoutClients);
+                    View clientView = linearLayoutClients.getChildAt(simulation_manager.getClientNum());
+                    linearLayoutClients.removeView(clientView);
+
+                    //editing a client
+                } else {
+                    simulation_manager.editClient(client, index);
+                }
+                //nothing to be done, represents just viewing or canceling an add to a client
             } else if (resultCode == RESULT_CANCELED) {
                 return;
             }
@@ -404,18 +454,14 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             Intent procedureRoomIntent = new Intent(getApplicationContext(), ProcedureRoomActivity.class);
             procedureRoomIntent.putExtra("procedureRoom", procedureRoom);
             startActivityForResult(procedureRoomIntent, procedureRoom_Request);
-           // procedureRoomInfoBox(""+room.getTravelTime(), ""+room.getCooldownTime());
         }
 
         else if(type.equals("Client")){
             Client client = simulation_manager.getClient(index);
-            //TODO: indexing procedure types in array???????/
 
-            int arrivalTime = client.getArrivalTime();
-            String arrivalString = Time.convertToString(arrivalTime);
-
-
-            clientInfoBox(arrivalString, "", -1);
+            Intent clientIntent = new Intent(getApplicationContext(), ClientActivity.class);
+            clientIntent.putExtra("client", client);
+            startActivityForResult(clientIntent, client_Request);
         }
     }
 

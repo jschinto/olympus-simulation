@@ -27,6 +27,14 @@ public class Client implements Comparable<Client>, Serializable {
         this.arrivalTime = arrivalTime;
     }
 
+    public Client(Client client) {
+        this.procedure = client.procedure;
+        setState(client.getState());
+        procedureRoom = client.getProcedureRoom();
+        timeLeft = client.getTimeLeft();
+        arrivalTime = client.getArrivalTime();
+    }
+
     //alters appropriate variables based on passage of time(tick)
     public void tick() {
         timeLeft--;

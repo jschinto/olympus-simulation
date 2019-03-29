@@ -15,4 +15,5 @@
     <string name="buttonExit">Exit</string>
     <string name="textClientTitle">Client</string>
     <string name="ArrivalTime">Arrival Time:</string>
+    <string name="AmountToAdd">Amount To Add:</string>
 </resources>

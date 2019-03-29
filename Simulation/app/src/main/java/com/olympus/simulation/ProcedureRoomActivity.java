@@ -37,7 +37,7 @@ public class ProcedureRoomActivity extends AppCompatActivity {
     private void setValues(int travelTime, int cooldownTime) {
         EditText edit1 = findViewById(R.id.procedureRoomEdit1);
         EditText edit2 = findViewById(R.id.procedureRoomEdit2);
-        if (travelTime <= 0 && cooldownTime <= 0) {//default value 0 to indicate user is in adding mode
+        if (travelTime <= 0 || cooldownTime <= 0) {//default value 0 to indicate user is in adding mode
             edit1.setText("");
             edit2.setText("");
             addSetup();
@@ -83,7 +83,7 @@ public class ProcedureRoomActivity extends AppCompatActivity {
                     return;
                 }
 
-                ProcedureRoom procedureRoom = new ProcedureRoom(travelTime, cooldownTime);
+                procedureRoom = new ProcedureRoom(travelTime, cooldownTime);
 
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("procedureRoom", procedureRoom);
