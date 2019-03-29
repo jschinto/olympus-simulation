@@ -55,12 +55,9 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Button buttonAddDelete = findViewById(R.id.buttonAddDelete);
-        buttonAddDelete.setText("Add");
+
         if (id == R.id.addProcedureType) {
 
-            procedureInfoBox("","","");
-            findViewById(R.id.buttonEdit).setVisibility(View.INVISIBLE);
         }
         if (id == R.id.addClient) {
             int latest = simulation_manager.getLatestClientTime();
@@ -209,7 +206,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
 
 
-
+/*
     public void onAddDeleteClick(View view){
         Button buttonAddDelete = findViewById(R.id.buttonAddDelete);
         String buttonName = buttonAddDelete.getText().toString();
@@ -261,10 +258,10 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 String arrivalString = "";
                 int amount = 0;
                 try {
-                    /*
+
                     EditText editData1 = findViewById(R.id.editData1);
                     Get Procedure from EditText
-                    */
+
                     EditText editData1 = findViewById(R.id.editData1);
                     arrivalString = editData1.getText().toString();
                     EditText editData2 = findViewById(R.id.editData2);
@@ -374,7 +371,8 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             }
         }
     }
-
+*/
+/*
     public void onUpdate (View view) {
         int index = currentClicked.index;
         String type = currentClicked.type;
@@ -435,14 +433,8 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             simulation_manager.editProcedure(procedureRoom, index);
         }
     }
-
+*/
     public void onClick (View view) {
-
-        findViewById(R.id.buttonEdit).setVisibility(View.VISIBLE);
-
-        Button buttonAddDelete = findViewById(R.id.buttonAddDelete);
-        buttonAddDelete.setText("Delete");
-
         Tag tag = (Tag)view.getTag();
         currentClicked = tag;
         int index = tag.index;
@@ -464,7 +456,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             startActivityForResult(clientIntent, client_Request);
         }
     }
-
+/*
     public void procedureRoomInfoBox(String travelTime, String cooldownTime) {
         setInfoBox("Travel Time:", travelTime, "Cooldown Time:", cooldownTime, "", "", "", null, -1, "", "", "", "");
         TextView headerView =  findViewById(R.id.textInfo_Name);
@@ -589,7 +581,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             editData6.setText(value6);
         }
 
-    }
+    }*/
 
     static boolean isRunning = false;
     static boolean isPaused = false;

@@ -16,4 +16,8 @@
     <string name="textClientTitle">Client</string>
     <string name="ArrivalTime">Arrival Time:</string>
     <string name="AmountToAdd">Amount To Add:</string>
+    <string name="textProcedureTitle">Procedure</string>
+    <string name="procedureName">Procedure Name:</string>
+    <string name="minTime">Min Completion Time:</string>
+    <string name="maxTime">Max Completion Time:</string>>
 </resources>
