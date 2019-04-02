@@ -14,6 +14,7 @@ public class ProcedureRoom implements Serializable {
     private int cooldownTimeLeft;
 
     private Client client;
+    private Scope scope;
 
     public ProcedureRoom(int travelTime, int cooldownTime) {
         this.occupied = false;
@@ -21,6 +22,7 @@ public class ProcedureRoom implements Serializable {
         this.cooldownTime = cooldownTime;
         this.cooldownTimeLeft = 0;
         this.client = null;
+        this.scope = null;
     }
 
     //cooldown time decreases with each tick of time
