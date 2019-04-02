@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -21,6 +22,7 @@ public class ClientActivity extends AppCompatActivity {
     // 3 : procedures to add
 
     Client client;
+    String[] procedures;
 
     private boolean adding;
 
@@ -33,6 +35,12 @@ public class ClientActivity extends AppCompatActivity {
         adding = true;
         Intent fromIntent = getIntent();
         client = (Client) fromIntent.getSerializableExtra("client");
+        procedures = fromIntent.getStringArrayExtra("procedures");
+        if (procedures != null && procedures.length > 0) {
+            Spinner spinner3 = findViewById(R.id.clientSpinner3);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, procedures);
+            spinner3.setAdapter(adapter);
+        }
         if (client != null) {
             setValues(client.getArrivalTime(), client.getProcedure());
         }

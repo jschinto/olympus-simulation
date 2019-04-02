@@ -76,6 +76,7 @@ public class ProcedureActivity extends AppCompatActivity {
                 }
                 if (name == null || name.equals("")) {
                     Toast.makeText(getApplicationContext(), "Invalid Name!", Toast.LENGTH_LONG).show();
+                    return;
                 }
                 if (minTime <= 0 || maxTime <= 0) {
                     Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
@@ -83,6 +84,7 @@ public class ProcedureActivity extends AppCompatActivity {
                 }
                 if (minTime > maxTime) {
                     Toast.makeText(getApplicationContext(), "Min time can't be greater than max time!", Toast.LENGTH_LONG).show();
+                    return;
                 }
 
                 Procedure procedure = new Procedure(name, minTime, maxTime);
@@ -118,6 +120,7 @@ public class ProcedureActivity extends AppCompatActivity {
             }
             if (name == null || name.equals("")) {
                 Toast.makeText(getApplicationContext(), "Invalid Name!", Toast.LENGTH_LONG).show();
+                return;
             }
             if (minTime <= 0 || maxTime <= 0) {
                 Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
@@ -125,6 +128,7 @@ public class ProcedureActivity extends AppCompatActivity {
             }
             if (minTime > maxTime) {
                 Toast.makeText(getApplicationContext(), "Min time can't be greater than max time!", Toast.LENGTH_LONG).show();
+                return;
             }
 
             procedure.setName(name);
