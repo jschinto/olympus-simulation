@@ -10,6 +10,9 @@ public class Procedure_Manager {
     }
 
     public void addProcedure(Procedure procedure) {
+        if (getProcedureByName(procedure.getName()) != null) {
+            deleteProcedure(procedure.getName());
+        }
         procedureList.add(procedure);
     }
 

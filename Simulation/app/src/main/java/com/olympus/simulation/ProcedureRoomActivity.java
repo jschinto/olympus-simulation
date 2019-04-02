@@ -90,7 +90,8 @@ public class ProcedureRoomActivity extends AppCompatActivity {
                 setResult(RESULT_FIRST_USER, returnIntent);
                 finish();
 
-            } else {//deleting
+                //deleting
+            } else {
                 procedureRoom.setCooldownTime(0);
                 procedureRoom.setTravelTime(0);
                 Intent returnIntent = new Intent();

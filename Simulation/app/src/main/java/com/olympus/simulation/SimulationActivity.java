@@ -57,7 +57,10 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         int id = item.getItemId();
 
         if (id == R.id.addProcedureType) {
-
+            Intent procedureIntent = new Intent(getApplicationContext(), ProcedureActivity.class);
+            Procedure procedure = new Procedure("", 0, 0);
+            procedureIntent.putExtra("procedure", procedure);
+            startActivityForResult(procedureIntent, procedure_Request);
         }
         if (id == R.id.addClient) {
             int latest = simulation_manager.getLatestClientTime();
@@ -65,6 +68,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             Intent clientIntent = new Intent(getApplicationContext(), ClientActivity.class);
             Client client = new Client(null, latest);
             clientIntent.putExtra("client", client);
+            clientIntent.putExtra("procedures", simulation_manager.getProcedureNames());
             startActivityForResult(clientIntent, client_Request);
         }
         if (id == R.id.addProcedureRoom) {
@@ -137,7 +141,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
                     //editing a procedureRoom
                 } else {
-                    simulation_manager.editProcedure(procedureRoom, index);
+                    simulation_manager.editProcedureRoom(procedureRoom, index);
                 }
                 //nothing to be done, represents just viewing or canceling an add to procedureRoom
             } else if (resultCode == RESULT_CANCELED) {
@@ -192,6 +196,35 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 return;
             }
         }
+
+
+        //returned from ProcedureActivity
+        if (requestCode == procedure_Request) {
+            //added a procedure
+            if (resultCode == RESULT_FIRST_USER) {
+                Procedure procedure = (Procedure) data.getSerializableExtra("procedure");
+                int amount = data.getIntExtra("amount",1);
+                simulation_manager.addProcedure(procedure);
+
+                //edited or deleted a procedure
+            } else if (resultCode == RESULT_OK) {
+                Procedure procedure = (Procedure) data.getSerializableExtra("procedure");
+
+                //deleting a procedure
+                if (procedure.getMinTime() <= 0 || procedure.getMaxTime() <= 0 || procedure.getMinTime() > procedure.getMaxTime()) {
+                    simulation_manager.deleteProcedure(procedure.getName());
+
+                    //editing a procedure
+                } else {
+                    simulation_manager.addProcedure(procedure);//adding removes duplicate names??TODO:proper editing
+                }
+                //nothing to be done, represents just viewing or canceling an add to a procedure
+            } else if (resultCode == RESULT_CANCELED) {
+                return;
+            }
+        }
+
+
     }
 
 

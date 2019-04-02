@@ -142,7 +142,7 @@ public class Simulation_Manager {
     }
 
     //Updates the procedure room at the position of the given index with the given Procedure Room
-    public void editProcedure(ProcedureRoom room, int index){
+    public void editProcedureRoom(ProcedureRoom room, int index){
         procedureRoomManager.setProcedureRoom(room, index);
     }
 
@@ -154,6 +154,10 @@ public class Simulation_Manager {
     //Removes the procedure room at the given index.
     public void deleteProcedureRoom(int index) {
         procedureRoomManager.deleteProcedureRoom(index);
+    }
+
+    public void deleteProcedure(String name) {
+        procedureManager.deleteProcedure(name);
     }
 
     public int getLatestClientTime() {

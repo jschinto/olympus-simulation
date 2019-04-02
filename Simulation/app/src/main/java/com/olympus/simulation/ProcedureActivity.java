@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class ProcedureActivity extends AppCompatActivity {
 
@@ -40,9 +43,102 @@ public class ProcedureActivity extends AppCompatActivity {
 
     private void addSetup() {
         adding = true;
+        Button buttonEdit = findViewById(R.id.procedureButtonEdit);
+        Button buttonAddDelete = findViewById(R.id.procedureButtonAddDelete);
+        buttonEdit.setVisibility(View.INVISIBLE);
+        buttonAddDelete.setText("Add");
     }
 
     private void viewSetup() {
         adding = false;
+        Button buttonEdit = findViewById(R.id.procedureButtonEdit);
+        Button buttonAddDelete = findViewById(R.id.procedureButtonAddDelete);
+        buttonEdit.setVisibility(View.VISIBLE);
+        buttonAddDelete.setText("Delete");
+    }
+
+    public void buttonClick(View view) {
+        if (view.getId() == R.id.procedureButtonAddDelete) {
+            if (adding) {
+                String name = null;
+                int minTime = 0;
+                int maxTime = 0;
+                try {
+                    EditText editData1 = findViewById(R.id.procedureEdit1);
+                    name = editData1.getText().toString();
+                    EditText editData2 = findViewById(R.id.procedureEdit2);
+                    minTime = Integer.parseInt(editData2.getText().toString());
+                    EditText editData3 = findViewById(R.id.procedureEdit3);
+                    maxTime = Integer.parseInt(editData3.getText().toString());
+                } catch (NumberFormatException e) {
+                    Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (name == null || name.equals("")) {
+                    Toast.makeText(getApplicationContext(), "Invalid Name!", Toast.LENGTH_LONG).show();
+                }
+                if (minTime <= 0 || maxTime <= 0) {
+                    Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (minTime > maxTime) {
+                    Toast.makeText(getApplicationContext(), "Min time can't be greater than max time!", Toast.LENGTH_LONG).show();
+                }
+
+                Procedure procedure = new Procedure(name, minTime, maxTime);
+
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("procedure", procedure);
+                setResult(RESULT_FIRST_USER, returnIntent);
+                finish();
+
+                //deleting
+            } else {
+                procedure.setMinTime(0);
+                procedure.setMaxTime(0);
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("procedure", procedure);
+                setResult(RESULT_OK, returnIntent);
+                finish();
+            }
+        } else if (view.getId() == R.id.procedureButtonEdit) {
+            String name = null;
+            int minTime = 0;
+            int maxTime = 0;
+            try {
+                EditText editData1 = findViewById(R.id.procedureEdit1);
+                name = editData1.getText().toString();
+                EditText editData2 = findViewById(R.id.procedureEdit2);
+                minTime = Integer.parseInt(editData2.getText().toString());
+                EditText editData3 = findViewById(R.id.procedureEdit3);
+                maxTime = Integer.parseInt(editData3.getText().toString());
+            } catch (NumberFormatException e) {
+                Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (name == null || name.equals("")) {
+                Toast.makeText(getApplicationContext(), "Invalid Name!", Toast.LENGTH_LONG).show();
+            }
+            if (minTime <= 0 || maxTime <= 0) {
+                Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (minTime > maxTime) {
+                Toast.makeText(getApplicationContext(), "Min time can't be greater than max time!", Toast.LENGTH_LONG).show();
+            }
+
+            procedure.setName(name);
+            procedure.setMinTime(minTime);
+            procedure.setMaxTime(maxTime);
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("procedure", procedure);
+            setResult(RESULT_OK, returnIntent);
+            finish();
+
+
+        } else if (view.getId() == R.id.procedureButtonExit) {
+            setResult(RESULT_CANCELED);
+            finish();
+        }
     }
 }
