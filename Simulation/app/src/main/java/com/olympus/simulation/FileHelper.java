@@ -18,11 +18,22 @@ import java.io.InputStreamReader;
  * Improved by Jake on 4/4/2019.
  */
 public class FileHelper {
-    final static String fileName = "data.txt";
-    final static String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/instinctcoder/readwrite/" ;
-    final static String TAG = FileHelper.class.getName();
+    String fileName;
+    String TAG = FileHelper.class.getName();
 
-    public static  String ReadFile( Context context){
+    public FileHelper() {
+        fileName = "data.txt";
+    }
+
+    public FileHelper(String theFileName) {
+        fileName = theFileName;
+    }
+
+    public void setFileName(String theFileName) {
+        fileName = theFileName;
+    }
+
+    public String ReadFile( Context context){
         String line = null;
 
         try {
@@ -70,7 +81,7 @@ public class FileHelper {
 
     }*/
 
-    public static boolean writeFileOnInternalStorage(Context mcoContext, String sBody){
+    public boolean writeFileOnInternalStorage(Context mcoContext, String sBody){
         /*File file = new File(mcoContext.getFilesDir(),"mydir");
         if(!file.exists()){
             file.mkdir();
