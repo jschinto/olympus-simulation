@@ -9,13 +9,15 @@ public class Scope implements Comparable<Scope> {
     private int state;
     private int price;
     private int timeLeft;
+    private int cleaningTime;
 
-    public Scope(String n, int p) {
+    public Scope(String n, int p, int c) {
         this.name = n;
         this.procedureList = new ArrayList<Procedure>();
         this.state = State_Scope.STATE_FREE;
         this.price = p;
         this.timeLeft = 0;
+        this.cleaningTime = c;
     }
 
     public String getName() {
@@ -72,6 +74,12 @@ public class Scope implements Comparable<Scope> {
                 this.state = State_Scope.STATE_FREE;
             }
         }
+    }
+
+    //TEMPORARY CODE UNTIL WE WORK ON CLEANING
+    public void freeScope() {
+        this.state = State_Scope.STATE_DIRTY;
+        this.timeLeft = this.cleaningTime;
     }
 
     public int getTimeLeft() {

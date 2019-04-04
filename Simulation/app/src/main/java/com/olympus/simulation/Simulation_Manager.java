@@ -13,6 +13,7 @@ public class Simulation_Manager {
     private ProcedureRoom_Manager procedureRoomManager;
     private Client_Manager clientManager;
     private Procedure_Manager procedureManager;
+    private  Scope_Manager scopeManager;
 
     //the time the simulated hospital should open and close
     //Represented as a integer from 0 - some value
@@ -58,6 +59,7 @@ public class Simulation_Manager {
         procedureRoomManager = new ProcedureRoom_Manager();
         clientManager = new Client_Manager();
         procedureManager = new Procedure_Manager();
+        scopeManager = new Scope_Manager();
         this.startTime = startTime;
         this.endTime = endTime;
         this.waitTime = waitTime;
@@ -79,11 +81,20 @@ public class Simulation_Manager {
             if (nextClient == null) {
                 break;
             }
+
+            Scope freeScope = scopeManager.getAvaliableScope(nextClient.getProcedure());
+            if(freeScope == null) {
+                break;
+            }
+
+            clientManager.addToOperating(nextClient);
             nextClient.setProcedureRoom(openRoom);
+            openRoom.claimScope(freeScope);
             openRoom = procedureRoomManager.getProcedureRoom();
             clientManager.sortQueue();
         }
         clientManager.runTick();
+        scopeManager.runTick();
         procedureRoomManager.runTick();
 
         clientManager.sortQueue();

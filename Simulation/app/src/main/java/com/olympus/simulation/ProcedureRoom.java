@@ -3,9 +3,12 @@ package com.olympus.simulation;
 import java.io.Serializable;
 
 public class ProcedureRoom implements Serializable {
+    //TODO: IMPLEMENT DIFFERENT TRAVEL TIMES FOR SCOPES AND PATIENTS
 
     //whether the room is currently being used or not
     private boolean occupied;
+    //whether the room is ready to serve the customer
+    private boolean ready;
     //how much time it takes to travel to this room from the client waiting room
     private int travelTime;
     //the time needed after an operation for the room to be available again
@@ -18,11 +21,17 @@ public class ProcedureRoom implements Serializable {
 
     public ProcedureRoom(int travelTime, int cooldownTime) {
         this.occupied = false;
+        this.ready = false;
         this.travelTime = travelTime;
         this.cooldownTime = cooldownTime;
         this.cooldownTimeLeft = 0;
         this.client = null;
         this.scope = null;
+    }
+
+    public void claimScope(Scope s) {
+        this.scope = s;
+        this.scope.claim(travelTime);
     }
 
     //cooldown time decreases with each tick of time
@@ -41,7 +50,10 @@ public class ProcedureRoom implements Serializable {
 
     public void removeClient() {
         setOccupied(false);
+        setReady(false);
+        this.scope.freeScope();
         this.client = null;
+        this.scope = null;
         startCooldown();
     }
 
@@ -58,6 +70,14 @@ public class ProcedureRoom implements Serializable {
     //Returns true of the room is occupied by another client
     public boolean isOccupied() {
         return occupied;
+    }
+
+    public boolean isReady() {
+        return ready;
+    }
+
+    public void setReady(boolean ready) {
+        this.ready = ready;
     }
 
     //Returns the amount of cooldown time left.
@@ -91,5 +111,7 @@ public class ProcedureRoom implements Serializable {
         this.cooldownTime = cooldownTime;
     }
 
-
+    public Scope getScope() {
+        return scope;
+    }
 }

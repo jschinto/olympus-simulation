@@ -23,7 +23,7 @@ public class Client_Manager {
                 operating.remove(i);
                 i--;
             }
-            else if (operating.get(i).getTimeLeft() > 0) {
+            else if (operating.get(i).getProcedureRoom() != null) {
                 operating.get(i).tick();
             }
         }
@@ -45,6 +45,10 @@ public class Client_Manager {
         return queue.get(index);
     }
 
+    public void addToOperating(Client c) {
+        operating.add(c);
+    }
+
     /*
         Returns the next client ready to be given a room.
         Ignores any clients that have either not arrived or are not actually in the waiting room
@@ -54,7 +58,7 @@ public class Client_Manager {
             return null;
         }
         Client nextClient = queue.get(operating.size());
-        operating.add(nextClient);
+        //operating.add(nextClient);
         return nextClient;
     }
 

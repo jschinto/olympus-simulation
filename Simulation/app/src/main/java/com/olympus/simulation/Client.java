@@ -37,17 +37,25 @@ public class Client implements Comparable<Client>, Serializable {
 
     //alters appropriate variables based on passage of time(tick)
     public void tick() {
-        timeLeft--;
-        //client is done with operation
-        if (timeLeft <= 0 && state.equals(State.STATE_OPERATION)) {
-            setState(State.STATE_DONE);
-            procedureRoom.removeClient();
-            this.procedureRoom = null;
+        if(timeLeft == 0) {
+            if(this.procedureRoom.isReady()) {
+                setState(State.STATE_TRAVEL);
+                timeLeft = procedureRoom.getTravelTime();
+            }
         }
-        //client is done traveling to operation room
-        if (timeLeft <= 0 && state.equals(State.STATE_TRAVEL)) {
-            setState(State.STATE_OPERATION);
-            beginProcedure();
+        else {
+            timeLeft--;
+            //client is done with operation
+            if (timeLeft <= 0 && state.equals(State.STATE_OPERATION)) {
+                setState(State.STATE_DONE);
+                procedureRoom.removeClient();
+                this.procedureRoom = null;
+            }
+            //client is done traveling to operation room
+            if (timeLeft <= 0 && state.equals(State.STATE_TRAVEL)) {
+                setState(State.STATE_OPERATION);
+                beginProcedure();
+            }
         }
     }
 
@@ -76,9 +84,6 @@ public class Client implements Comparable<Client>, Serializable {
     //assigns client to given procedure room
     public void setProcedureRoom(ProcedureRoom procedureRoom) {
         this.procedureRoom = procedureRoom;
-        setState(State.STATE_TRAVEL);
-        timeLeft = procedureRoom.getTravelTime();
-
         procedureRoom.setClient(this);
     }
 
@@ -108,6 +113,12 @@ public class Client implements Comparable<Client>, Serializable {
         if(this.getState() != o.getState())
         {
             return this.getState() - o.getState();
+        }
+        else if(this.getProcedureRoom() != null && o.getProcedureRoom() == null) {
+            return -1;
+        }
+        else if(this.getProcedureRoom() == null && o.getProcedureRoom() != null) {
+            return 1;
         }
         return this.arrivalTime - o.getArrivalTime();
     }

@@ -16,6 +16,9 @@ public class ProcedureRoom_Manager {
             if (roomList.get(i).getCooldownTimeLeft() > 0) {
                 roomList.get(i).tick();//call tick on each room
             }
+            if(roomList.get(i).isReady() == false && roomList.get(i).getScope() != null && roomList.get(i).getScope().getState() == State_Scope.STATE_USE) {
+                roomList.get(i).setReady(true);
+            }
         }
     }
 
