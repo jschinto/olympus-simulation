@@ -183,7 +183,7 @@ public class Simulation_Manager {
     }
 
     public ArrayList<Scope_Type> getScopeTypes(Scope_Type t) {
-        scopeManager.getScopeTypes();
+        return scopeManager.getScopeTypes();
     }
 
     public void addScope(Scope s) {
