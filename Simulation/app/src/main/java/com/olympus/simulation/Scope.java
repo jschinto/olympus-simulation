@@ -9,7 +9,7 @@ public class Scope implements Comparable<Scope> {
     private int timeLeft;
     private int cleaningTime;
 
-    public Scope(Scope_Type t, int p, int c) {
+    public Scope(Scope_Type t, int c) {
         this.type = t;
         this.state = State_Scope.STATE_FREE;
         this.timeLeft = 0;
@@ -30,6 +30,7 @@ public class Scope implements Comparable<Scope> {
     }
 
     public void tick() {
+        System.err.print(this.timeLeft + " " + this.state);
         this.timeLeft--;
         if(this.timeLeft == 0) {
             //Scope has arrived at its destination
@@ -67,7 +68,7 @@ public class Scope implements Comparable<Scope> {
     }
 
     public boolean checkProcedure(Procedure p) {
-        return type.getProcedureList().contains(p);
+        return type.checkProcedure(p);
     }
 
     public int compareTo(Scope o) {

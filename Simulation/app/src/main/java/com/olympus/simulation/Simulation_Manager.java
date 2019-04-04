@@ -76,22 +76,33 @@ public class Simulation_Manager {
         //Clients to procedure rooms until a pair cannot be made.
         //TODO: Currently does not check if a room is ready to service the client.
         ProcedureRoom openRoom = procedureRoomManager.getProcedureRoom();
+        int offset = 0;
         while (openRoom != null) {
-            Client nextClient = clientManager.getNextClient(currTime);
+            Client nextClient = clientManager.getNextClient(currTime, offset);
             if (nextClient == null) {
                 break;
             }
 
-            Scope freeScope = scopeManager.getAvaliableScope(nextClient.getProcedure());
-            if(freeScope == null) {
-                break;
+            ArrayList<Scope> scopeList = new ArrayList<Scope>();
+            for(int i = 0; i < nextClient.getProcedureList().size(); i++) {
+                Scope freeScope = scopeManager.getAvaliableScope(nextClient.getProcedureList().get(i));
+                if (freeScope == null) {
+                    break;
+                }
+                scopeList.add(freeScope);
             }
 
-            clientManager.addToOperating(nextClient);
-            nextClient.setProcedureRoom(openRoom);
-            openRoom.claimScope(freeScope);
-            openRoom = procedureRoomManager.getProcedureRoom();
-            clientManager.sortQueue();
+            if(scopeList.size() == nextClient.getProcedureList().size()) {
+                clientManager.addToOperating(nextClient);
+                nextClient.setProcedureRoom(openRoom);
+                openRoom.claimScope(scopeList);
+                openRoom = procedureRoomManager.getProcedureRoom();
+                clientManager.sortQueue();
+            }
+            else
+            {
+                offset++;
+            }
         }
         clientManager.runTick();
         scopeManager.runTick();

@@ -46,4 +46,8 @@ public class Scope_Type {
     public boolean removeProcedure(Procedure p) {
         return procedureList.remove(p);
     }
+
+    public boolean checkProcedure(Procedure p) {
+        return this.procedureList.contains(p);
+    }
 }

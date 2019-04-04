@@ -40,6 +40,16 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_simulation);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//set orientation to lock on portrait
         simulation_manager = new Simulation_Manager(0,100,1);
+        //TEST CODE REMOVE PLZ
+        Procedure proc = new Procedure("Bark", 3, 5);
+        Scope_Type type = new Scope_Type("TESTSCOPE", 5);
+        type.addProcedure(proc);
+        Scope scope = new Scope(type, 5);
+
+        simulation_manager.addProcedure(proc);
+        simulation_manager.addScopeType(type);
+        simulation_manager.addScope(scope);
+        //TEST CODE REMOVE PLZ
         currentClicked = null;
     }
 

@@ -2,6 +2,7 @@ package com.olympus.simulation;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /*
 class to represent a Client in the simulation
@@ -9,7 +10,7 @@ class to represent a Client in the simulation
 public class Client implements Comparable<Client>, Serializable {
 
     //the procedure that a client is going to have done
-    private Procedure procedure;
+    private ArrayList<Procedure> procedure;
     //the procedure room that the client is in
     private ProcedureRoom procedureRoom;
     //the current status of the client in the simulation
@@ -19,12 +20,15 @@ public class Client implements Comparable<Client>, Serializable {
     //when the client enters the waiting room
     private int arrivalTime;
 
-    public Client(Procedure procedure, int arrivalTime) {
+    private int step;
+
+    public Client(ArrayList<Procedure> procedure, int arrivalTime) {
         this.procedure = procedure;
         setState(State.STATE_WAIT);
         procedureRoom = null;
         timeLeft = 0;
         this.arrivalTime = arrivalTime;
+        step = 0;
     }
 
     public Client(Client client) {
@@ -33,6 +37,7 @@ public class Client implements Comparable<Client>, Serializable {
         procedureRoom = client.getProcedureRoom();
         timeLeft = client.getTimeLeft();
         arrivalTime = client.getArrivalTime();
+        this.step = client.getStep();
     }
 
     //alters appropriate variables based on passage of time(tick)
@@ -54,27 +59,31 @@ public class Client implements Comparable<Client>, Serializable {
             //client is done traveling to operation room
             if (timeLeft <= 0 && state.equals(State.STATE_TRAVEL)) {
                 setState(State.STATE_OPERATION);
-                beginProcedure();
+                beginProcedure(this.step);
             }
         }
     }
 
     //start the operation, pick a random time between min and max procedure times
     //set appropriate state and time left to client
-    public void beginProcedure() {
+    public void beginProcedure(int i) {
         //check procedure constraints
-        int minTime = procedure.getMinTime();
-        int maxTime = procedure.getMaxTime();
+        int minTime = procedure.get(i).getMinTime();
+        int maxTime = procedure.get(i).getMaxTime();
         timeLeft = (int) (minTime + Math.random()*(maxTime-minTime));
         setState(State.STATE_OPERATION);
     }
 
-    public Procedure getProcedure() {
+    public ArrayList<Procedure> getProcedureList() {
         return procedure;
     }
 
-    public void setProcedure(Procedure procedure) {
-        this.procedure = procedure;
+    public void addProcedure(Procedure procedure) {
+        this.procedure.add(procedure);
+    }
+
+    public void removeProcedure(Procedure procedure)  {
+        this.procedure.remove(procedure);
     }
 
     public ProcedureRoom getProcedureRoom() {
@@ -121,5 +130,13 @@ public class Client implements Comparable<Client>, Serializable {
             return 1;
         }
         return this.arrivalTime - o.getArrivalTime();
+    }
+
+    public int getStep() {
+        return step;
+    }
+
+    public void setStep(int step) {
+        this.step = step;
     }
 }

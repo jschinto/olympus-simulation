@@ -1,6 +1,8 @@
 package com.olympus.simulation;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class ProcedureRoom implements Serializable {
     //TODO: IMPLEMENT DIFFERENT TRAVEL TIMES FOR SCOPES AND PATIENTS
@@ -17,7 +19,7 @@ public class ProcedureRoom implements Serializable {
     private int cooldownTimeLeft;
 
     private Client client;
-    private Scope scope;
+    private ArrayList<Scope> scope;
 
     public ProcedureRoom(int travelTime, int cooldownTime) {
         this.occupied = false;
@@ -26,12 +28,14 @@ public class ProcedureRoom implements Serializable {
         this.cooldownTime = cooldownTime;
         this.cooldownTimeLeft = 0;
         this.client = null;
-        this.scope = null;
+        this.scope = new ArrayList<Scope>();
     }
 
-    public void claimScope(Scope s) {
-        this.scope = s;
-        this.scope.claim(travelTime);
+    public void claimScope(ArrayList<Scope> list) {
+        this.scope = list;
+        for(Scope s : list) {
+            s.claim(this.travelTime);
+        }
     }
 
     //cooldown time decreases with each tick of time
@@ -48,12 +52,17 @@ public class ProcedureRoom implements Serializable {
         this.client = client;
     }
 
+    public void removeScope() {
+        setReady(false);
+        for(Scope s : this.scope){
+            s.freeScope();
+        }
+        this.scope.clear();
+    }
+
     public void removeClient() {
         setOccupied(false);
-        setReady(false);
-        this.scope.freeScope();
         this.client = null;
-        this.scope = null;
         startCooldown();
     }
 
@@ -111,7 +120,7 @@ public class ProcedureRoom implements Serializable {
         this.cooldownTime = cooldownTime;
     }
 
-    public Scope getScope() {
+    public ArrayList<Scope> getScopeList() {
         return scope;
     }
 }

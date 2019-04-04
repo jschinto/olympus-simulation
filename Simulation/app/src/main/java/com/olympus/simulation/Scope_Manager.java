@@ -44,7 +44,8 @@ public class Scope_Manager {
 
     public Scope getAvaliableScope(Procedure p) {
         int i = 0;
-        while(list.get(i).getState() == State_Scope.STATE_FREE) {
+
+        while(i < list.size() && list.get(i).getState() == State_Scope.STATE_FREE) {
             if(list.get(i).checkProcedure(p)) {
                 return list.get(i);
             }
