@@ -174,4 +174,23 @@ public class Simulation_Manager {
     public int getLatestClientTime() {
         return clientManager.getLatestTime();
     }
+    public void addScopeType(Scope_Type t) {
+        scopeManager.addScopeType(t);
+    }
+
+    public void removeScopeType(Scope_Type t) {
+        scopeManager.removeScopeType(t);
+    }
+
+    public ArrayList<Scope_Type> getScopeTypes(Scope_Type t) {
+        scopeManager.getScopeTypes();
+    }
+
+    public void addScope(Scope s) {
+        scopeManager.addScope(s);
+    }
+
+    public void removeScope(Scope s) {
+        scopeManager.removeScope(s);
+    }
 }

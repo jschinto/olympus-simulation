@@ -4,10 +4,24 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Scope_Manager {
+    private ArrayList<Scope_Type> types;
     private ArrayList<Scope> list;
 
     public Scope_Manager(){
         list = new ArrayList<Scope>();
+        types = new ArrayList<Scope_Type>();
+    }
+
+    public void addScopeType(Scope_Type t) {
+        types.add(t);
+    }
+
+    public void removeScopeType(Scope_Type t) {
+        types.remove(t);
+    }
+
+    public ArrayList<Scope_Type> getScopeTypes() {
+        return types;
     }
 
     public void addScope(Scope s) {
