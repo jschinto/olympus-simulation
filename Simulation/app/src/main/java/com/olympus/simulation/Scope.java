@@ -30,8 +30,8 @@ public class Scope implements Comparable<Scope> {
     }
 
     public void tick() {
-        System.err.print(this.timeLeft + " " + this.state);
         this.timeLeft--;
+        System.out.print("Scope: " + this.timeLeft + "\n");
         if(this.timeLeft == 0) {
             //Scope has arrived at its destination
             if(this.state == State_Scope.STATE_TRAVEL) {
@@ -46,6 +46,7 @@ public class Scope implements Comparable<Scope> {
 
     //TEMPORARY CODE UNTIL WE WORK ON CLEANING
     public void freeScope() {
+        System.out.print("Freeing Scope\n");
         this.state = State_Scope.STATE_DIRTY;
         this.timeLeft = this.cleaningTime;
     }
