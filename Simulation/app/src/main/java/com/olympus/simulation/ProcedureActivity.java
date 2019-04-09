@@ -11,6 +11,10 @@ import android.widget.Toast;
 
 public class ProcedureActivity extends AppCompatActivity {
 
+    // 1 : name
+    // 2 : min time
+    // 3 : max time
+
     Procedure procedure;
     private boolean adding;
 

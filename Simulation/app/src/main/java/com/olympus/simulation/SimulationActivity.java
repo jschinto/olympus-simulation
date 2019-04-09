@@ -496,6 +496,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
             Intent clientIntent = new Intent(getApplicationContext(), ClientActivity.class);
             clientIntent.putExtra("client", client);
+            clientIntent.putExtra("procedures", simulation_manager.getProcedureNames());
             startActivityForResult(clientIntent, client_Request);
         }
     }

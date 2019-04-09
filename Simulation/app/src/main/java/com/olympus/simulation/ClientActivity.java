@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +21,8 @@ public class ClientActivity extends AppCompatActivity {
     // text fields with these numbers correspond to these attributes
     // 1 : arrival time
     // 2: amount to add
-    // 3 : procedures to add
+    // 3 : procedures added
+    // 4 : procedures to add
 
     Client client;
     String[] procedures;
@@ -36,11 +39,6 @@ public class ClientActivity extends AppCompatActivity {
         Intent fromIntent = getIntent();
         client = (Client) fromIntent.getSerializableExtra("client");
         procedures = fromIntent.getStringArrayExtra("procedures");
-        if (procedures != null && procedures.length > 0) {
-            Spinner spinner3 = findViewById(R.id.clientSpinner3);
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, procedures);
-            spinner3.setAdapter(adapter);
-        }
         if (client != null) {
             setValues(client.getArrivalTime(), client.getProcedure());
         }
@@ -50,6 +48,12 @@ public class ClientActivity extends AppCompatActivity {
         EditText edit1 = findViewById(R.id.clientEdit1);
         TextView text2 = findViewById(R.id.clientText2);
         EditText edit2 = findViewById(R.id.clientEdit2);
+
+        TextView text3 = findViewById(R.id.clientText3);
+        Spinner spinner3 = findViewById(R.id.clientSpinner3);
+        TextView text4 = findViewById(R.id.clientText4);
+        LinearLayout linearLayout4 = findViewById(R.id.clientCheckbox4);
+
         if (arrivalTime < 0  || procedure == null) {
             if (arrivalTime >= 0) {
                 edit1.setText(Time.convertToString(arrivalTime));
@@ -59,12 +63,32 @@ public class ClientActivity extends AppCompatActivity {
             text2.setVisibility(View.VISIBLE);
             edit2.setVisibility(View.VISIBLE);
             edit2.setText("1");
+            text3.setVisibility(View.INVISIBLE);
+            spinner3.setVisibility(View.INVISIBLE);
+            text4.setVisibility(View.VISIBLE);
+            linearLayout4.setVisibility(View.VISIBLE);
+
+            LinearLayout clientCheckboxGroup4 = findViewById(R.id.clientCheckbox4);
+            for (int i=0; i < procedures.length; i++) {
+                CheckBox checkBox = new CheckBox(getApplicationContext());
+                checkBox.setText(procedures[i]);
+                clientCheckboxGroup4.addView(checkBox);
+            }
             addSetup();
             return;
         }
         edit1.setText(Time.convertToString(arrivalTime));
         text2.setVisibility(View.INVISIBLE);
         edit2.setVisibility(View.INVISIBLE);
+
+        text3.setVisibility(View.VISIBLE);
+        spinner3.setVisibility(View.VISIBLE);
+        text4.setVisibility(View.INVISIBLE);
+        linearLayout4.setVisibility(View.INVISIBLE);
+        if (procedures != null && procedures.length > 0) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, procedures);
+            spinner3.setAdapter(adapter);
+        }
         viewSetup();
     }
 
