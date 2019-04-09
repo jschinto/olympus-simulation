@@ -9,8 +9,8 @@ class to represent a Client in the simulation
  */
 public class Client implements Comparable<Client>, Serializable {
 
-    //the procedure that a client is going to have done
-    private ArrayList<Procedure> procedure;
+    //the procedures that a client is going to have done
+    private ArrayList<Procedure> procedures;
     //the procedure room that the client is in
     private ProcedureRoom procedureRoom;
     //the current status of the client in the simulation
@@ -22,8 +22,8 @@ public class Client implements Comparable<Client>, Serializable {
 
     private int step;
 
-    public Client(ArrayList<Procedure> procedure, int arrivalTime) {
-        this.procedure = procedure;
+    public Client(ArrayList<Procedure> procedures, int arrivalTime) {
+        this.procedures = procedures;
         setState(State.STATE_WAIT);
         procedureRoom = null;
         timeLeft = 0;
@@ -32,7 +32,7 @@ public class Client implements Comparable<Client>, Serializable {
     }
 
     public Client(Client client) {
-        this.procedure = client.procedure;
+        this.procedures = client.getProcedureList();
         setState(client.getState());
         procedureRoom = client.getProcedureRoom();
         timeLeft = client.getTimeLeft();
@@ -68,22 +68,26 @@ public class Client implements Comparable<Client>, Serializable {
     //set appropriate state and time left to client
     public void beginProcedure(int i) {
         //check procedure constraints
-        int minTime = procedure.get(i).getMinTime();
-        int maxTime = procedure.get(i).getMaxTime();
+        int minTime = procedures.get(i).getMinTime();
+        int maxTime = procedures.get(i).getMaxTime();
         timeLeft = (int) (minTime + Math.random()*(maxTime-minTime));
         setState(State.STATE_OPERATION);
     }
 
     public ArrayList<Procedure> getProcedureList() {
-        return procedure;
+        return procedures;
     }
 
     public void addProcedure(Procedure procedure) {
-        this.procedure.add(procedure);
+        this.procedures.add(procedure);
+    }
+
+    public void setProcedureList(ArrayList<Procedure> procedureList) {
+        this.procedures = procedureList;
     }
 
     public void removeProcedure(Procedure procedure)  {
-        this.procedure.remove(procedure);
+        this.procedures.remove(procedure);
     }
 
     public ProcedureRoom getProcedureRoom() {

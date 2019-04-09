@@ -41,6 +41,11 @@ public class Procedure implements Serializable {
         this.maxTime = maxTime;
     }
 
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
 
 
 

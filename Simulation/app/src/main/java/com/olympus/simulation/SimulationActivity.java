@@ -22,6 +22,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -163,7 +164,13 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         if (requestCode == client_Request) {
             //added a client
             if (resultCode == RESULT_FIRST_USER) {
-                Client client = (Client)data.getSerializableExtra("client");
+                int arrivalTime = data.getIntExtra("arrivalTime",simulation_manager.getLatestClientTime());
+                Client client = new Client(new ArrayList<Procedure>(), arrivalTime);
+                String[] procedures = data.getStringArrayExtra("procedures");
+                for (int i=0; i < procedures.length; i++) {
+                    client.addProcedure(simulation_manager.getProcedureByName(procedures[i]));
+                }
+
                 int amount = data.getIntExtra("amount",1);
                 for (int i=0; i < amount; i++) {
                     simulation_manager.addClient(new Client(client));
@@ -190,7 +197,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 int index = currentClicked.index;
 
                 //deleting a client
-                if (client.getProcedure() == null || client.getArrivalTime() < 0) {
+                if (client.getProcedureList() == null || client.getArrivalTime() < 0) {
                     simulation_manager.deleteClient(index);
 
                     LinearLayout linearLayoutClients = findViewById(R.id.LinearLayoutClients);
@@ -199,6 +206,11 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
                     //editing a client
                 } else {
+                    String[] procedures = data.getStringArrayExtra("procedures");
+                    client.setProcedureList(new ArrayList<Procedure>());
+                    for (int i=0; i < procedures.length; i++) {
+                        client.addProcedure(simulation_manager.getProcedureByName(procedures[i]));
+                    }
                     simulation_manager.editClient(client, index);
                 }
                 //nothing to be done, represents just viewing or canceling an add to a client
