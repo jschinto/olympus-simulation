@@ -22,7 +22,7 @@ public class FileHelper {
     String TAG = FileHelper.class.getName();
 
     public FileHelper() {
-        fileName = "data.txt";
+        fileName = "data.json";
     }
 
     public FileHelper(String theFileName) {
