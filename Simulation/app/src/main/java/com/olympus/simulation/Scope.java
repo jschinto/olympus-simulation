@@ -1,13 +1,22 @@
 package com.olympus.simulation;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class Scope implements Comparable<Scope> {
+public class Scope implements Comparable<Scope>, Serializable {
     private Scope_Type type;
     private int state;
     private int timeLeft;
     private int cleaningTime;
+
+    public int getCleaningTime() {
+        return cleaningTime;
+    }
+
+    public void setCleaningTime(int cleaningTime) {
+        this.cleaningTime = cleaningTime;
+    }
 
     public Scope(Scope_Type t, int c) {
         this.type = t;

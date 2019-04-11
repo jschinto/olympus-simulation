@@ -25,6 +25,12 @@
             <item
                 android:id="@+id/addProcedureType"
                 android:title="Add Procedure Type" />
+            <item
+                android:id="@+id/addScope"
+                android:title="Add Scope" />
+            <item
+                android:id="@+id/addScopeType"
+                android:title="Add Scope Type" />
         </menu>
     </item>
 </menu>

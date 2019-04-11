@@ -22,5 +22,9 @@
     <string name="maxTime">Max Completion Time:</string>
     <string name="textProcedures">Procedures:</string>
     <string name="textProceduresAdd">Procedures To Add:</string>
-    <string name="textProcedureTypes">Procedure Types</string>>
+    <string name="textProcedureTypes">Procedure Types</string>
+    <string name="textScopes">Scope Storage</string>
+    <string name="textScopeTitle">Scope</string>
+    <string name="textCleaningTime">Cleaning Time</string>
+    <string name="textScopeType">Scope Type</string>>
 </resources>

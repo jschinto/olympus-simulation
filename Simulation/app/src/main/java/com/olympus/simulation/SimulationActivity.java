@@ -38,6 +38,8 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     public static final int procedureRoom_Request = 1;
     public static final int client_Request = 2;
     public static final int procedure_Request = 3;
+    public static final int scopeType_Request = 4;
+    public static final int scope_Request = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +102,19 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             procedureRoomIntent.putExtra("procedureRoom", procedureRoom);
             startActivityForResult(procedureRoomIntent, procedureRoom_Request);
         }
+        else if (id == R.id.addScope) {
+
+            Intent scopeIntent = new Intent(getApplicationContext(), Scope.class);
+            Scope scope = new Scope(null, -1);
+            scopeIntent.putExtra("scope", scope);
+            startActivityForResult(scopeIntent, scope_Request);
+        }
+        else if (id == R.id.addScopeType) {
+            Intent scopeTypeIntent = new Intent(getApplicationContext(), Scope_Type.class);
+            Scope_Type scopeType = new Scope_Type("", -1);
+            scopeTypeIntent.putExtra("scopeType", scopeType);
+            startActivityForResult(scopeTypeIntent, scopeType_Request);
+        }
         else if(id == R.id.startSimulation) {
             ActionMenuItemView playImage = findViewById(R.id.playButton);
             if(item.getTitle().equals("Confirm Start")) {
@@ -129,7 +144,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             //added a procedureRoom
             if (resultCode == RESULT_FIRST_USER) {
 
-                ProcedureRoom procedureRoom = (ProcedureRoom)data.getSerializableExtra("procedureRoom");
+                ProcedureRoom procedureRoom = (ProcedureRoom) data.getSerializableExtra("procedureRoom");
                 simulation_manager.addProcedureRoom(procedureRoom);
 
                 LinearLayout linearLayoutRooms = findViewById(R.id.LinearLayoutRooms);
@@ -150,7 +165,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
                 //edited or deleted a procedureRoom
             } else if (resultCode == RESULT_OK) {
-                ProcedureRoom procedureRoom = (ProcedureRoom)data.getSerializableExtra("procedureRoom");
+                ProcedureRoom procedureRoom = (ProcedureRoom) data.getSerializableExtra("procedureRoom");
                 int index = currentClicked.index;
 
                 //deleting a procedureRoom
@@ -175,15 +190,15 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         if (requestCode == client_Request) {
             //added a client
             if (resultCode == RESULT_FIRST_USER) {
-                int arrivalTime = data.getIntExtra("arrivalTime",simulation_manager.getLatestClientTime());
+                int arrivalTime = data.getIntExtra("arrivalTime", simulation_manager.getLatestClientTime());
                 Client client = new Client(new ArrayList<Procedure>(), arrivalTime);
                 String[] procedures = data.getStringArrayExtra("procedures");
-                for (int i=0; i < procedures.length; i++) {
+                for (int i = 0; i < procedures.length; i++) {
                     client.addProcedure(simulation_manager.getProcedureByName(procedures[i]));
                 }
 
-                int amount = data.getIntExtra("amount",1);
-                for (int i=0; i < amount; i++) {
+                int amount = data.getIntExtra("amount", 1);
+                for (int i = 0; i < amount; i++) {
                     simulation_manager.addClient(new Client(client));
 
                     LinearLayout linearLayoutClients = findViewById(R.id.LinearLayoutClients);
@@ -204,7 +219,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
                 //edited or deleted a client
             } else if (resultCode == RESULT_OK) {
-                Client client = (Client)data.getSerializableExtra("client");
+                Client client = (Client) data.getSerializableExtra("client");
                 int index = currentClicked.index;
 
                 //deleting a client
@@ -219,7 +234,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 } else {
                     String[] procedures = data.getStringArrayExtra("procedures");
                     client.setProcedureList(new ArrayList<Procedure>());
-                    for (int i=0; i < procedures.length; i++) {
+                    for (int i = 0; i < procedures.length; i++) {
                         client.addProcedure(simulation_manager.getProcedureByName(procedures[i]));
                     }
                     simulation_manager.editClient(client, index);
@@ -238,7 +253,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 Procedure procedure = (Procedure) data.getSerializableExtra("procedure");
                 simulation_manager.addProcedure(procedure);
 
-                LinearLayout linearLayoutProcedureTypes = findViewById(R.id.LinearLayoutProcedureTypes);
+                //TODO:LinearLayout linearLayoutProcedureTypes = findViewById(R.id.LinearLayoutProcedureTypes);
                 TextView procedureText = new TextView(getApplicationContext());
                 procedureText.setText(procedure.getName());
 
@@ -251,7 +266,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
                 procedureText.setTag(tag);
 
-                linearLayoutProcedureTypes.addView(procedureText);
+                //TODO:linearLayoutProcedureTypes.addView(procedureText);
 
                 //edited or deleted a procedure
             } else if (resultCode == RESULT_OK) {
@@ -262,9 +277,9 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 //deleting a procedure
                 if (procedure.getMinTime() <= 0 || procedure.getMaxTime() <= 0 || procedure.getMinTime() > procedure.getMaxTime()) {
                     simulation_manager.deleteProcedure(procedure.getName());
-                    LinearLayout linearLayoutProcedureTypes = findViewById(R.id.LinearLayoutProcedureTypes);
-                    View procedureView = linearLayoutProcedureTypes.getChildAt(simulation_manager.getProcedureNum());
-                    linearLayoutProcedureTypes.removeView(procedureView);
+                    //TODO:LinearLayout linearLayoutProcedureTypes = findViewById(R.id.LinearLayoutProcedureTypes);
+                    //TODO:View procedureView = linearLayoutProcedureTypes.getChildAt(simulation_manager.getProcedureNum());
+                    //TODO:linearLayoutProcedureTypes.removeView(procedureView);
 
                     updateProceduresUI();
 
@@ -283,14 +298,90 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             }
         }
 
+        if (requestCode == scope_Request) {
+            if (resultCode == RESULT_FIRST_USER) {
+                Scope scope = (Scope) data.getSerializableExtra("scope");
+                simulation_manager.addScope(scope);
 
+                LinearLayout linearLayoutScope = findViewById(R.id.LinearLayoutScopes);
+                ImageView scopeImage = new ImageView(getApplicationContext());
+                scopeImage.setImageResource(R.drawable.procedure_room);
+
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
+                scopeImage.setLayoutParams(layoutParams);
+                scopeImage.setPadding(10, 0, 0, 0);
+                scopeImage.setOnClickListener(this);
+
+                int index = simulation_manager.getProcedureRoomNum() - 1;
+                Tag tag = new Tag(index, "Procedure Room");
+
+                scopeImage.setTag(tag);
+
+                linearLayoutScope.addView(scopeImage);
+            } else if (resultCode == RESULT_OK) {
+                Scope scope = (Scope) data.getSerializableExtra("scope");
+                int index = currentClicked.index;
+
+                //Deleting
+                if (scope.getCleaningTime() < 0) {
+                    simulation_manager.removeScope(index);
+                    LinearLayout linearLayoutScopes = findViewById(R.id.LinearLayoutScopes);
+                    View scopeImg = linearLayoutScopes.getChildAt(simulation_manager.getScopeNum()); //TODO:: not -1?????/
+                    linearLayoutScopes.removeView(scopeImg);
+                }
+                //Editing
+                else {
+                    simulation_manager.removeScope(index);
+                    simulation_manager.addScope(scope);
+                }
+
+            } else if (resultCode == RESULT_CANCELED) {
+                return;
+            }
+        }
+
+        if (requestCode == scope_Request) {
+            if (resultCode == RESULT_FIRST_USER) {
+                Scope scope = (Scope) data.getSerializableExtra("scope");
+                simulation_manager.addScope(scope);
+
+                LinearLayout linearLayoutScope = findViewById(R.id.LinearLayoutScopes);
+                ImageView scopeImage = new ImageView(getApplicationContext());
+                scopeImage.setImageResource(R.drawable.procedure_room);
+
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
+                scopeImage.setLayoutParams(layoutParams);
+                scopeImage.setPadding(10, 0, 0, 0);
+                scopeImage.setOnClickListener(this);
+
+                int index = simulation_manager.getProcedureRoomNum() - 1;
+                Tag tag = new Tag(index, "Procedure Room");
+
+                scopeImage.setTag(tag);
+
+                linearLayoutScope.addView(scopeImage);
+            } else if (resultCode == RESULT_OK) {
+                Scope scope = (Scope) data.getSerializableExtra("scope");
+                int index = currentClicked.index;
+
+                //Deleting
+                if (scope.getCleaningTime() < 0) {
+                    simulation_manager.removeScope(index);
+                    LinearLayout linearLayoutScopes = findViewById(R.id.LinearLayoutScopes);
+                    View scopeImg = linearLayoutScopes.getChildAt(simulation_manager.getScopeNum()); //TODO:: not -1?????/
+                    linearLayoutScopes.removeView(scopeImg);
+                }
+                //Editing
+                else {
+                    simulation_manager.removeScope(index);
+                    simulation_manager.addScope(scope);
+                }
+
+            } else if (resultCode == RESULT_CANCELED) {
+                return;
+            }
+        }
     }
-
-
-    public void renderUIFromManager() {
-
-    }
-
 
     public void onClick (View view) {
         Tag tag = (Tag)view.getTag();
@@ -409,11 +500,11 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     public void updateProceduresUI() {
 
         int numProcedures = simulation_manager.getProcedureNum();
-        LinearLayout linearLayoutProcedureTypes = findViewById(R.id.LinearLayoutProcedureTypes);
+        //TODO:LinearLayout linearLayoutProcedureTypes = findViewById(R.id.LinearLayoutProcedureTypes);
         for (int i=0; i < numProcedures; i++) {
             Procedure procedure = simulation_manager.getProcedure(i);
-            TextView procedureText = (TextView)linearLayoutProcedureTypes.getChildAt(i);
-            procedureText.setText(procedure.getName());
+            //TextView procedureText = (TextView)linearLayoutProcedureTypes.getChildAt(i);
+            //procedureText.setText(procedure.getName());
         }
 
 

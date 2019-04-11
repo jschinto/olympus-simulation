@@ -14,6 +14,7 @@ public class Simulation_Manager {
     private Client_Manager clientManager;
     private Procedure_Manager procedureManager;
     private  Scope_Manager scopeManager;
+    private ScopeType_Manager scopeTypeManager;
 
     //the time the simulated hospital should open and close
     //Represented as a integer from 0 - some value
@@ -60,6 +61,7 @@ public class Simulation_Manager {
         clientManager = new Client_Manager();
         procedureManager = new Procedure_Manager();
         scopeManager = new Scope_Manager();
+        scopeTypeManager = new ScopeType_Manager();
         this.startTime = startTime;
         this.endTime = endTime;
         this.waitTime = waitTime;
@@ -194,15 +196,15 @@ public class Simulation_Manager {
         return clientManager.getLatestTime();
     }
     public void addScopeType(Scope_Type t) {
-        scopeManager.addScopeType(t);
+        scopeTypeManager.addScopeType(t);
     }
 
-    public void removeScopeType(Scope_Type t) {
-        scopeManager.removeScopeType(t);
+    public void removeScopeType(String t) {
+        scopeTypeManager.deleteScopeType(t);
     }
 
-    public ArrayList<Scope_Type> getScopeTypes(Scope_Type t) {
-        return scopeManager.getScopeTypes();
+    public ArrayList<String> getScopeTypeNames(Scope_Type t) {
+        return scopeTypeManager.getScopeTypeNames();
     }
 
     public void addScope(Scope s) {
@@ -212,4 +214,8 @@ public class Simulation_Manager {
     public void removeScope(Scope s) {
         scopeManager.removeScope(s);
     }
+
+    public void removeScope(int i) {scopeManager.removeScopeByIndex(i);}
+
+    public int getScopeNum() {return scopeManager.getScopeNum();}
 }

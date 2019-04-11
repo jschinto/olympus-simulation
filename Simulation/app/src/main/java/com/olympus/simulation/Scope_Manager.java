@@ -9,9 +9,9 @@ public class Scope_Manager {
 
     public Scope_Manager(){
         list = new ArrayList<Scope>();
-        types = new ArrayList<Scope_Type>();
+        //types = new ArrayList<Scope_Type>();
     }
-
+/*
     public void addScopeType(Scope_Type t) {
         types.add(t);
     }
@@ -23,6 +23,10 @@ public class Scope_Manager {
     public ArrayList<Scope_Type> getScopeTypes() {
         return types;
     }
+*/
+    public int getScopeNum() {
+        return list.size();
+    }
 
     public void addScope(Scope s) {
         list.add(s);
@@ -31,6 +35,10 @@ public class Scope_Manager {
 
     public boolean removeScope(Scope s) {
         return list.remove(s);
+    }
+
+    public void removeScopeByIndex(int i) {
+        list.remove(i);
     }
 
     public void runTick() {

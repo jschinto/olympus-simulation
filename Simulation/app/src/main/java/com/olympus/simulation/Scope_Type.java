@@ -1,8 +1,9 @@
 package com.olympus.simulation;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Scope_Type {
+public class Scope_Type implements Serializable {
 
     private String name;
     private ArrayList<Procedure> procedureList;
