@@ -21,5 +21,6 @@
     <string name="minTime">Min Completion Time:</string>
     <string name="maxTime">Max Completion Time:</string>
     <string name="textProcedures">Procedures:</string>
-    <string name="textProceduresAdd">Procedures To Add:</string>>
+    <string name="textProceduresAdd">Procedures To Add:</string>
+    <string name="textProcedureTypes">Procedure Types</string>>
 </resources>

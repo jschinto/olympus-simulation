@@ -134,12 +134,13 @@ public class ProcedureActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Min time can't be greater than max time!", Toast.LENGTH_LONG).show();
                 return;
             }
-
+            String oldName = procedure.getName();
             procedure.setName(name);
             procedure.setMinTime(minTime);
             procedure.setMaxTime(maxTime);
             Intent returnIntent = new Intent();
             returnIntent.putExtra("procedure", procedure);
+            returnIntent.putExtra("oldName", oldName);
             setResult(RESULT_OK, returnIntent);
             finish();
 
