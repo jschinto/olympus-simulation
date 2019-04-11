@@ -34,7 +34,7 @@ public class FileHelper {
     }
 
     public String ReadFile( Context context){
-        String line = null;
+        String line = "";
 
         try {
             FileInputStream fileInputStream = new FileInputStream (new File(context.getExternalFilesDir(null), fileName));
@@ -53,9 +53,11 @@ public class FileHelper {
         }
         catch(FileNotFoundException ex) {
             Log.d(TAG, ex.getMessage());
+            line = "";
         }
         catch(IOException ex) {
             Log.d(TAG, ex.getMessage());
+            line = "";
         }
         return line;
     }

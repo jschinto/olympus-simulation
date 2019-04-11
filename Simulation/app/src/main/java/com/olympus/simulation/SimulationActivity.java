@@ -22,6 +22,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -43,6 +45,13 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_simulation);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//set orientation to lock on portrait
         simulation_manager = new Simulation_Manager(0,100,1);
+        /*FileHelper theFileHelper = new FileHelper();
+        String jsonString = theFileHelper.ReadFile(getApplicationContext());
+        if(jsonString != "") {
+            Gson gson = new Gson();
+            simulation_manager = gson.fromJson(jsonString, Simulation_Manager.class);
+            renderUIFromManager();
+        }/*
         //TODO: TEST CODE REMOVE PLZ
       /*  Procedure proc = new Procedure("Bark", 3, 5);
         Scope_Type type = new Scope_Type("TESTSCOPE", 5);
@@ -278,7 +287,9 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     }
 
 
+    public void renderUIFromManager() {
 
+    }
 
 
     public void onClick (View view) {
@@ -318,6 +329,10 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
 
     public void startSimulation(final MenuItem item) {
+        FileHelper theFileHelper = new FileHelper();
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(simulation_manager);
+        theFileHelper.writeFileOnInternalStorage(getApplicationContext(), jsonString);
         simulation_manager.setCurrTime(0);
         Timer time = new Timer();
         time.scheduleAtFixedRate(new TimerTask() {
