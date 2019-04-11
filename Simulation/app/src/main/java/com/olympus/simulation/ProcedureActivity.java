@@ -28,11 +28,11 @@ public class ProcedureActivity extends AppCompatActivity {
         Intent fromIntent = getIntent();
         procedure = (Procedure) fromIntent.getSerializableExtra("procedure");
         if (procedure != null) {
-            setValues(procedure.getMinTime(), procedure.getMaxTime());
+            setValues(procedure.getName(), procedure.getMinTime(), procedure.getMaxTime());
         }
     }
 
-    private void setValues(int minTime, int maxTime) {
+    private void setValues(String name, int minTime, int maxTime) {
         EditText edit1 = findViewById(R.id.procedureEdit1);
         EditText edit2 = findViewById(R.id.procedureEdit2);
         EditText edit3 = findViewById(R.id.procedureEdit3);
@@ -43,6 +43,10 @@ public class ProcedureActivity extends AppCompatActivity {
             addSetup();
             return;
         }
+        edit1.setText(name);
+        edit2.setText(String.valueOf(minTime));
+        edit3.setText(String.valueOf(maxTime));
+        viewSetup();
     }
 
     private void addSetup() {

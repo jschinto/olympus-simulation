@@ -137,6 +137,10 @@ public class Simulation_Manager {
         return procedureRoomManager.getProcedureRoomNum();
     }
 
+    public int getProcedureNum() {
+        return procedureManager.getProcedureNum();
+    }
+
     //Returns a client based on the given index. Associated with their position in the queue.
     public Client getClient(int index) {
         return clientManager.getClientByIndex(index);
@@ -156,6 +160,10 @@ public class Simulation_Manager {
 
     public Procedure getProcedureByName(String name){
         return procedureManager.getProcedureByName(name);
+    }
+
+    public Procedure getProcedure(int index) {
+        return procedureManager.getProcedure(index);
     }
 
     //Updates the client at the position of the given index with the given Client

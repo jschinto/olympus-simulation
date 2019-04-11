@@ -49,4 +49,12 @@ public class Procedure_Manager {
         return null;
     }
 
+    public Procedure getProcedure(int index) {
+        return procedureList.get(index);
+    }
+
+    public int getProcedureNum() {
+        return procedureList.size();
+    }
+
 }

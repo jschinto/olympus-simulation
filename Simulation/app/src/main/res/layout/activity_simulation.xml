@@ -113,7 +113,8 @@
                     android:id="@+id/LinearLayoutProcedureTypes"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"></LinearLayout>
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="20dp"></LinearLayout>
             </HorizontalScrollView>
 
         </LinearLayout>

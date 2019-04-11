@@ -22,6 +22,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -42,14 +44,14 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//set orientation to lock on portrait
         simulation_manager = new Simulation_Manager(0,100,1);
         //TODO: TEST CODE REMOVE PLZ
-        Procedure proc = new Procedure("Bark", 3, 5);
+      /*  Procedure proc = new Procedure("Bark", 3, 5);
         Scope_Type type = new Scope_Type("TESTSCOPE", 5);
         type.addProcedure(proc);
         Scope scope = new Scope(type, 5);
 
         simulation_manager.addProcedure(proc);
         simulation_manager.addScopeType(type);
-        simulation_manager.addScope(scope);
+        simulation_manager.addScope(scope);*/
         //TEST CODE REMOVE PLZ
         currentClicked = null;
     }
@@ -107,9 +109,6 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 playImage.setIcon(getResources().getDrawable(R.drawable.pause_button));
             }
         }
-        else if (id == R.id.viewProcedureTypes) {
-
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -150,7 +149,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     simulation_manager.deleteProcedureRoom(index);
 
                     LinearLayout linearLayoutRooms = findViewById(R.id.LinearLayoutRooms);
-                    View room = linearLayoutRooms.getChildAt(simulation_manager.getProcedureRoomNum());
+                    View room = linearLayoutRooms.getChildAt(simulation_manager.getProcedureRoomNum()); //TODO:: not -1?????/
                     linearLayoutRooms.removeView(room);
 
                     //editing a procedureRoom
@@ -204,7 +203,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     simulation_manager.deleteClient(index);
 
                     LinearLayout linearLayoutClients = findViewById(R.id.LinearLayoutClients);
-                    View clientView = linearLayoutClients.getChildAt(simulation_manager.getClientNum());
+                    View clientView = linearLayoutClients.getChildAt(simulation_manager.getClientNum()); //TODO:: not -1???
                     linearLayoutClients.removeView(clientView);
 
                     //editing a client
@@ -230,19 +229,44 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 Procedure procedure = (Procedure) data.getSerializableExtra("procedure");
                 simulation_manager.addProcedure(procedure);
 
+                LinearLayout linearLayoutProcedureTypes = findViewById(R.id.LinearLayoutProcedureTypes);
+                TextView procedureText = new TextView(getApplicationContext());
+                procedureText.setText(procedure.getName());
+
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(78, 100);
+                procedureText.setLayoutParams(layoutParams);
+                procedureText.setOnClickListener(this);
+
+                int index = simulation_manager.getProcedureNum() - 1;
+                Tag tag = new Tag(index, "Procedure");
+
+                procedureText.setTag(tag);
+
+                linearLayoutProcedureTypes.addView(procedureText);
+
                 //edited or deleted a procedure
             } else if (resultCode == RESULT_OK) {
                 Procedure procedure = (Procedure) data.getSerializableExtra("procedure");
 
+                updateProceduresUI();
+
                 //deleting a procedure
                 if (procedure.getMinTime() <= 0 || procedure.getMaxTime() <= 0 || procedure.getMinTime() > procedure.getMaxTime()) {
                     simulation_manager.deleteProcedure(procedure.getName());
+                    LinearLayout linearLayoutProcedureTypes = findViewById(R.id.LinearLayoutProcedureTypes);
+                    View procedureView = linearLayoutProcedureTypes.getChildAt(simulation_manager.getProcedureNum());
+                    linearLayoutProcedureTypes.removeView(procedureView);
+
+                    updateProceduresUI();
 
                     //editing a procedure
                 } else {
                     String oldName = data.getStringExtra("oldName");
                     simulation_manager.deleteProcedure(oldName);
                     simulation_manager.addProcedure(procedure);
+
+                    updateProceduresUI();
+
                 }
                 //nothing to be done, represents just viewing or canceling an add to a procedure
             } else if (resultCode == RESULT_CANCELED) {
@@ -252,6 +276,10 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
 
     }
+
+
+
+
 
     public void onClick (View view) {
         Tag tag = (Tag)view.getTag();
@@ -267,13 +295,21 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             startActivityForResult(procedureRoomIntent, procedureRoom_Request);
         }
 
-        else if(type.equals("Client")){
+        else if (type.equals("Client")) {
             Client client = simulation_manager.getClient(index);
 
             Intent clientIntent = new Intent(getApplicationContext(), ClientActivity.class);
             clientIntent.putExtra("client", client);
             clientIntent.putExtra("procedures", simulation_manager.getProcedureNames());
             startActivityForResult(clientIntent, client_Request);
+        }
+
+        else if (type.equals("Procedure")) {
+            Procedure procedure = simulation_manager.getProcedure(index);
+
+            Intent procedureIntent = new Intent(getApplicationContext(), ProcedureActivity.class);
+            procedureIntent.putExtra("procedure", procedure);
+            startActivityForResult(procedureIntent, procedure_Request);
         }
     }
 
@@ -319,7 +355,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
     public void updateUI() {
         int numClients = simulation_manager.getClientNum();
-        int numProcedureRoom = simulation_manager.getProcedureRoomNum();
+        int numProcedureRooms = simulation_manager.getProcedureRoomNum();
 
         LinearLayout linearLayoutClients = findViewById(R.id.LinearLayoutClients);
         for(int i = 0; i < numClients; i++)
@@ -342,20 +378,29 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             }
         }
         LinearLayout linearLayoutRooms = findViewById(R.id.LinearLayoutRooms);
-        for(int i = 0; i < numProcedureRoom; i++)
-        {
+        for(int i = 0; i < numProcedureRooms; i++) {
             ProcedureRoom room = simulation_manager.getProcedureRoom(i);
             View roomImg = linearLayoutRooms.getChildAt(i);
 
-            if(room.isAvailable()) {
+            if (room.isAvailable()) {
                 roomImg.setBackgroundColor(Color.BLUE);
-            }
-            else if(room.isOccupied()) {
+            } else if (room.isOccupied()) {
                 roomImg.setBackgroundColor(Color.CYAN);
-            }
-            else {
+            } else {
                 roomImg.setBackgroundColor(Color.YELLOW);
             }
         }
+    }
+    public void updateProceduresUI() {
+
+        int numProcedures = simulation_manager.getProcedureNum();
+        LinearLayout linearLayoutProcedureTypes = findViewById(R.id.LinearLayoutProcedureTypes);
+        for (int i=0; i < numProcedures; i++) {
+            Procedure procedure = simulation_manager.getProcedure(i);
+            TextView procedureText = (TextView)linearLayoutProcedureTypes.getChildAt(i);
+            procedureText.setText(procedure.getName());
+        }
+
+
     }
 }
