@@ -27,6 +27,10 @@ public class Scope_Type implements Serializable {
         return procedureList;
     }
 
+    public void setProcedureList(ArrayList<Procedure> procedureList) {
+        this.procedureList = procedureList;
+    }
+
     public int getPrice() {
         return price;
     }

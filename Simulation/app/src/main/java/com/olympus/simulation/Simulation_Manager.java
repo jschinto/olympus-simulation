@@ -203,8 +203,14 @@ public class Simulation_Manager {
         scopeTypeManager.deleteScopeType(t);
     }
 
-    public ArrayList<String> getScopeTypeNames(Scope_Type t) {
-        return scopeTypeManager.getScopeTypeNames();
+    public String[] getScopeTypeNames() {
+        ArrayList<String> scopeTypeNames = scopeTypeManager.getScopeTypeNames();
+        String[] scopeTypeNamesArray = new String[scopeTypeNames.size()];
+        return scopeTypeNames.toArray(scopeTypeNamesArray);
+    }
+
+    public Scope_Type getScopeTypeByName(String name) {
+        return scopeTypeManager.getScopeTypeByName(name);
     }
 
     public void addScope(Scope s) {

@@ -11,6 +11,38 @@
     android:focusableInTouchMode="true">
 
     <LinearLayout
+        android:id="@+id/LinearLayoutViewBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="time"
+            android:text="00:00" />
+
+        <Button
+            android:id="@+id/buttonViewProcedures"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="buttonClick"
+            android:text="@string/buttonViewProcedures" />
+
+        <Button
+            android:id="@+id/buttonViewScopeTypes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="buttonClick"
+            android:text="@string/buttonViewScopeTypes" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/LinearLayoutMenus"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

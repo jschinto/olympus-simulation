@@ -30,5 +30,7 @@
     <string name="scopeTypeTile">Scope Type</string>
     <string name="scopeTypeName">Scope Type Name:</string>
     <string name="Price">Price:</string>
-    <string name="scopeTypeProcedures">Valid Procedures:</string>>
+    <string name="scopeTypeProcedures">Valid Procedures:</string>
+    <string name="buttonViewProcedures">View Procedure Types</string>
+    <string name="buttonViewScopeTypes">View Scope Types</string>>
 </resources>

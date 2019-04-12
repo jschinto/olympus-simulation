@@ -42,11 +42,13 @@ public class ScopeTypeActivity extends AppCompatActivity {
         EditText edit1 = findViewById(R.id.scopeTypeEdit1);
         EditText edit2 = findViewById(R.id.scopeTypeEdit2);
         LinearLayout checkbox3  = findViewById(R.id.scopeTypeCheckbox3);
-        for (int i=0; i < procedureNames.length; i++) {
-            CheckBox checkBox = new CheckBox(getApplicationContext());
-            checkBox.setText(procedureNames[i]);
-            checkBox.setChecked(false);
-            checkbox3.addView(checkBox);
+        if (procedureNames != null) {
+            for (int i = 0; i < procedureNames.length; i++) {
+                CheckBox checkBox = new CheckBox(getApplicationContext());
+                checkBox.setText(procedureNames[i]);
+                checkBox.setChecked(false);
+                checkbox3.addView(checkBox);
+            }
         }
 
         if (price <= 0 || procedureList == null) { //adding
@@ -55,9 +57,17 @@ public class ScopeTypeActivity extends AppCompatActivity {
             addSetup();
             return;
         }
+
+        edit1.setText(name);
+        edit2.setText(String.valueOf(price));
         //viewing
+
+        ArrayList<String> procedureListNames = new ArrayList<String>();
+        for (int i=0; i < procedureList.size(); i++) {
+            procedureListNames.add(procedureList.get(i).getName());
+        }
         for (int i=0; i < procedureNames.length; i++) {
-            if (procedureList.contains(procedureNames[i])) {
+            if (procedureListNames.contains(procedureNames[i])) {
                 CheckBox checkBox = (CheckBox) checkbox3.getChildAt(i);
                 checkBox.setChecked(true);
             }
@@ -67,22 +77,22 @@ public class ScopeTypeActivity extends AppCompatActivity {
 
     public void addSetup() {
         adding = true;
-        Button buttonEdit = findViewById(R.id.clientButtonEdit);
-        Button buttonAddDelete = findViewById(R.id.clientButtonAddDelete);
+        Button buttonEdit = findViewById(R.id.scopeTypeButtonEdit);
+        Button buttonAddDelete = findViewById(R.id.scopeTypeButtonAddDelete);
         buttonEdit.setVisibility(View.INVISIBLE);
         buttonAddDelete.setText("Add");
     }
 
     public void viewSetup() {
         adding = false;
-        Button buttonEdit = findViewById(R.id.clientButtonEdit);
-        Button buttonAddDelete = findViewById(R.id.clientButtonAddDelete);
+        Button buttonEdit = findViewById(R.id.scopeTypeButtonEdit);
+        Button buttonAddDelete = findViewById(R.id.scopeTypeButtonAddDelete);
         buttonEdit.setVisibility(View.VISIBLE);
         buttonAddDelete.setText("Delete");
     }
 
     public void buttonClick(View view) {
-        if (view.getId() == R.id.clientButtonAddDelete) {
+        if (view.getId() == R.id.scopeTypeButtonAddDelete) {
 
             if (adding) {
                 String name = null;
@@ -134,17 +144,58 @@ public class ScopeTypeActivity extends AppCompatActivity {
                 scope_type.setPrice(-1);
                 scope_type.setProcedureList(null);
                 Intent returnIntent = new Intent();
-                //returnIntent.putExtra("scopeType", scope_type);
+                returnIntent.putExtra("scopeType", scope_type);
                 setResult(RESULT_OK, returnIntent);
                 finish();
             }
 
-        } else if (view.getId() == R.id.clientButtonEdit) {
+        } else if (view.getId() == R.id.scopeTypeButtonEdit) {
+            String name = null;
+            int price = 0;
+            try {
+                EditText edit1 = findViewById(R.id.scopeTypeEdit1);
+                name = edit1.getText().toString();
+                EditText edit2 = findViewById(R.id.scopeTypeEdit2);
+                price = Integer.parseInt(edit2.getText().toString());
+            } catch (NumberFormatException e) {
+                Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (name == null || name.equals("")) {
+                Toast.makeText(getApplicationContext(), "Invalid Name Entered!", Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (price <= 0) {
+                Toast.makeText(getApplicationContext(), "Invalid Price Entered!", Toast.LENGTH_LONG).show();
+                return;
+            }
 
+            //get checked procedures from checkboxes
+            LinearLayout clientCheckbox3 = findViewById(R.id.scopeTypeCheckbox3);
+            ArrayList<String> procedureList = new ArrayList<String>();
+            for (int i=0; i < clientCheckbox3.getChildCount(); i++) {
+                CheckBox checkBox = (CheckBox)clientCheckbox3.getChildAt(i);
+                if (checkBox.isChecked()) {
+                    String procedureName = checkBox.getText().toString();
+                    procedureList.add(procedureName);
+                }
+            }
+            if (procedureList == null || procedureList.size() <= 0) {
+                Toast.makeText(getApplicationContext(), "A scope type needs a valid procedure", Toast.LENGTH_LONG).show();
+                return;
+            }
+            String oldName = scope_type.getName();
+            scope_type.setName(name);
+            scope_type.setPrice(price);
+            Intent returnIntent = new Intent();
+            String[] procedureListArray = new String[procedureList.size()];
+            returnIntent.putExtra("oldName", oldName);
+            returnIntent.putExtra("procedures", procedureList.toArray(procedureListArray));
+            returnIntent.putExtra("scopeType", scope_type);
             setResult(RESULT_OK, returnIntent);
             finish();
 
-        } else if (view.getId() == R.id.clientButtonExit) {
+        } else if (view.getId() == R.id.scopeTypeButtonExit) {
             setResult(RESULT_CANCELED);
             finish();
         }

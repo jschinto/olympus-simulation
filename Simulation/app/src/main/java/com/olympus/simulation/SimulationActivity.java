@@ -1,6 +1,6 @@
 package com.olympus.simulation;
 
-import android.annotation.SuppressLint;
+import   android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -18,11 +18,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
+//import com.google.gson.Gson;
 
 import org.w3c.dom.Text;
 
@@ -67,6 +68,51 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         currentClicked = null;
     }
 
+    //handle view bar button clicks
+    public void buttonClick(View view){
+        if (view.getId() == R.id.buttonViewProcedures) {
+            PopupMenu popupMenu = new PopupMenu(getApplicationContext(), view);
+            String[] procedureNames = simulation_manager.getProcedureNames();
+            for (int i=0; i < procedureNames.length; i++) {
+                popupMenu.getMenu().add(Menu.NONE, i, i, procedureNames[i]);
+            }
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    String name = item.getTitle().toString();
+
+                    Procedure procedure = simulation_manager.getProcedureByName(name);
+                    Intent procedureIntent = new Intent(getApplicationContext(), ProcedureActivity.class);
+                    procedureIntent.putExtra("procedure", procedure);
+                    startActivityForResult(procedureIntent, procedure_Request);
+                    return true;
+                }
+            });
+            popupMenu.show();
+        } else if (view.getId() == R.id.buttonViewScopeTypes) {
+            PopupMenu popupMenu = new PopupMenu(getApplicationContext(), view);
+            String[] scopeTypeNames = simulation_manager.getScopeTypeNames();
+            for (int i=0; i < scopeTypeNames.length; i++) {
+                popupMenu.getMenu().add(Menu.NONE, i, i, scopeTypeNames[i]);
+            }
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    String name = item.getTitle().toString();
+
+                    Scope_Type scope_type = simulation_manager.getScopeTypeByName(name);
+                    Intent scopeTypeIntent = new Intent(getApplicationContext(), ScopeTypeActivity.class);
+                    scopeTypeIntent.putExtra("scopeType", scope_type);
+                    scopeTypeIntent.putExtra("procedureNames", simulation_manager.getProcedureNames());
+                    startActivityForResult(scopeTypeIntent, scopeType_Request);
+                    return true;
+                }
+            });
+            popupMenu.show();
+        }
+    }
+
+
 
     // create an action bar button
     @Override
@@ -74,6 +120,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         getMenuInflater().inflate(R.menu.menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     // handle button activities
     @SuppressLint("RestrictedApi")
     @Override
@@ -104,15 +151,16 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         }
         else if (id == R.id.addScope) {
 
-            Intent scopeIntent = new Intent(getApplicationContext(), Scope.class);
+           // Intent scopeIntent = new Intent(getApplicationContext(), ScopeAc.class);
             Scope scope = new Scope(null, -1);
-            scopeIntent.putExtra("scope", scope);
-            startActivityForResult(scopeIntent, scope_Request);
+           // scopeIntent.putExtra("scope", scope);
+          //  startActivityForResult(scopeIntent, scope_Request);
         }
         else if (id == R.id.addScopeType) {
-            Intent scopeTypeIntent = new Intent(getApplicationContext(), Scope_Type.class);
+            Intent scopeTypeIntent = new Intent(getApplicationContext(), ScopeTypeActivity.class);
             Scope_Type scopeType = new Scope_Type("", -1);
             scopeTypeIntent.putExtra("scopeType", scopeType);
+            scopeTypeIntent.putExtra("procedureNames", simulation_manager.getProcedureNames());
             startActivityForResult(scopeTypeIntent, scopeType_Request);
         }
         else if(id == R.id.startSimulation) {
@@ -299,7 +347,8 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         }
 
         if (requestCode == scope_Request) {
-            if (resultCode == RESULT_FIRST_USER) {
+
+            if (resultCode == RESULT_FIRST_USER) {//adding
                 Scope scope = (Scope) data.getSerializableExtra("scope");
                 simulation_manager.addScope(scope);
 
@@ -312,23 +361,26 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 scopeImage.setPadding(10, 0, 0, 0);
                 scopeImage.setOnClickListener(this);
 
-                int index = simulation_manager.getProcedureRoomNum() - 1;
+                int index = simulation_manager.getScopeNum() - 1;
                 Tag tag = new Tag(index, "Procedure Room");
 
                 scopeImage.setTag(tag);
 
                 linearLayoutScope.addView(scopeImage);
+
+
             } else if (resultCode == RESULT_OK) {
                 Scope scope = (Scope) data.getSerializableExtra("scope");
                 int index = currentClicked.index;
 
                 //Deleting
-                if (scope.getCleaningTime() < 0) {
+                if (scope.getCleaningTime() <= 0) {
                     simulation_manager.removeScope(index);
                     LinearLayout linearLayoutScopes = findViewById(R.id.LinearLayoutScopes);
                     View scopeImg = linearLayoutScopes.getChildAt(simulation_manager.getScopeNum()); //TODO:: not -1?????/
                     linearLayoutScopes.removeView(scopeImg);
                 }
+
                 //Editing
                 else {
                     simulation_manager.removeScope(index);
@@ -340,41 +392,37 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             }
         }
 
-        if (requestCode == scope_Request) {
+
+
+        if (requestCode == scopeType_Request) {
             if (resultCode == RESULT_FIRST_USER) {
-                Scope scope = (Scope) data.getSerializableExtra("scope");
-                simulation_manager.addScope(scope);
+                String name = data.getStringExtra("name");
+                int price = data.getIntExtra("price", 1);
+                Scope_Type scope_type = new Scope_Type(name, price);
+                String[] procedureList = data.getStringArrayExtra("procedures");
+                for (int i=0; i < procedureList.length; i++) {
+                    scope_type.addProcedure(simulation_manager.getProcedureByName(procedureList[i]));
+                }
+                simulation_manager.addScopeType(scope_type);
 
-                LinearLayout linearLayoutScope = findViewById(R.id.LinearLayoutScopes);
-                ImageView scopeImage = new ImageView(getApplicationContext());
-                scopeImage.setImageResource(R.drawable.procedure_room);
-
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
-                scopeImage.setLayoutParams(layoutParams);
-                scopeImage.setPadding(10, 0, 0, 0);
-                scopeImage.setOnClickListener(this);
-
-                int index = simulation_manager.getProcedureRoomNum() - 1;
-                Tag tag = new Tag(index, "Procedure Room");
-
-                scopeImage.setTag(tag);
-
-                linearLayoutScope.addView(scopeImage);
             } else if (resultCode == RESULT_OK) {
-                Scope scope = (Scope) data.getSerializableExtra("scope");
-                int index = currentClicked.index;
+                Scope_Type scope_type = (Scope_Type) data.getSerializableExtra("scopeType");
 
                 //Deleting
-                if (scope.getCleaningTime() < 0) {
-                    simulation_manager.removeScope(index);
-                    LinearLayout linearLayoutScopes = findViewById(R.id.LinearLayoutScopes);
-                    View scopeImg = linearLayoutScopes.getChildAt(simulation_manager.getScopeNum()); //TODO:: not -1?????/
-                    linearLayoutScopes.removeView(scopeImg);
+                if (scope_type.getPrice() <= 0 || scope_type.getProcedureList() == null) {
+                    simulation_manager.removeScopeType(scope_type.getName());
                 }
                 //Editing
                 else {
-                    simulation_manager.removeScope(index);
-                    simulation_manager.addScope(scope);
+                    String oldName = data.getStringExtra("oldName");
+                    simulation_manager.removeScopeType(oldName);
+
+                    scope_type.setProcedureList(new ArrayList<Procedure>());
+                    String[] procedureList = data.getStringArrayExtra("procedures");
+                    for (int i=0; i < procedureList.length; i++) {
+                        scope_type.addProcedure(simulation_manager.getProcedureByName(procedureList[i]));
+                    }
+                    simulation_manager.addScopeType(scope_type);
                 }
 
             } else if (resultCode == RESULT_CANCELED) {
@@ -421,9 +469,9 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
     public void startSimulation(final MenuItem item) {
         FileHelper theFileHelper = new FileHelper();
-        Gson gson = new Gson();
-        String jsonString = gson.toJson(simulation_manager);
-        theFileHelper.writeFileOnInternalStorage(getApplicationContext(), jsonString);
+        //Gson gson = new Gson();
+       // String jsonString = gson.toJson(simulation_manager);
+       // theFileHelper.writeFileOnInternalStorage(getApplicationContext(), jsonString);
         simulation_manager.setCurrTime(0);
         Timer time = new Timer();
         time.scheduleAtFixedRate(new TimerTask() {
