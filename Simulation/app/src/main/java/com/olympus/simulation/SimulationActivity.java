@@ -336,7 +336,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
                 LinearLayout linearLayoutScope = findViewById(R.id.LinearLayoutScopes);
                 ImageView scopeImage = new ImageView(getApplicationContext());
-                scopeImage.setImageResource(R.drawable.procedure_room);
+                scopeImage.setImageResource(R.drawable.scope);
 
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
                 scopeImage.setLayoutParams(layoutParams);
@@ -493,8 +493,12 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void updateUI() {
+        TextView textTime = findViewById(R.id.textViewTime);
+        textTime.setText(Time.convertToString(simulation_manager.getCurrTime()));
+
         int numClients = simulation_manager.getClientNum();
         int numProcedureRooms = simulation_manager.getProcedureRoomNum();
+        int numScopes = simulation_manager.getScopeNum();
 
         LinearLayout linearLayoutClients = findViewById(R.id.LinearLayoutClients);
         for(int i = 0; i < numClients; i++)
@@ -527,6 +531,26 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 roomImg.setBackgroundColor(Color.CYAN);
             } else {
                 roomImg.setBackgroundColor(Color.YELLOW);
+            }
+        }
+
+        LinearLayout linearLayoutScopes = findViewById(R.id.LinearLayoutScopes);
+        for (int i=0; i < numScopes; i++) {
+            Scope scope = simulation_manager.getScopeByIndex(i);
+            View scopeImg = linearLayoutScopes.getChildAt(i);
+
+            if (scope.getState() == State_Scope.STATE_FREE) {
+                scopeImg.setBackgroundColor(Color.BLUE);
+
+            } else if (scope.getState() == State_Scope.STATE_TRAVEL) {
+                scopeImg.setBackgroundColor(Color.CYAN);
+
+            } else if (scope.getState() == State_Scope.STATE_USE) {
+                scopeImg.setBackgroundColor(Color.YELLOW);
+
+            } else if (scope.getState() == State_Scope.STATE_DIRTY) {
+                scopeImg.setBackgroundColor(Color.GREEN);
+
             }
         }
     }
