@@ -301,43 +301,19 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 Procedure procedure = (Procedure) data.getSerializableExtra("procedure");
                 simulation_manager.addProcedure(procedure);
 
-                //TODO:LinearLayout linearLayoutProcedureTypes = findViewById(R.id.LinearLayoutProcedureTypes);
-                TextView procedureText = new TextView(getApplicationContext());
-                procedureText.setText(procedure.getName());
-
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(78, 100);
-                procedureText.setLayoutParams(layoutParams);
-                procedureText.setOnClickListener(this);
-
-                int index = simulation_manager.getProcedureNum() - 1;
-                Tag tag = new Tag(index, "Procedure");
-
-                procedureText.setTag(tag);
-
-                //TODO:linearLayoutProcedureTypes.addView(procedureText);
-
                 //edited or deleted a procedure
             } else if (resultCode == RESULT_OK) {
                 Procedure procedure = (Procedure) data.getSerializableExtra("procedure");
 
-                updateProceduresUI();
-
                 //deleting a procedure
                 if (procedure.getMinTime() <= 0 || procedure.getMaxTime() <= 0 || procedure.getMinTime() > procedure.getMaxTime()) {
                     simulation_manager.deleteProcedure(procedure.getName());
-                    //TODO:LinearLayout linearLayoutProcedureTypes = findViewById(R.id.LinearLayoutProcedureTypes);
-                    //TODO:View procedureView = linearLayoutProcedureTypes.getChildAt(simulation_manager.getProcedureNum());
-                    //TODO:linearLayoutProcedureTypes.removeView(procedureView);
-
-                    updateProceduresUI();
 
                     //editing a procedure
                 } else {
                     String oldName = data.getStringExtra("oldName");
                     simulation_manager.deleteProcedure(oldName);
                     simulation_manager.addProcedure(procedure);
-
-                    updateProceduresUI();
 
                 }
                 //nothing to be done, represents just viewing or canceling an add to a procedure
@@ -453,14 +429,6 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             clientIntent.putExtra("procedures", simulation_manager.getProcedureNames());
             startActivityForResult(clientIntent, client_Request);
         }
-
-        else if (type.equals("Procedure")) {
-            Procedure procedure = simulation_manager.getProcedure(index);
-
-            Intent procedureIntent = new Intent(getApplicationContext(), ProcedureActivity.class);
-            procedureIntent.putExtra("procedure", procedure);
-            startActivityForResult(procedureIntent, procedure_Request);
-        }
     }
 
     static boolean isRunning = false;
@@ -545,16 +513,5 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             }
         }
     }
-    public void updateProceduresUI() {
 
-        int numProcedures = simulation_manager.getProcedureNum();
-        //TODO:LinearLayout linearLayoutProcedureTypes = findViewById(R.id.LinearLayoutProcedureTypes);
-        for (int i=0; i < numProcedures; i++) {
-            Procedure procedure = simulation_manager.getProcedure(i);
-            //TextView procedureText = (TextView)linearLayoutProcedureTypes.getChildAt(i);
-            //procedureText.setText(procedure.getName());
-        }
-
-
-    }
 }
