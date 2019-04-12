@@ -23,7 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//import com.google.gson.Gson;
+import com.google.gson.Gson;
 
 import org.w3c.dom.Text;
 
@@ -48,13 +48,13 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_simulation);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//set orientation to lock on portrait
         simulation_manager = new Simulation_Manager(0,100,1);
-        /*FileHelper theFileHelper = new FileHelper();
+        FileHelper theFileHelper = new FileHelper();
         String jsonString = theFileHelper.ReadFile(getApplicationContext());
         if(jsonString != "") {
             Gson gson = new Gson();
             simulation_manager = gson.fromJson(jsonString, Simulation_Manager.class);
             renderUIFromManager();
-        }/*
+        }
         //TODO: TEST CODE REMOVE PLZ
       /*  Procedure proc = new Procedure("Bark", 3, 5);
         Scope_Type type = new Scope_Type("TESTSCOPE", 5);
@@ -253,8 +253,9 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     ImageView clientImage = new ImageView(getApplicationContext());
                     clientImage.setImageResource(R.drawable.client);
 
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(78, 100);
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
                     clientImage.setLayoutParams(layoutParams);
+                    clientImage.setPadding(10, 0, 0, 0);
                     clientImage.setOnClickListener(this);
 
                     int index = simulation_manager.getClientNum() - 1;
@@ -448,15 +449,47 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    public void renderUIFromManager() {
+        Integer clientNum = simulation_manager.getClientNum();
+        LinearLayout linearLayoutClient = findViewById(R.id.LinearLayoutClients);
+        populateSection(linearLayoutClient, R.drawable.client, "Client", clientNum);
+
+        Integer procedureRoomNum = simulation_manager.getProcedureRoomNum();
+        LinearLayout linearLayoutProcedureRoom = findViewById(R.id.LinearLayoutRooms);
+        populateSection(linearLayoutProcedureRoom, R.drawable.procedure_room, "Procedure Room", procedureRoomNum);
+
+        Integer scopeNum = simulation_manager.getScopeNum();
+        LinearLayout linearLayoutScope = findViewById(R.id.LinearLayoutScopes);
+        populateSection(linearLayoutScope, R.drawable.scope, "Scope", scopeNum);
+    }
+
+    public void populateSection(LinearLayout theLinearLayout, int resID, String tagType, Integer elemNum) {
+        theLinearLayout.removeAllViews();
+        for(int index = 0; index < elemNum; index++) {
+            ImageView theImage = new ImageView(getApplicationContext());
+            theImage.setImageResource(resID);
+
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
+            theImage.setLayoutParams(layoutParams);
+            theImage.setPadding(10, 0, 0, 0);
+            theImage.setOnClickListener(this);
+
+            Tag tag = new Tag(index, tagType);
+
+            theImage.setTag(tag);
+
+            theLinearLayout.addView(theImage);
+        }
+    }
+
     static boolean isRunning = false;
     static boolean isPaused = false;
 
-
     public void startSimulation(final MenuItem item) {
         FileHelper theFileHelper = new FileHelper();
-        //Gson gson = new Gson();
-       // String jsonString = gson.toJson(simulation_manager);
-       // theFileHelper.writeFileOnInternalStorage(getApplicationContext(), jsonString);
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(simulation_manager);
+        theFileHelper.writeFileOnInternalStorage(getApplicationContext(), jsonString);
         simulation_manager.setCurrTime(0);
         Timer time = new Timer();
         time.scheduleAtFixedRate(new TimerTask() {

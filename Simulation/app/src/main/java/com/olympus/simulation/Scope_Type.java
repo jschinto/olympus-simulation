@@ -53,6 +53,11 @@ public class Scope_Type implements Serializable {
     }
 
     public boolean checkProcedure(Procedure p) {
-        return this.procedureList.contains(p);
+        for(int i = 0; i < this.procedureList.size(); i++){
+            if(this.procedureList.get(i).getName().equals(p.getName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
