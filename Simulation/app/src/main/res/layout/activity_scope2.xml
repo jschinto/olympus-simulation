@@ -20,7 +20,7 @@
             android:text="@string/textScopeTitle" />
 
         <Button
-            android:id="@+id/clientButtonEdit"
+            android:id="@+id/scopeButtonUpdate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -28,7 +28,7 @@
             android:text="@string/buttonEdit" />
 
         <Button
-            android:id="@+id/clientButtonAddDelete"
+            android:id="@+id/scopeButtonAddDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -36,7 +36,7 @@
             android:text="@string/buttonAdd" />
 
         <Button
-            android:id="@+id/clientButtonExit"
+            android:id="@+id/scopeButtonExit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

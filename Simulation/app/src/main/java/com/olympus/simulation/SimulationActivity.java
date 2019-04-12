@@ -150,11 +150,11 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             startActivityForResult(procedureRoomIntent, procedureRoom_Request);
         }
         else if (id == R.id.addScope) {
-
-           // Intent scopeIntent = new Intent(getApplicationContext(), ScopeAc.class);
+            Intent scopeIntent = new Intent(getApplicationContext(), ScopeActivity.class);
             Scope scope = new Scope(null, -1);
-           // scopeIntent.putExtra("scope", scope);
-          //  startActivityForResult(scopeIntent, scope_Request);
+            scopeIntent.putExtra("scope", scope);
+            scopeIntent.putExtra("scopeTypeNames", simulation_manager.getScopeTypeNames());
+            startActivityForResult(scopeIntent, scope_Request);
         }
         else if (id == R.id.addScopeType) {
             Intent scopeTypeIntent = new Intent(getApplicationContext(), ScopeTypeActivity.class);
@@ -325,7 +325,13 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         if (requestCode == scope_Request) {
 
             if (resultCode == RESULT_FIRST_USER) {//adding
-                Scope scope = (Scope) data.getSerializableExtra("scope");
+                String type = (String) data.getSerializableExtra("scopeType");
+                int clean = (int) data.getSerializableExtra("cleaningTime");
+
+                Scope_Type scopeType = simulation_manager.getScopeTypeByName(type);
+
+                Scope scope = new Scope(scopeType, clean);
+
                 simulation_manager.addScope(scope);
 
                 LinearLayout linearLayoutScope = findViewById(R.id.LinearLayoutScopes);
@@ -338,7 +344,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 scopeImage.setOnClickListener(this);
 
                 int index = simulation_manager.getScopeNum() - 1;
-                Tag tag = new Tag(index, "Procedure Room");
+                Tag tag = new Tag(index, "Scope");
 
                 scopeImage.setTag(tag);
 
@@ -346,23 +352,25 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
 
             } else if (resultCode == RESULT_OK) {
-                Scope scope = (Scope) data.getSerializableExtra("scope");
+                String type = (String) data.getSerializableExtra("scopeType");
+                int clean = (int) data.getSerializableExtra("cleaningTime");
+
                 int index = currentClicked.index;
 
                 //Deleting
-                if (scope.getCleaningTime() <= 0) {
+                if (clean < 0) {
                     simulation_manager.removeScope(index);
                     LinearLayout linearLayoutScopes = findViewById(R.id.LinearLayoutScopes);
                     View scopeImg = linearLayoutScopes.getChildAt(simulation_manager.getScopeNum()); //TODO:: not -1?????/
                     linearLayoutScopes.removeView(scopeImg);
                 }
-
                 //Editing
                 else {
+                    Scope_Type scopeType = simulation_manager.getScopeTypeByName(type);
+                    Scope scope = new Scope(scopeType, clean);
                     simulation_manager.removeScope(index);
                     simulation_manager.addScope(scope);
                 }
-
             } else if (resultCode == RESULT_CANCELED) {
                 return;
             }
@@ -428,6 +436,15 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             clientIntent.putExtra("client", client);
             clientIntent.putExtra("procedures", simulation_manager.getProcedureNames());
             startActivityForResult(clientIntent, client_Request);
+        }
+
+        else if(type.equals("Scope")) {
+            Scope scope = simulation_manager.getScopeByIndex(index);
+
+            Intent scopeIntent = new Intent(getApplicationContext(), ScopeActivity.class);
+            scopeIntent.putExtra("scope", scope);
+            scopeIntent.putExtra("scopeTypeNames", simulation_manager.getScopeTypeNames());
+            startActivityForResult(scopeIntent, scope_Request);
         }
     }
 

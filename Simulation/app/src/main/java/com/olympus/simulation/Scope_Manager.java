@@ -11,7 +11,11 @@ public class Scope_Manager {
         list = new ArrayList<Scope>();
         //types = new ArrayList<Scope_Type>();
     }
-/*
+
+    public Scope getScopeByIndex(int index) {
+        return list.get(index);
+    }
+    /*
     public void addScopeType(Scope_Type t) {
         types.add(t);
     }

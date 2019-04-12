@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ScopeTypeActivity"/>
+        <activity android:name=".ScopeActivity"></activity>
+        <activity android:name=".ScopeTypeActivity" />
         <activity android:name=".ProcedureActivity" />
         <activity android:name=".ClientActivity" />
         <activity android:name=".ProcedureRoomActivity" />

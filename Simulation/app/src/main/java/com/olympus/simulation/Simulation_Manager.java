@@ -224,4 +224,6 @@ public class Simulation_Manager {
     public void removeScope(int i) {scopeManager.removeScopeByIndex(i);}
 
     public int getScopeNum() {return scopeManager.getScopeNum();}
+
+    public Scope getScopeByIndex(int index) {return scopeManager.getScopeByIndex(index);}
 }

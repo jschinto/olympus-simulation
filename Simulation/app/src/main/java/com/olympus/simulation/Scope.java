@@ -84,4 +84,12 @@ public class Scope implements Comparable<Scope>, Serializable {
     public int compareTo(Scope o) {
         return this.getState() - o.getState();
     }
+
+    public Scope_Type getType() {
+        return type;
+    }
+
+    public void setType(Scope_Type type) {
+        this.type = type;
+    }
 }
