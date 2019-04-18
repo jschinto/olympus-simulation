@@ -247,6 +247,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 roomImage.setTag(tag);
 
                 linearLayoutRooms.addView(roomImage);
+                updateUI();
 
                 //edited or deleted a procedureRoom
             } else if (resultCode == RESULT_OK) {
@@ -264,6 +265,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     //editing a procedureRoom
                 } else {
                     simulation_manager.editProcedureRoom(procedureRoom, index);
+                    updateUI();
                 }
                 //nothing to be done, represents just viewing or canceling an add to procedureRoom
             } else if (resultCode == RESULT_CANCELED) {
@@ -307,6 +309,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     clientImage.setTag(tag);
 
                     linearLayoutClients.addView(clientImage);
+                    updateUI();
                 }
 
                 //edited or deleted a client
@@ -413,6 +416,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     Scope scope = new Scope(scopeType, clean);
                     simulation_manager.removeScope(index);
                     simulation_manager.addScope(scope);
+                    updateUI();
                 }
             } else if (resultCode == RESULT_CANCELED) {
                 return;
