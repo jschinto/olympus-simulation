@@ -602,13 +602,16 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             Client client = simulation_manager.getClient(i);
 
             if(client.getState() == State.STATE_OPERATION && client.getuiUpdated() == false) {
+                client.setuiUpdated(true);
+                hall_monitor.removeObject(client);
+            }
+            else if(client.getState() == State.STATE_DONE && client.getuiUpdated() == false) {
                 ObjectView clientImage = new ObjectView(client, getApplicationContext());
                 clientImage.changeOrientation(LinearLayout.HORIZONTAL);
                 clientImage.setOnClickListener(this);
 
                 linearLayoutClients.addView(clientImage);
                 client.setuiUpdated(true);
-                hall_monitor.removeObject(client);
             }
 
             ObjectView clientImg = (ObjectView)linearLayoutClients.getChildAt(i);
@@ -637,13 +640,16 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             Scope scope = simulation_manager.getScopeByIndex(i);
             
             if(scope.getState() == State_Scope.STATE_USE && scope.getuiUpdated() == false){
+                scope.setuiUpdated(true);
+                hall_monitor.removeObject(scope);
+            }
+            else if(scope.getState() == State_Scope.STATE_DIRTY && scope.getuiUpdated() == false){
                 ObjectView scopeImage = new ObjectView(scope, getApplicationContext());
                 scopeImage.changeOrientation(LinearLayout.HORIZONTAL);
                 scopeImage.setOnClickListener(this);
 
                 linearLayoutScopes.addView(scopeImage);
                 scope.setuiUpdated(true);
-                hall_monitor.removeObject(scope);
             }
 
             ObjectView scopeImg = (ObjectView)linearLayoutScopes.getChildAt(i);
@@ -655,7 +661,6 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     linearLayoutScopes.removeView(scopeImg);
                     hall_monitor.addObject(scope);
                     scope.setuiUpdated(true);
-
                 }
             }
         }
