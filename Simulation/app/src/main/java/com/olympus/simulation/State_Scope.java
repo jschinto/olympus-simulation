@@ -11,9 +11,9 @@ public class State_Scope implements Serializable {
     public int state;
 
     public static final int STATE_FREE = 0;
-    public static final int STATE_TRAVEL = 1;
-    public static final int STATE_USE = 2;
-    public static final int STATE_DIRTY = 3;
+    public static final int STATE_TRAVEL = 3;
+    public static final int STATE_USE = 1;
+    public static final int STATE_DIRTY = 2;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({

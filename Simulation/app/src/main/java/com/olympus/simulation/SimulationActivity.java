@@ -34,6 +34,7 @@ import java.util.TimerTask;
 public class SimulationActivity extends AppCompatActivity implements View.OnClickListener {
 
     Simulation_Manager simulation_manager;
+    Hall_Monitor hall_monitor;
     Tag currentClicked;
 
     public static final int procedureRoom_Request = 1;
@@ -42,12 +43,52 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     public static final int scopeType_Request = 4;
     public static final int scope_Request = 5;
 
+    public class Hall_Monitor {
+        ArrayList<Object> list;
+        LinearLayout hallway;
+
+        public Hall_Monitor() {
+            list = new ArrayList<Object>();
+            hallway = findViewById(R.id.LinearLayoutHallway);
+        }
+
+        public void addObject(Object o) {
+            ObjectView obj = new ObjectView(o, getApplicationContext());
+            obj.changeOrientation(LinearLayout.VERTICAL);
+            hallway.addView(obj);
+        }
+
+        public void getObjectByIndex(int i) {
+            //TODO: Implement
+        }
+
+        public void getObjectList() {
+            //TODO: Implement
+        }
+
+        public void removeObject(Object o) {
+            for(int i = 0; i < hallway.getChildCount(); i++) {
+                ObjectView obj = (ObjectView)hallway.getChildAt(i);
+                if(obj.contains(o)){
+                    hallway.removeViewAt(i);
+                    return;
+                }
+            }
+        }
+
+        public void removeObjectByIndex(int i) {
+            //TODO: Implement
+        }
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simulation);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//set orientation to lock on portrait
         simulation_manager = new Simulation_Manager(0,100,1);
+        hall_monitor = new Hall_Monitor();
         FileHelper theFileHelper = new FileHelper();
         String jsonString = theFileHelper.ReadFile(getApplicationContext());
         if(jsonString != "") {
@@ -247,15 +288,21 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
                 int amount = data.getIntExtra("amount", 1);
                 for (int i = 0; i < amount; i++) {
-                    simulation_manager.addClient(new Client(client));
+                    Client newClient = new Client(client);
+                    simulation_manager.addClient(newClient);
 
                     LinearLayout linearLayoutClients = findViewById(R.id.LinearLayoutClients);
+                    /*
                     ImageView clientImage = new ImageView(getApplicationContext());
                     clientImage.setImageResource(R.drawable.client);
 
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
                     clientImage.setLayoutParams(layoutParams);
                     clientImage.setPadding(10, 0, 0, 0);
+                    clientImage.setOnClickListener(this);
+                    */
+                    ObjectView clientImage = new ObjectView(newClient, getApplicationContext());
+                    clientImage.changeOrientation(LinearLayout.HORIZONTAL);
                     clientImage.setOnClickListener(this);
 
                     int index = simulation_manager.getClientNum() - 1;
@@ -287,6 +334,9 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                         client.addProcedure(simulation_manager.getProcedureByName(procedures[i]));
                     }
                     simulation_manager.editClient(client, index);
+                    LinearLayout linearLayoutClients = findViewById(R.id.LinearLayoutClients);
+                    ObjectView clientView = (ObjectView) linearLayoutClients.getChildAt(index);
+                    clientView.update();
                 }
                 //nothing to be done, represents just viewing or canceling an add to a client
             } else if (resultCode == RESULT_CANCELED) {
@@ -537,20 +587,38 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         for(int i = 0; i < numClients; i++)
         {
             Client client = simulation_manager.getClient(i);
+
+            if(client.getState() == State.STATE_OPERATION && client.getuiUpdated() == false) {
+                ObjectView clientImage = new ObjectView(client, getApplicationContext());
+                clientImage.changeOrientation(LinearLayout.HORIZONTAL);
+                clientImage.setOnClickListener(this);
+
+                linearLayoutClients.addView(clientImage);
+                client.setuiUpdated(true);
+                hall_monitor.removeObject(client);
+            }
+
             View clientImg = linearLayoutClients.getChildAt(i);
 
-            if(client.getState() == State.STATE_WAIT) {
-                clientImg.setBackgroundColor(Color.BLUE);
-            }
-            else if(client.getState() == State.STATE_TRAVEL) {
-                clientImg.setBackgroundColor(Color.CYAN);
-            }
-            else if(client.getState() == State.STATE_OPERATION) {
-                clientImg.setBackgroundColor(Color.YELLOW);
-            }
-            else if(client.getState() == State.STATE_DONE)
-            {
-                clientImg.setBackgroundColor(Color.GREEN);
+            if(clientImg != null) {
+                if (client.getState() == State.STATE_WAIT)
+                {
+                    clientImg.setBackgroundColor(Color.BLUE);
+                }
+                else if (client.getState() == State.STATE_TRAVEL && client.getuiUpdated() == false)
+                {
+                    linearLayoutClients.removeView(clientImg);
+                    hall_monitor.addObject(client);
+                    client.setuiUpdated(true);
+                }
+                else if (client.getState() == State.STATE_OPERATION)
+                {
+                    clientImg.setBackgroundColor(Color.YELLOW);
+                }
+                else if (client.getState() == State.STATE_DONE)
+                {
+                    clientImg.setBackgroundColor(Color.GREEN);
+                }
             }
         }
         LinearLayout linearLayoutRooms = findViewById(R.id.LinearLayoutRooms);
@@ -570,22 +638,41 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         LinearLayout linearLayoutScopes = findViewById(R.id.LinearLayoutScopes);
         for (int i=0; i < numScopes; i++) {
             Scope scope = simulation_manager.getScopeByIndex(i);
+            
+            if(scope.getState() == State_Scope.STATE_USE && scope.getuiUpdated() == false){
+                ImageView scopeImage = new ImageView(getApplicationContext());
+                scopeImage.setImageResource(R.drawable.scope);
+
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
+                scopeImage.setLayoutParams(layoutParams);
+                scopeImage.setPadding(10, 0, 0, 0);
+                scopeImage.setOnClickListener(this);
+
+
+                linearLayoutScopes.addView(scopeImage);
+                scope.setuiUpdated(true);
+                hall_monitor.removeObject(scope);
+            }
+
             View scopeImg = linearLayoutScopes.getChildAt(i);
 
-            if (scope.getState() == State_Scope.STATE_FREE) {
-                scopeImg.setBackgroundColor(Color.BLUE);
+            if(scopeImg != null) {
+                if (scope.getState() == State_Scope.STATE_FREE) {
+                    scopeImg.setBackgroundColor(Color.BLUE);
 
-            } else if (scope.getState() == State_Scope.STATE_TRAVEL) {
-                scopeImg.setBackgroundColor(Color.CYAN);
+                } else if (scope.getState() == State_Scope.STATE_TRAVEL && scope.getuiUpdated() == false) {
+                    linearLayoutScopes.removeView(scopeImg);
+                    hall_monitor.addObject(scope);
+                    scope.setuiUpdated(true);
 
-            } else if (scope.getState() == State_Scope.STATE_USE) {
-                scopeImg.setBackgroundColor(Color.YELLOW);
+                } else if (scope.getState() == State_Scope.STATE_USE) {
+                    scopeImg.setBackgroundColor(Color.YELLOW);
 
-            } else if (scope.getState() == State_Scope.STATE_DIRTY) {
-                scopeImg.setBackgroundColor(Color.GREEN);
+                } else if (scope.getState() == State_Scope.STATE_DIRTY) {
+                    scopeImg.setBackgroundColor(Color.GREEN);
 
+                }
             }
         }
     }
-
 }

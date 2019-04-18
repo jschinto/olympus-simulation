@@ -9,6 +9,7 @@ public class Scope implements Comparable<Scope>, Serializable {
     private int state;
     private int timeLeft;
     private int cleaningTime;
+    private boolean uiUpdated;
 
     public int getCleaningTime() {
         return cleaningTime;
@@ -23,6 +24,7 @@ public class Scope implements Comparable<Scope>, Serializable {
         this.state = State_Scope.STATE_FREE;
         this.timeLeft = 0;
         this.cleaningTime = c;
+        this.uiUpdated = false;
     }
 
     public int getState() {
@@ -31,32 +33,31 @@ public class Scope implements Comparable<Scope>, Serializable {
 
     public void setState(int state) {
         this.state = state;
+        setuiUpdated(false);
     }
 
     public void claim(int time) {
-        this.state = State_Scope.STATE_TRAVEL;
+        setState(State_Scope.STATE_TRAVEL);
         this.timeLeft = time;
     }
 
     public void tick() {
         this.timeLeft--;
-        System.out.print("Scope: " + this.timeLeft + "\n");
         if(this.timeLeft == 0) {
             //Scope has arrived at its destination
             if(this.state == State_Scope.STATE_TRAVEL) {
-                this.state = State_Scope.STATE_USE;
+                setState(State_Scope.STATE_USE);
             }
             //Scope has finished being cleaned
             if(this.state == State_Scope.STATE_DIRTY) {
-                this.state = State_Scope.STATE_FREE;
+                setState(State_Scope.STATE_FREE);
             }
         }
     }
 
     //TEMPORARY CODE UNTIL WE WORK ON CLEANING
     public void freeScope() {
-        System.out.print("Freeing Scope\n");
-        this.state = State_Scope.STATE_DIRTY;
+        setState(State_Scope.STATE_DIRTY);
         this.timeLeft = this.cleaningTime;
     }
 
@@ -91,5 +92,13 @@ public class Scope implements Comparable<Scope>, Serializable {
 
     public void setType(Scope_Type type) {
         this.type = type;
+    }
+
+    public boolean getuiUpdated() {
+        return uiUpdated;
+    }
+
+    public void setuiUpdated(boolean uiUpdated) {
+        this.uiUpdated = uiUpdated;
     }
 }

@@ -22,6 +22,8 @@ public class Client implements Comparable<Client>, Serializable {
 
     private int step;
 
+    private boolean uiUpdated;
+
     public Client(ArrayList<Procedure> procedures, int arrivalTime) {
         this.procedures = procedures;
         setState(State.STATE_WAIT);
@@ -29,6 +31,7 @@ public class Client implements Comparable<Client>, Serializable {
         timeLeft = 0;
         this.arrivalTime = arrivalTime;
         step = 0;
+        this.uiUpdated = false;
     }
 
     public Client(Client client) {
@@ -38,6 +41,15 @@ public class Client implements Comparable<Client>, Serializable {
         timeLeft = client.getTimeLeft();
         arrivalTime = client.getArrivalTime();
         this.step = client.getStep();
+        this.uiUpdated = false;
+    }
+
+    public void setuiUpdated(boolean bool) {
+        this.uiUpdated = bool;
+    }
+
+    public boolean getuiUpdated() {
+        return this.uiUpdated;
     }
 
     //alters appropriate variables based on passage of time(tick)
@@ -104,6 +116,7 @@ public class Client implements Comparable<Client>, Serializable {
 
     public void setState(@State.StateDef int state) {
         this.state = new State(state);
+        setuiUpdated(false);
     }
 
     public int getTimeLeft() {
