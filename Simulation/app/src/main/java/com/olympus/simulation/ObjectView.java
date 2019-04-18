@@ -103,7 +103,7 @@ public class ObjectView extends LinearLayout {
         } else if (type.equals("scope")) {
             Scope scope = (Scope)object;
             if (scope.getState() == State_Scope.STATE_TRAVEL) {
-                changeText("Destination: Room ");
+                changeText("Destination: Room "+scope.getRoom().getId());
             } else if (scope.getState() == State_Scope.STATE_FREE) {
                 changeText(scope.getType().getName());
             } else if (scope.getState() == State_Scope.STATE_USE) {
