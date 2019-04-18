@@ -36,7 +36,7 @@ public class ProcedureRoom implements Serializable {
     public void claimScope(ArrayList<Scope> list) {
         this.scope = list;
         for(Scope s : list) {
-            s.claim(this.travelTime);
+            s.claim(this, this.travelTime);
         }
     }
 

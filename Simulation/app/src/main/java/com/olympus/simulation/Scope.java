@@ -10,6 +10,7 @@ public class Scope implements Comparable<Scope>, Serializable {
     private int timeLeft;
     private int cleaningTime;
     private boolean uiUpdated;
+    private ProcedureRoom room;
 
     private int id;
 
@@ -27,6 +28,7 @@ public class Scope implements Comparable<Scope>, Serializable {
         this.timeLeft = 0;
         this.cleaningTime = c;
         this.uiUpdated = false;
+        this.room = null;
     }
 
     public int getState() {
@@ -38,20 +40,21 @@ public class Scope implements Comparable<Scope>, Serializable {
         setuiUpdated(false);
     }
 
-    public void claim(int time) {
+    public void claim(ProcedureRoom room, int time) {
         setState(State_Scope.STATE_TRAVEL);
+        this.room = room;
         this.timeLeft = time;
     }
 
     public void tick() {
         this.timeLeft--;
-        if(this.timeLeft == 0) {
+        if (this.timeLeft == 0) {
             //Scope has arrived at its destination
-            if(this.state == State_Scope.STATE_TRAVEL) {
+            if (this.state == State_Scope.STATE_TRAVEL) {
                 setState(State_Scope.STATE_USE);
             }
             //Scope has finished being cleaned
-            if(this.state == State_Scope.STATE_DIRTY) {
+            if (this.state == State_Scope.STATE_DIRTY) {
                 setState(State_Scope.STATE_FREE);
             }
         }
@@ -59,6 +62,7 @@ public class Scope implements Comparable<Scope>, Serializable {
 
     //TEMPORARY CODE UNTIL WE WORK ON CLEANING
     public void freeScope() {
+        this.room = null;
         setState(State_Scope.STATE_DIRTY);
         this.timeLeft = this.cleaningTime;
     }
@@ -73,7 +77,7 @@ public class Scope implements Comparable<Scope>, Serializable {
 
     public ArrayList<String> getProcedureList() {
         ArrayList<String> names = new ArrayList<String>();
-        for(int i = 0; i < type.getProcedureList().size(); i++){
+        for (int i = 0; i < type.getProcedureList().size(); i++) {
             names.add(type.getProcedureList().get(i).getName());
         }
 
@@ -110,5 +114,9 @@ public class Scope implements Comparable<Scope>, Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public ProcedureRoom getRoom() {
+        return room;
     }
 }
