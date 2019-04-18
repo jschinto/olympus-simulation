@@ -121,7 +121,20 @@ public class ObjectView extends LinearLayout {
         imageView.setImageResource(drawable);
     }
 
-
+    public void changeObject(Object o) {
+        this.object = o;
+        if (object instanceof Client) {
+            type = "client";
+        } else if (object instanceof Scope) {
+            type = "scope";
+        } else if (object instanceof  ProcedureRoom) {
+            type = "procedureRoom";
+        }
+        else  {
+            type = null;
+        }
+        update();
+    }
     public void changeOrientation(int orientation) {
         if (orientation == VERTICAL) {
             this.setOrientation(VERTICAL);
