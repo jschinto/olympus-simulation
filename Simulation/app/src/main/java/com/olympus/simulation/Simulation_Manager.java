@@ -106,9 +106,10 @@ public class Simulation_Manager {
                 offset++;
             }
         }
+        procedureRoomManager.runTick();
         clientManager.runTick();
         scopeManager.runTick();
-        procedureRoomManager.runTick();
+
 
         clientManager.sortQueue();
         return false;
