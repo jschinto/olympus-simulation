@@ -494,20 +494,21 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     public void renderUIFromManager() {
         Integer clientNum = simulation_manager.getClientNum();
         LinearLayout linearLayoutClient = findViewById(R.id.LinearLayoutClients);
-        populateSection(linearLayoutClient, R.drawable.client, "Client", clientNum);
+        populateSection(linearLayoutClient, "Client", clientNum);
 
         Integer procedureRoomNum = simulation_manager.getProcedureRoomNum();
         LinearLayout linearLayoutProcedureRoom = findViewById(R.id.LinearLayoutRooms);
-        populateSection(linearLayoutProcedureRoom, R.drawable.procedure_room, "Procedure Room", procedureRoomNum);
+        populateSection(linearLayoutProcedureRoom, "Procedure Room", procedureRoomNum);
 
         Integer scopeNum = simulation_manager.getScopeNum();
         LinearLayout linearLayoutScope = findViewById(R.id.LinearLayoutScopes);
-        populateSection(linearLayoutScope, R.drawable.scope, "Scope", scopeNum);
+        populateSection(linearLayoutScope, "Scope", scopeNum);
     }
 
-    public void populateSection(LinearLayout theLinearLayout, int resID, String tagType, Integer elemNum) {
+    public void populateSection(LinearLayout theLinearLayout, String tagType, Integer elemNum) {
         theLinearLayout.removeAllViews();
         for(int index = 0; index < elemNum; index++) {
+            /*
             ImageView theImage = new ImageView(getApplicationContext());
             theImage.setImageResource(resID);
 
@@ -515,12 +516,27 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             theImage.setLayoutParams(layoutParams);
             theImage.setPadding(10, 0, 0, 0);
             theImage.setOnClickListener(this);
+            */
+            Object insert = null;
+            if(tagType == "Client"){
+                insert = simulation_manager.getClient(index);
+            }
+            else if(tagType == "Procedure Room") {
+                insert = simulation_manager.getProcedureRoom(index);
+            }
+            else if(tagType == "Scope") {
+                insert = simulation_manager.getScopeByIndex(index);
+            }
+
+            ObjectView viewImage = new ObjectView(insert, getApplicationContext());
+            viewImage.changeOrientation(LinearLayout.HORIZONTAL);
+            viewImage.setOnClickListener(this);
 
             Tag tag = new Tag(index, tagType);
 
-            theImage.setTag(tag);
+            viewImage.setTag(tag);
 
-            theLinearLayout.addView(theImage);
+            theLinearLayout.addView(viewImage);
         }
     }
 
@@ -618,7 +634,9 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         LinearLayout linearLayoutRooms = findViewById(R.id.LinearLayoutRooms);
         for(int i = 0; i < numProcedureRooms; i++) {
             ProcedureRoom room = simulation_manager.getProcedureRoom(i);
-            View roomImg = linearLayoutRooms.getChildAt(i);
+            ObjectView roomImg = (ObjectView)linearLayoutRooms.getChildAt(i);
+
+            roomImg.update();
 
             if (room.isAvailable()) {
                 roomImg.setBackgroundColor(Color.BLUE);
