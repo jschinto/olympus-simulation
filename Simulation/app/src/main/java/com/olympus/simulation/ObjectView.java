@@ -34,7 +34,10 @@ public class ObjectView extends LinearLayout {
             type = "client";
         } else if (object instanceof Scope) {
             type = "scope";
-        } else  {
+        } else if (object instanceof  ProcedureRoom) {
+            type = "procedureRoom";
+        }
+        else  {
             type = null;
         }
         init();
@@ -54,6 +57,8 @@ public class ObjectView extends LinearLayout {
             imageView.setImageResource(R.drawable.client);
         } else if (type.equals("scope")) {
             imageView.setImageResource(R.drawable.scope);
+        } else if (type.equals("procedureRoom")) {
+            imageView.setImageResource(R.drawable.procedure_room);
         }
 
         update();
@@ -77,19 +82,28 @@ public class ObjectView extends LinearLayout {
 
             Client client = (Client)object;
             if (client.getState() == State.STATE_WAIT) {
+                changeText("WAIT:");
                 ArrayList<Procedure> procedureList = client.getProcedureList();
                 changeText(procedureList.get(0).getName());
                 for (int i=1; i < procedureList.size(); i++) {
                     addLine(procedureList.get(i).getName());
                 }
             } else if (client.getState() == State.STATE_TRAVEL) {
-                changeText(String.valueOf(client.getProcedureRoom().getTravelTime()));
+                changeText("TRAVEL:" + String.valueOf(client.getProcedureRoom().getTravelTime()));
+            } else if (client.getState() == State.STATE_DONE) {
+                changeText("DONE");
+            } else if (client.getState() == State.STATE_OPERATION) {
+                changeText("OPERATION");
+            } else {
+                changeText("BORGER");
             }
         } else if (type.equals("scope")) {
             Scope scope = (Scope)object;
             if (scope.getState() == State_Scope.STATE_TRAVEL) {
 
             }
+        } else {
+            changeText("NO TYPE");
         }
     }
 
