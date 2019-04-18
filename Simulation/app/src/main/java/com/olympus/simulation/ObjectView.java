@@ -78,11 +78,11 @@ public class ObjectView extends LinearLayout {
             return;
         }
 
+        //client
         if (type.equals("client")) {
 
             Client client = (Client)object;
             if (client.getState() == State.STATE_WAIT) {
-                changeText("WAIT:");
                 ArrayList<Procedure> procedureList = client.getProcedureList();
                 changeText(procedureList.get(0).getName());
                 for (int i=1; i < procedureList.size(); i++) {
@@ -94,16 +94,21 @@ public class ObjectView extends LinearLayout {
                 changeText("DONE");
             } else if (client.getState() == State.STATE_OPERATION) {
                 changeText("OPERATION");
-            } else {
-                changeText("BORGER");
             }
+
+         //scope
         } else if (type.equals("scope")) {
             Scope scope = (Scope)object;
             if (scope.getState() == State_Scope.STATE_TRAVEL) {
 
             }
-        } else {
-            changeText("NO TYPE");
+
+        //procedure room
+        } else if (type.equals("procedureRoom")) {
+
+        }
+        else {
+            changeText("TYPE INVALID");
         }
     }
 
@@ -135,6 +140,8 @@ public class ObjectView extends LinearLayout {
         }
         update();
     }
+
+
     public void changeOrientation(int orientation) {
         if (orientation == VERTICAL) {
             this.setOrientation(VERTICAL);

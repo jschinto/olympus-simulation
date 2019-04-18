@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ProcedureRoomActivity extends AppCompatActivity {
@@ -35,6 +36,9 @@ public class ProcedureRoomActivity extends AppCompatActivity {
     }
 
     private void setValues(int travelTime, int cooldownTime) {
+        TextView textTitle = findViewById(R.id.procedureRoomTitle);
+        textTitle.setText("Procedure Room " +procedureRoom.getId());
+
         EditText edit1 = findViewById(R.id.procedureRoomEdit1);
         EditText edit2 = findViewById(R.id.procedureRoomEdit2);
         if (travelTime <= 0 || cooldownTime <= 0) {//default value 0 to indicate user is in adding mode

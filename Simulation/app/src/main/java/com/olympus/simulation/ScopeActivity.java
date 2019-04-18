@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -36,6 +37,9 @@ public class ScopeActivity extends AppCompatActivity {
     }
 
     public void setValues(Scope_Type scopeType, int cleaningTime) {
+        TextView textTitle = findViewById(R.id.scopeTitle);
+        textTitle.setText("Scope "+scope.getId());
+
         Spinner edit1 = findViewById(R.id.scopeEdit1);
         EditText edit2 = findViewById(R.id.scopeEdit2);
         if (scopeTypeNames != null && scopeTypeNames.length > 0) {

@@ -47,6 +47,9 @@ public class ClientActivity extends AppCompatActivity {
     }
 
     private void setValues(int arrivalTime, ArrayList<Procedure> procedureList) {
+        TextView textTitle = findViewById(R.id.clientTitle);
+        textTitle.setText("Client " + client.getId());
+
         EditText edit1 = findViewById(R.id.clientEdit1);
         TextView text2 = findViewById(R.id.clientText2);
         EditText edit2 = findViewById(R.id.clientEdit2);
