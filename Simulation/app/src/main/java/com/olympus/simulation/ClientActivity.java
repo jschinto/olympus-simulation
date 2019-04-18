@@ -24,8 +24,7 @@ public class ClientActivity extends AppCompatActivity {
     // text fields with these numbers correspond to these attributes
     // 1 : arrival time
     // 2: amount to add
-    // 3 : procedures added
-    // 4 : procedures to add
+    // 3 : procedures
 
     Client client;
     String[] procedures;
@@ -52,50 +51,42 @@ public class ClientActivity extends AppCompatActivity {
         TextView text2 = findViewById(R.id.clientText2);
         EditText edit2 = findViewById(R.id.clientEdit2);
 
-        TextView text3 = findViewById(R.id.clientText3);
-        Spinner spinner3 = findViewById(R.id.clientSpinner3);
-        TextView text4 = findViewById(R.id.clientText4);
-        LinearLayout linearLayout4 = findViewById(R.id.clientCheckbox4);
+        LinearLayout clientCheckbox3 = findViewById(R.id.clientCheckbox3);
+        if (procedures != null) {
+            for (int i = 0; i < procedures.length; i++) {
+                CheckBox checkBox = new CheckBox(getApplicationContext());
+                checkBox.setText(procedures[i]);
+                checkBox.setChecked(false);
+                clientCheckbox3.addView(checkBox);
+            }
+        }
 
         if (arrivalTime < 0  || procedureList == null) {
+            text2.setVisibility(View.VISIBLE);
+            edit2.setVisibility(View.VISIBLE);
             if (arrivalTime >= 0) {
                 edit1.setText(Time.convertToString(arrivalTime));
             } else {
                 edit1.setText("");
             }
-            text2.setVisibility(View.VISIBLE);
-            edit2.setVisibility(View.VISIBLE);
             edit2.setText("1");
-            text3.setVisibility(View.INVISIBLE);
-            spinner3.setVisibility(View.INVISIBLE);
-            text4.setVisibility(View.VISIBLE);
-            linearLayout4.setVisibility(View.VISIBLE);
 
-            LinearLayout clientCheckboxGroup4 = findViewById(R.id.clientCheckbox4);
-            for (int i=0; i < procedures.length; i++) {
-                CheckBox checkBox = new CheckBox(getApplicationContext());
-                checkBox.setText(procedures[i]);
-                clientCheckboxGroup4.addView(checkBox);
-            }
             addSetup();
             return;
         }
-        edit1.setText(Time.convertToString(arrivalTime));
         text2.setVisibility(View.INVISIBLE);
         edit2.setVisibility(View.INVISIBLE);
+        edit1.setText(Time.convertToString(arrivalTime));
 
-        text3.setVisibility(View.VISIBLE);
-        spinner3.setVisibility(View.VISIBLE);
-        text4.setVisibility(View.INVISIBLE);
-        linearLayout4.setVisibility(View.INVISIBLE);
-        String[] procedureNames = new String[procedureList.size()];
-        for (int i=0; i < procedureNames.length; i++) {
-            procedureNames[i] = procedureList.get(i).getName();
+        ArrayList<String> procedureListNames = new ArrayList<String>();
+        for (int i=0; i < procedureList.size(); i++) {
+            procedureListNames.add(procedureList.get(i).getName());
         }
-        if (procedureList != null && procedureList.size() > 0) {
-
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, procedureNames);
-            spinner3.setAdapter(adapter);
+        for (int i=0; i < procedures.length; i++) {
+            if (procedureListNames.contains(procedures[i])) {
+                CheckBox checkBox = (CheckBox) clientCheckbox3.getChildAt(i);
+                checkBox.setChecked(true);
+            }
         }
         viewSetup();
     }
@@ -143,7 +134,7 @@ public class ClientActivity extends AppCompatActivity {
                 }
 
                 //get checked procedures from checkboxes
-                LinearLayout clientCheckbox4 = findViewById(R.id.clientCheckbox4);
+                LinearLayout clientCheckbox4 = findViewById(R.id.clientCheckbox3);
                 ArrayList<String> procedureNames = new ArrayList<String>();
                 for (int i=0; i < clientCheckbox4.getChildCount(); i++) {
                     CheckBox checkBox = (CheckBox)clientCheckbox4.getChildAt(i);
@@ -200,10 +191,10 @@ public class ClientActivity extends AppCompatActivity {
 
 
             //get checked procedures from checkboxes
-            LinearLayout clientCheckbox4 = findViewById(R.id.clientCheckbox4);
+            LinearLayout clientCheckbox3 = findViewById(R.id.clientCheckbox3);
             ArrayList<String> procedureNames = new ArrayList<String>();
-            for (int i=0; i < clientCheckbox4.getChildCount(); i++) {
-                CheckBox checkBox = (CheckBox)clientCheckbox4.getChildAt(i);
+            for (int i=0; i < clientCheckbox3.getChildCount(); i++) {
+                CheckBox checkBox = (CheckBox)clientCheckbox3.getChildAt(i);
                 if (checkBox.isChecked()) {
                     String name = checkBox.getText().toString();
                     procedureNames.add(name);
@@ -218,7 +209,8 @@ public class ClientActivity extends AppCompatActivity {
             client.setArrivalTime(arrivalTime);
             Intent returnIntent = new Intent();
             returnIntent.putExtra("client", client);
-            returnIntent.putExtra("procedures", procedureNames.toArray());
+            String[] procedureNamesArray = new String[procedureNames.size()];
+            returnIntent.putExtra("procedures", procedureNames.toArray(procedureNamesArray));
             setResult(RESULT_OK, returnIntent);
             finish();
 
