@@ -1,6 +1,6 @@
 package com.olympus.simulation;
 
-import   android.annotation.SuppressLint;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -38,7 +38,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simulation);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//set orientation to lock on portrait
-        simulation_manager = new Simulation_Manager(0,100,1);
+        simulation_manager = new Simulation_Manager(0, 100, 1);
         //loadLoadout("help2");
         //TODO: TEST CODE REMOVE PLZ
       /*  Procedure proc = new Procedure("Bark", 3, 5);
@@ -54,11 +54,11 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     }
 
     //handle view bar button clicks
-    public void buttonClick(View view){
+    public void buttonClick(View view) {
         if (view.getId() == R.id.buttonViewProcedures) {
             PopupMenu popupMenu = new PopupMenu(getApplicationContext(), view);
             String[] procedureNames = simulation_manager.getProcedureNames();
-            for (int i=0; i < procedureNames.length; i++) {
+            for (int i = 0; i < procedureNames.length; i++) {
                 popupMenu.getMenu().add(Menu.NONE, i, i, procedureNames[i]);
             }
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -77,7 +77,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         } else if (view.getId() == R.id.buttonViewScopeTypes) {
             PopupMenu popupMenu = new PopupMenu(getApplicationContext(), view);
             String[] scopeTypeNames = simulation_manager.getScopeTypeNames();
-            for (int i=0; i < scopeTypeNames.length; i++) {
+            for (int i = 0; i < scopeTypeNames.length; i++) {
                 popupMenu.getMenu().add(Menu.NONE, i, i, scopeTypeNames[i]);
             }
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -98,7 +98,6 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     }
 
 
-
     // create an action bar button
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -117,8 +116,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             Procedure procedure = new Procedure("", 0, 0);
             procedureIntent.putExtra("procedure", procedure);
             startActivityForResult(procedureIntent, procedure_Request);
-        }
-        else if (id == R.id.addClient) {
+        } else if (id == R.id.addClient) {
             int latest = simulation_manager.getLatestClientTime();
 
             Intent clientIntent = new Intent(getApplicationContext(), ClientActivity.class);
@@ -126,53 +124,45 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             clientIntent.putExtra("client", client);
             clientIntent.putExtra("procedures", simulation_manager.getProcedureNames());
             startActivityForResult(clientIntent, client_Request);
-        }
-        else if (id == R.id.addProcedureRoom) {
+        } else if (id == R.id.addProcedureRoom) {
 
             Intent procedureRoomIntent = new Intent(getApplicationContext(), ProcedureRoomActivity.class);
-            ProcedureRoom procedureRoom = new ProcedureRoom(0,0);
+            ProcedureRoom procedureRoom = new ProcedureRoom(0, 0);
             procedureRoomIntent.putExtra("procedureRoom", procedureRoom);
             startActivityForResult(procedureRoomIntent, procedureRoom_Request);
-        }
-        else if (id == R.id.addScope) {
+        } else if (id == R.id.addScope) {
             Intent scopeIntent = new Intent(getApplicationContext(), ScopeActivity.class);
             Scope scope = new Scope(null, -1);
             scopeIntent.putExtra("scope", scope);
             scopeIntent.putExtra("scopeTypeNames", simulation_manager.getScopeTypeNames());
             startActivityForResult(scopeIntent, scope_Request);
-        }
-        else if (id == R.id.addScopeType) {
+        } else if (id == R.id.addScopeType) {
             Intent scopeTypeIntent = new Intent(getApplicationContext(), ScopeTypeActivity.class);
             Scope_Type scopeType = new Scope_Type("", -1);
             scopeTypeIntent.putExtra("scopeType", scopeType);
             scopeTypeIntent.putExtra("procedureNames", simulation_manager.getProcedureNames());
             startActivityForResult(scopeTypeIntent, scopeType_Request);
-        }
-        else if(id == R.id.startSimulation) {
+        } else if (id == R.id.startSimulation) {
             ActionMenuItemView playImage = findViewById(R.id.playButton);
-            if(item.getTitle().equals("Confirm Start")) {
+            if (item.getTitle().equals("Confirm Start")) {
                 startSimulation(item);
                 item.setTitle("Pause");
                 playImage.setIcon(getResources().getDrawable(R.drawable.pause_button));
-            }
-            else if(item.getTitle().equals("Pause")){
+            } else if (item.getTitle().equals("Pause")) {
                 isPaused = true;
                 item.setTitle("Resume");
                 playImage.setIcon(getResources().getDrawable(R.drawable.play_button));
-            }
-            else {
+            } else {
                 isPaused = false;
                 item.setTitle("Pause");
                 playImage.setIcon(getResources().getDrawable(R.drawable.pause_button));
                 //loadLoadout(true, "LastRun");
             }
-        }
-        else if(id == R.id.saveLoadout) {
+        } else if (id == R.id.saveLoadout) {
             isPaused = true;
             SavePromptDialog savePromptDialog = new SavePromptDialog();
             savePromptDialog.show(getSupportFragmentManager(), "save dialog");
-        }
-        else if(id == R.id.loadLoadout) {
+        } else if (id == R.id.loadLoadout) {
             isPaused = true;
             LoadPromptDialog loadPromptDialog = new LoadPromptDialog();
             loadPromptDialog.show(getSupportFragmentManager(), "load dialog");
@@ -374,14 +364,13 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         }
 
 
-
         if (requestCode == scopeType_Request) {
             if (resultCode == RESULT_FIRST_USER) {
                 String name = data.getStringExtra("name");
                 int price = data.getIntExtra("price", 1);
                 Scope_Type scope_type = new Scope_Type(name, price);
                 String[] procedureList = data.getStringArrayExtra("procedures");
-                for (int i=0; i < procedureList.length; i++) {
+                for (int i = 0; i < procedureList.length; i++) {
                     scope_type.addProcedure(simulation_manager.getProcedureByName(procedureList[i]));
                 }
                 simulation_manager.addScopeType(scope_type);
@@ -400,7 +389,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
                     scope_type.setProcedureList(new ArrayList<Procedure>());
                     String[] procedureList = data.getStringArrayExtra("procedures");
-                    for (int i=0; i < procedureList.length; i++) {
+                    for (int i = 0; i < procedureList.length; i++) {
                         scope_type.addProcedure(simulation_manager.getProcedureByName(procedureList[i]));
                     }
                     simulation_manager.addScopeType(scope_type);
@@ -412,8 +401,8 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    public void onClick (View view) {
-        Tag tag = (Tag)view.getTag();
+    public void onClick(View view) {
+        Tag tag = (Tag) view.getTag();
         currentClicked = tag;
         int index = tag.index;
         String type = tag.type;
@@ -424,18 +413,14 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             Intent procedureRoomIntent = new Intent(getApplicationContext(), ProcedureRoomActivity.class);
             procedureRoomIntent.putExtra("procedureRoom", procedureRoom);
             startActivityForResult(procedureRoomIntent, procedureRoom_Request);
-        }
-
-        else if (type.equals("Client")) {
+        } else if (type.equals("Client")) {
             Client client = simulation_manager.getClient(index);
 
             Intent clientIntent = new Intent(getApplicationContext(), ClientActivity.class);
             clientIntent.putExtra("client", client);
             clientIntent.putExtra("procedures", simulation_manager.getProcedureNames());
             startActivityForResult(clientIntent, client_Request);
-        }
-
-        else if(type.equals("Scope")) {
+        } else if (type.equals("Scope")) {
             Scope scope = simulation_manager.getScopeByIndex(index);
 
             Intent scopeIntent = new Intent(getApplicationContext(), ScopeActivity.class);
@@ -446,14 +431,12 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void saveLoadout(String fileName) {
-        if(fileName != null && fileName.equals("LastRun")) {
+        if (fileName != null && fileName.equals("LastRun")) {
             Toast.makeText(getApplicationContext(), "You Cannot Save to LastRun!", Toast.LENGTH_LONG).show();
             return;
-        }
-        else if(fileName == null) {
+        } else if (fileName == null) {
             fileName = "LastRun";
-        }
-        else if(fileName.equals("")) {
+        } else if (fileName.equals("")) {
             Toast.makeText(getApplicationContext(), "Invalid Entry!", Toast.LENGTH_LONG).show();
             return;
         }
@@ -461,10 +444,9 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         FileHelper theFileHelper = new FileHelper(fileName);
         Gson gson = new Gson();
         String jsonString;
-        if(!ranAlready) {
+        if (!ranAlready) {
             jsonString = gson.toJson(simulation_manager);
-        }
-        else {
+        } else {
             FileHelper theFileHelper2 = new FileHelper();
             jsonString = theFileHelper2.ReadFile(getApplicationContext());
         }
@@ -473,21 +455,39 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void loadLoadout(String fileName) {
-        if(fileName == null || fileName.equals("")) {
+        if (fileName == null || fileName.equals("")) {
             Toast.makeText(getApplicationContext(), "Invalid Entry!", Toast.LENGTH_LONG).show();
             return;
         }
         fileName += ".json";
         FileHelper theFileHelper = new FileHelper(fileName);
         String jsonString = theFileHelper.ReadFile(getApplicationContext());
-        if(jsonString != "" && jsonString != null) {
+        if (jsonString != "" && jsonString != null) {
             Gson gson = new Gson();
             simulation_manager = gson.fromJson(jsonString, Simulation_Manager.class);
-            Toast.makeText(getApplicationContext(), "Loaded Setup from " + fileName , Toast.LENGTH_LONG).show();
+            if(!hideToast) {
+                Toast.makeText(getApplicationContext(), "Loaded Setup from " + fileName, Toast.LENGTH_LONG).show();
+            }
+            hideToast = false;
             renderUIFromManager();
+            if (time != null) {
+                time.cancel();
+            }
+            if (startItem != null) {
+                runOnUiThread(new Runnable() {
+                    @SuppressLint("RestrictedApi")
+                    @Override
+                    public void run() {
+                        startItem.setTitle("Confirm Start");
+                        ActionMenuItemView playImage = findViewById(R.id.playButton);
+                        playImage.setIcon(getResources().getDrawable(R.drawable.play_button));
+                        TextView textTime = findViewById(R.id.textViewTime);
+                        textTime.setText(Time.convertToString(0));
+                    }
+                });
+            }
             ranAlready = false;
-        }
-        else {
+        } else {
             Toast.makeText(getApplicationContext(), "Error Loading File " + fileName + "!", Toast.LENGTH_LONG).show();
             return;
         }
@@ -509,7 +509,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
     public void populateSection(LinearLayout theLinearLayout, int resID, String tagType, Integer elemNum) {
         theLinearLayout.removeAllViews();
-        for(int index = 0; index < elemNum; index++) {
+        for (int index = 0; index < elemNum; index++) {
             ImageView theImage = new ImageView(getApplicationContext());
             theImage.setImageResource(resID);
 
@@ -529,25 +529,30 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     static boolean isRunning = false;
     static boolean isPaused = false;
     static boolean ranAlready = false;
+    static boolean hideToast = false;
+    Timer time = null;
+    MenuItem startItem = null;
 
     public void startSimulation(final MenuItem item) {
-        if(ranAlready) {
+        startItem = item;
+        if (ranAlready) {
+            hideToast = true;
             loadLoadout("LastRun");
         }
         saveLoadout(null);
         ranAlready = true;
         simulation_manager.setCurrTime(0);
-        Timer time = new Timer();
+        time = new Timer();
         time.scheduleAtFixedRate(new TimerTask() {
             @SuppressLint("RestrictedApi")
             @Override
             public void run() {
-                if(!isRunning && !isPaused) {
+                if (!isRunning && !isPaused) {
                     isRunning = true;
                     simulation_manager.runTick();
                     simulation_manager.incrementCurrTime();
 
-                    if (simulation_manager.getCurrTime() >= simulation_manager.getEndTime() - 80) { //undo this later
+                    if (simulation_manager.getCurrTime() >= simulation_manager.getEndTime()) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -580,27 +585,22 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         int numScopes = simulation_manager.getScopeNum();
 
         LinearLayout linearLayoutClients = findViewById(R.id.LinearLayoutClients);
-        for(int i = 0; i < numClients; i++)
-        {
+        for (int i = 0; i < numClients; i++) {
             Client client = simulation_manager.getClient(i);
             View clientImg = linearLayoutClients.getChildAt(i);
 
-            if(client.getState() == State.STATE_WAIT) {
+            if (client.getState() == State.STATE_WAIT) {
                 clientImg.setBackgroundColor(Color.BLUE);
-            }
-            else if(client.getState() == State.STATE_TRAVEL) {
+            } else if (client.getState() == State.STATE_TRAVEL) {
                 clientImg.setBackgroundColor(Color.CYAN);
-            }
-            else if(client.getState() == State.STATE_OPERATION) {
+            } else if (client.getState() == State.STATE_OPERATION) {
                 clientImg.setBackgroundColor(Color.YELLOW);
-            }
-            else if(client.getState() == State.STATE_DONE)
-            {
+            } else if (client.getState() == State.STATE_DONE) {
                 clientImg.setBackgroundColor(Color.GREEN);
             }
         }
         LinearLayout linearLayoutRooms = findViewById(R.id.LinearLayoutRooms);
-        for(int i = 0; i < numProcedureRooms; i++) {
+        for (int i = 0; i < numProcedureRooms; i++) {
             ProcedureRoom room = simulation_manager.getProcedureRoom(i);
             View roomImg = linearLayoutRooms.getChildAt(i);
 
@@ -614,7 +614,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         }
 
         LinearLayout linearLayoutScopes = findViewById(R.id.LinearLayoutScopes);
-        for (int i=0; i < numScopes; i++) {
+        for (int i = 0; i < numScopes; i++) {
             Scope scope = simulation_manager.getScopeByIndex(i);
             View scopeImg = linearLayoutScopes.getChildAt(i);
 
