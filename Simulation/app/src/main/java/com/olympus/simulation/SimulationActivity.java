@@ -588,6 +588,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void updateUI() {
+
         TextView textTime = findViewById(R.id.textViewTime);
         textTime.setText(Time.convertToString(simulation_manager.getCurrTime()));
 
@@ -615,23 +616,11 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             if(clientImg != null) {
                 clientImg.changeObject(client);
 
-                if (client.getState() == State.STATE_WAIT)
-                {
-                    clientImg.setBackgroundColor(Color.BLUE);
-                }
-                else if (client.getState() == State.STATE_TRAVEL && client.getuiUpdated() == false)
+                if (client.getState() == State.STATE_TRAVEL && client.getuiUpdated() == false)
                 {
                     linearLayoutClients.removeView(clientImg);
                     hall_monitor.addObject(client);
                     client.setuiUpdated(true);
-                }
-                else if (client.getState() == State.STATE_OPERATION)
-                {
-                    clientImg.setBackgroundColor(Color.YELLOW);
-                }
-                else if (client.getState() == State.STATE_DONE)
-                {
-                    clientImg.setBackgroundColor(Color.GREEN);
                 }
             }
         }
@@ -640,15 +629,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             ProcedureRoom room = simulation_manager.getProcedureRoom(i);
             ObjectView roomImg = (ObjectView)linearLayoutRooms.getChildAt(i);
 
-            roomImg.update();
-
-            if (room.isAvailable()) {
-                roomImg.setBackgroundColor(Color.BLUE);
-            } else if (room.isOccupied()) {
-                roomImg.setBackgroundColor(Color.YELLOW);
-            } else {
-                roomImg.setBackgroundColor(Color.GREEN);
-            }
+            roomImg.changeObject(room);
         }
 
         LinearLayout linearLayoutScopes = findViewById(R.id.LinearLayoutScopes);
@@ -670,19 +651,10 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             if(scopeImg != null) {
                 scopeImg.changeObject(scope);
 
-                if (scope.getState() == State_Scope.STATE_FREE) {
-                    scopeImg.setBackgroundColor(Color.BLUE);
-
-                } else if (scope.getState() == State_Scope.STATE_TRAVEL && scope.getuiUpdated() == false) {
+                if (scope.getState() == State_Scope.STATE_TRAVEL && scope.getuiUpdated() == false) {
                     linearLayoutScopes.removeView(scopeImg);
                     hall_monitor.addObject(scope);
                     scope.setuiUpdated(true);
-
-                } else if (scope.getState() == State_Scope.STATE_USE) {
-                    scopeImg.setBackgroundColor(Color.YELLOW);
-
-                } else if (scope.getState() == State_Scope.STATE_DIRTY) {
-                    scopeImg.setBackgroundColor(Color.GREEN);
 
                 }
             }

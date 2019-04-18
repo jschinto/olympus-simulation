@@ -82,55 +82,62 @@ public class ObjectView extends LinearLayout {
         if (type.equals("client")) {
 
             Client client = (Client)object;
+            changeText("Client "+client.getId());
             if (client.getState() == State.STATE_WAIT) {
                 ArrayList<Procedure> procedureList = client.getProcedureList();
-                changeText(procedureList.get(0).getName());
-                for (int i=1; i < procedureList.size(); i++) {
+                for (int i=0; i < procedureList.size(); i++) {
                     addLine(procedureList.get(i).getName());
                 }
             } else if (client.getState() == State.STATE_TRAVEL) {
-                changeText("Destination: Room "+client.getProcedureRoom().getId());
+                addLine("Destination: Room "+client.getProcedureRoom().getId());
             } else if (client.getState() == State.STATE_DONE) {
-                changeText("DONE");
+                addLine("DONE");
             } else if (client.getState() == State.STATE_OPERATION) {
-                changeText("OPERATION");
+                addLine("OPERATION");
             }
             else {
-                changeText("ERROR");
+                addLine("ERROR");
             }
 
          //scope
         } else if (type.equals("scope")) {
             Scope scope = (Scope)object;
+            changeText("Scope "+scope.getId());
             if (scope.getState() == State_Scope.STATE_TRAVEL) {
-                changeText("Destination: Room "+scope.getRoom().getId());
+                addLine("Destination: Room "+scope.getRoom().getId());
             } else if (scope.getState() == State_Scope.STATE_FREE) {
-                changeText(scope.getType().getName());
+                addLine(scope.getType().getName());
             } else if (scope.getState() == State_Scope.STATE_USE) {
-                changeText("USE");
+                addLine("USE");
             } else if (scope.getState() == State_Scope.STATE_DIRTY) {
-                changeText("DIRTY");
+                addLine("DIRTY");
             }
             else {
-                changeText("ERROR");
+                addLine("ERROR");
             }
 
         //procedure room
         } else if (type.equals("procedureRoom")) {
             ProcedureRoom procedureRoom = (ProcedureRoom)object;
+            changeText("Room "+procedureRoom.getId());
             if (procedureRoom.isAvailable()) {
-                changeText("Room Available");
+                addLine("Room Available");
             } else if (procedureRoom.isOccupied()) {
-                changeText("Occupied: Client "+procedureRoom.getClient().getId());
+                addLine("Occupied: Client "+procedureRoom.getClient().getId());
             } else if (!procedureRoom.isOccupied() && !procedureRoom.isAvailable()) {
-                changeText("Room Cleaning");
+                addLine("Room Cleaning");
             }
             else {
-                changeText("ERROR");
+                addLine("ERROR");
+            }
+
+            ArrayList<Scope> scopes = procedureRoom.getScopeList();
+            for (int i=0; i < scopes.size(); i++) {
+                addLine(scopes.get(i).getType().getName());
             }
         }
         else {
-            changeText("TYPE INVALID");
+            addLine("TYPE INVALID");
         }
     }
 
