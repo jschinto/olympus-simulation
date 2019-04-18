@@ -4,34 +4,25 @@ import   android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
-import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class SimulationActivity extends AppCompatActivity implements View.OnClickListener {
+public class SimulationActivity extends AppCompatActivity implements View.OnClickListener, SavePromptDialog.SavePromptDialogListener, LoadPromptDialog.LoadPromptDialogListener {
 
     Simulation_Manager simulation_manager;
     Tag currentClicked;
@@ -48,13 +39,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_simulation);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//set orientation to lock on portrait
         simulation_manager = new Simulation_Manager(0,100,1);
-        FileHelper theFileHelper = new FileHelper();
-        String jsonString = theFileHelper.ReadFile(getApplicationContext());
-        if(jsonString != "") {
-            Gson gson = new Gson();
-            simulation_manager = gson.fromJson(jsonString, Simulation_Manager.class);
-            renderUIFromManager();
-        }
+        //loadLoadout("help2");
         //TODO: TEST CODE REMOVE PLZ
       /*  Procedure proc = new Procedure("Bark", 3, 5);
         Scope_Type type = new Scope_Type("TESTSCOPE", 5);
@@ -179,7 +164,18 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 isPaused = false;
                 item.setTitle("Pause");
                 playImage.setIcon(getResources().getDrawable(R.drawable.pause_button));
+                //loadLoadout(true, "LastRun");
             }
+        }
+        else if(id == R.id.saveLoadout) {
+            isPaused = true;
+            SavePromptDialog savePromptDialog = new SavePromptDialog();
+            savePromptDialog.show(getSupportFragmentManager(), "save dialog");
+        }
+        else if(id == R.id.loadLoadout) {
+            isPaused = true;
+            LoadPromptDialog loadPromptDialog = new LoadPromptDialog();
+            loadPromptDialog.show(getSupportFragmentManager(), "load dialog");
         }
         return super.onOptionsItemSelected(item);
     }
@@ -449,6 +445,54 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    public void saveLoadout(String fileName) {
+        if(fileName != null && fileName.equals("LastRun")) {
+            Toast.makeText(getApplicationContext(), "You Cannot Save to LastRun!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        else if(fileName == null) {
+            fileName = "LastRun";
+        }
+        else if(fileName.equals("")) {
+            Toast.makeText(getApplicationContext(), "Invalid Entry!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        fileName += ".json";
+        FileHelper theFileHelper = new FileHelper(fileName);
+        Gson gson = new Gson();
+        String jsonString;
+        if(!ranAlready) {
+            jsonString = gson.toJson(simulation_manager);
+        }
+        else {
+            FileHelper theFileHelper2 = new FileHelper();
+            jsonString = theFileHelper2.ReadFile(getApplicationContext());
+        }
+        theFileHelper.writeFileOnInternalStorage(getApplicationContext(), jsonString);
+        Toast.makeText(getApplicationContext(), "Saved Setup to " + fileName, Toast.LENGTH_LONG).show();
+    }
+
+    public void loadLoadout(String fileName) {
+        if(fileName == null || fileName.equals("")) {
+            Toast.makeText(getApplicationContext(), "Invalid Entry!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        fileName += ".json";
+        FileHelper theFileHelper = new FileHelper(fileName);
+        String jsonString = theFileHelper.ReadFile(getApplicationContext());
+        if(jsonString != "" && jsonString != null) {
+            Gson gson = new Gson();
+            simulation_manager = gson.fromJson(jsonString, Simulation_Manager.class);
+            Toast.makeText(getApplicationContext(), "Loaded Setup from " + fileName , Toast.LENGTH_LONG).show();
+            renderUIFromManager();
+            ranAlready = false;
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Error Loading File " + fileName + "!", Toast.LENGTH_LONG).show();
+            return;
+        }
+    }
+
     public void renderUIFromManager() {
         Integer clientNum = simulation_manager.getClientNum();
         LinearLayout linearLayoutClient = findViewById(R.id.LinearLayoutClients);
@@ -484,12 +528,14 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
     static boolean isRunning = false;
     static boolean isPaused = false;
+    static boolean ranAlready = false;
 
     public void startSimulation(final MenuItem item) {
-        FileHelper theFileHelper = new FileHelper();
-        Gson gson = new Gson();
-        String jsonString = gson.toJson(simulation_manager);
-        theFileHelper.writeFileOnInternalStorage(getApplicationContext(), jsonString);
+        if(ranAlready) {
+            loadLoadout("LastRun");
+        }
+        saveLoadout(null);
+        ranAlready = true;
         simulation_manager.setCurrTime(0);
         Timer time = new Timer();
         time.scheduleAtFixedRate(new TimerTask() {
@@ -501,7 +547,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     simulation_manager.runTick();
                     simulation_manager.incrementCurrTime();
 
-                    if (simulation_manager.getCurrTime() >= simulation_manager.getEndTime()) {
+                    if (simulation_manager.getCurrTime() >= simulation_manager.getEndTime() - 80) { //undo this later
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -588,4 +634,15 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    @Override
+    public void submitFileName(String fileName) {
+        saveLoadout(fileName);
+        isPaused = false;
+    }
+
+    @Override
+    public void loadFileName(String fileName) {
+        loadLoadout(fileName);
+        isPaused = false;
+    }
 }
