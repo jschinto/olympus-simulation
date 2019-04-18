@@ -56,5 +56,4 @@ public class Procedure_Manager {
     public int getProcedureNum() {
         return procedureList.size();
     }
-
 }

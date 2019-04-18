@@ -70,4 +70,10 @@ public class Scope_Manager {
     public void sortList(){
         Collections.sort(list);
     }
+
+    public void setIDs() {
+        for(int i = 0; i < list.size(); i++) {
+            list.get(i).setId(i + 1);
+        }
+    }
 }

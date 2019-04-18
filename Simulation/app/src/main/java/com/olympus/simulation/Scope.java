@@ -11,6 +11,8 @@ public class Scope implements Comparable<Scope>, Serializable {
     private int cleaningTime;
     private boolean uiUpdated;
 
+    private int id;
+
     public int getCleaningTime() {
         return cleaningTime;
     }
@@ -100,5 +102,13 @@ public class Scope implements Comparable<Scope>, Serializable {
 
     public void setuiUpdated(boolean uiUpdated) {
         this.uiUpdated = uiUpdated;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

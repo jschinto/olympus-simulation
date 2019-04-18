@@ -117,11 +117,13 @@ public class Simulation_Manager {
     //Adds a client to the client manager
     public void addClient(Client client) {
         clientManager.addClient(client);
+        clientManager.setIDs();
     }
 
     //Adds a procedure room to the procedure room manager
     public void addProcedureRoom(ProcedureRoom room) {
         procedureRoomManager.addProcedureRoom(room);
+        procedureRoomManager.setIDs();
     }
 
     //Adds a procedure to the list of procedures
@@ -171,21 +173,25 @@ public class Simulation_Manager {
     //Updates the client at the position of the given index with the given Client
     public void editClient(Client client, int index) {
         clientManager.setClient(client, index);
+        clientManager.setIDs();
     }
 
     //Updates the procedure room at the position of the given index with the given Procedure Room
     public void editProcedureRoom(ProcedureRoom room, int index){
         procedureRoomManager.setProcedureRoom(room, index);
+        procedureRoomManager.setIDs();
     }
 
     //Removes the client at the given index.
     public void deleteClient(int index) {
         clientManager.deleteClient(index);
+        clientManager.setIDs();
     }
 
     //Removes the procedure room at the given index.
     public void deleteProcedureRoom(int index) {
         procedureRoomManager.deleteProcedureRoom(index);
+        procedureRoomManager.setIDs();
     }
 
     public void deleteProcedure(String name) {
@@ -215,15 +221,26 @@ public class Simulation_Manager {
 
     public void addScope(Scope s) {
         scopeManager.addScope(s);
+        scopeManager.setIDs();
     }
 
     public void removeScope(Scope s) {
         scopeManager.removeScope(s);
+        scopeManager.setIDs();
     }
 
-    public void removeScope(int i) {scopeManager.removeScopeByIndex(i);}
+    public void removeScope(int i) {
+        scopeManager.removeScopeByIndex(i);
+        scopeManager.setIDs();
+    }
 
     public int getScopeNum() {return scopeManager.getScopeNum();}
 
     public Scope getScopeByIndex(int index) {return scopeManager.getScopeByIndex(index);}
+
+    public void setIDs() {
+        clientManager.setIDs();
+        procedureRoomManager.setIDs();
+        scopeManager.setIDs();
+    }
 }

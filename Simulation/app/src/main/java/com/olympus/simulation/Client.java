@@ -24,6 +24,8 @@ public class Client implements Comparable<Client>, Serializable {
 
     private boolean uiUpdated;
 
+    private int id;
+
     public Client(ArrayList<Procedure> procedures, int arrivalTime) {
         this.procedures = procedures;
         setState(State.STATE_WAIT);
@@ -153,5 +155,13 @@ public class Client implements Comparable<Client>, Serializable {
 
     public void setStep(int step) {
         this.step = step;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

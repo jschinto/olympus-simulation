@@ -18,6 +18,8 @@ public class ProcedureRoom implements Serializable {
     //time left in cooldown
     private int cooldownTimeLeft;
 
+    private int id;
+
     private Client client;
     private ArrayList<Scope> scope;
 
@@ -122,5 +124,13 @@ public class ProcedureRoom implements Serializable {
 
     public ArrayList<Scope> getScopeList() {
         return scope;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

@@ -86,4 +86,10 @@ public class Client_Manager {
         }
         return queue.get(queue.size() - 1).getArrivalTime();
     }
+
+    public void setIDs() {
+        for(int i = 0; i < queue.size(); i++) {
+            queue.get(i).setId(i + 1);
+        }
+    }
 }

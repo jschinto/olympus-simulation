@@ -237,12 +237,8 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 simulation_manager.addProcedureRoom(procedureRoom);
 
                 LinearLayout linearLayoutRooms = findViewById(R.id.LinearLayoutRooms);
-                ImageView roomImage = new ImageView(getApplicationContext());
-                roomImage.setImageResource(R.drawable.procedure_room);
-
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
-                roomImage.setLayoutParams(layoutParams);
-                roomImage.setPadding(10, 0, 0, 0);
+                ObjectView roomImage = new ObjectView(procedureRoom, getApplicationContext());
+                roomImage.changeOrientation(LinearLayout.HORIZONTAL);
                 roomImage.setOnClickListener(this);
 
                 int index = simulation_manager.getProcedureRoomNum() - 1;
@@ -386,12 +382,8 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 simulation_manager.addScope(scope);
 
                 LinearLayout linearLayoutScope = findViewById(R.id.LinearLayoutScopes);
-                ImageView scopeImage = new ImageView(getApplicationContext());
-                scopeImage.setImageResource(R.drawable.scope);
-
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
-                scopeImage.setLayoutParams(layoutParams);
-                scopeImage.setPadding(10, 0, 0, 0);
+                ObjectView scopeImage = new ObjectView(scope, getApplicationContext());
+                scopeImage.changeOrientation(LinearLayout.HORIZONTAL);
                 scopeImage.setOnClickListener(this);
 
                 int index = simulation_manager.getScopeNum() - 1;
@@ -598,9 +590,11 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 hall_monitor.removeObject(client);
             }
 
-            View clientImg = linearLayoutClients.getChildAt(i);
+            ObjectView clientImg = (ObjectView)linearLayoutClients.getChildAt(i);
 
             if(clientImg != null) {
+                clientImg.changeObject(client);
+
                 if (client.getState() == State.STATE_WAIT)
                 {
                     clientImg.setBackgroundColor(Color.BLUE);
@@ -629,9 +623,9 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             if (room.isAvailable()) {
                 roomImg.setBackgroundColor(Color.BLUE);
             } else if (room.isOccupied()) {
-                roomImg.setBackgroundColor(Color.CYAN);
-            } else {
                 roomImg.setBackgroundColor(Color.YELLOW);
+            } else {
+                roomImg.setBackgroundColor(Color.GREEN);
             }
         }
 
@@ -640,23 +634,20 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             Scope scope = simulation_manager.getScopeByIndex(i);
             
             if(scope.getState() == State_Scope.STATE_USE && scope.getuiUpdated() == false){
-                ImageView scopeImage = new ImageView(getApplicationContext());
-                scopeImage.setImageResource(R.drawable.scope);
-
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
-                scopeImage.setLayoutParams(layoutParams);
-                scopeImage.setPadding(10, 0, 0, 0);
+                ObjectView scopeImage = new ObjectView(scope, getApplicationContext());
+                scopeImage.changeOrientation(LinearLayout.HORIZONTAL);
                 scopeImage.setOnClickListener(this);
-
 
                 linearLayoutScopes.addView(scopeImage);
                 scope.setuiUpdated(true);
                 hall_monitor.removeObject(scope);
             }
 
-            View scopeImg = linearLayoutScopes.getChildAt(i);
+            ObjectView scopeImg = (ObjectView)linearLayoutScopes.getChildAt(i);
 
             if(scopeImg != null) {
+                scopeImg.changeObject(scope);
+
                 if (scope.getState() == State_Scope.STATE_FREE) {
                     scopeImg.setBackgroundColor(Color.BLUE);
 

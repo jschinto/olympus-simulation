@@ -74,4 +74,9 @@ public class ProcedureRoom_Manager {
         return null;
     }
 
+    public void setIDs() {
+        for(int i = 0; i < roomList.size(); i++) {
+            roomList.get(i).setId(i + 1);
+        }
+    }
 }
