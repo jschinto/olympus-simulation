@@ -22,7 +22,7 @@ public class FileHelper {
     String TAG = FileHelper.class.getName();
 
     public FileHelper() {
-        fileName = "data.json";
+        fileName = "LastRun.json";
     }
 
     public FileHelper(String theFileName) {
@@ -110,4 +110,13 @@ public class FileHelper {
         }
     }
 
+    public String[] getFileNames(Context mcoContext) {
+        File folder = mcoContext.getExternalFilesDir(null);
+        File[] listOfFiles = folder.listFiles();
+        String[] ret = new String[listOfFiles.length];
+        for(int i = 0; i < listOfFiles.length; i++){
+            ret[i] = listOfFiles[i].getName().substring(0, listOfFiles[i].getName().length() - 5);
+        }
+        return ret;
+    }
 }
