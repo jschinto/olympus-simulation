@@ -59,14 +59,11 @@ public class Scope_Manager {
     }
 
     public Scope getAvaliableScope(Procedure p) {
-        int i = 0;
 
-        while(i < list.size() && list.get(i).getState() == State_Scope.STATE_FREE ) {
-            if(list.get(i).checkProcedure(p)) {
-                Scope scope = list.get(i);
+        for(int i = 0; i < list.size(); i++) {
+            if(list.get(i).checkProcedure(p) && list.get(i).getState() == State_Scope.STATE_FREE) {
                 return list.get(i);
             }
-            i++;
         }
 
         return null;

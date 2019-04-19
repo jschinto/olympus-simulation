@@ -556,16 +556,6 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     public void populateSection(LinearLayout theLinearLayout, String tagType, Integer elemNum) {
         theLinearLayout.removeAllViews();
         for(int index = 0; index < elemNum; index++) {
-            /*
-        for (int index = 0; index < elemNum; index++) {
-            ImageView theImage = new ImageView(getApplicationContext());
-            theImage.setImageResource(resID);
-
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
-            theImage.setLayoutParams(layoutParams);
-            theImage.setPadding(10, 0, 0, 0);
-            theImage.setOnClickListener(this);
-            */
             Object insert = null;
             if(tagType == "Client"){
                 insert = simulation_manager.getClient(index);
@@ -633,7 +623,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                             isRunning = false;
                         }
                     });
-                    System.err.println("Loop " + (simulation_manager.getCurrTime() - 1));
+                    //System.err.println("Loop " + (simulation_manager.getCurrTime() - 1));
                 }
             }
         }, 0, 1000);
@@ -647,6 +637,8 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         int numClients = simulation_manager.getClientNum();
         int numProcedureRooms = simulation_manager.getProcedureRoomNum();
         int numScopes = simulation_manager.getScopeNum();
+
+        ArrayList<Integer> removal = new ArrayList<Integer>();
 
         LinearLayout linearLayoutClients = findViewById(R.id.LinearLayoutClients);
         for (int i = 0; i < numClients; i++) {
@@ -672,12 +664,17 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
                 if (client.getState() == State.STATE_TRAVEL && client.getuiUpdated() == false)
                 {
-                    linearLayoutClients.removeView(clientImg);
+                    removal.add(i);
                     hall_monitor.addObject(client);
                     client.setuiUpdated(true);
                 }
             }
         }
+
+        for(int i = removal.size(); i > 0; i--) {
+            linearLayoutClients.removeViewAt(removal.remove(i - 1));
+        }
+
         LinearLayout linearLayoutRooms = findViewById(R.id.LinearLayoutRooms);
         for (int i = 0; i < numProcedureRooms; i++) {
             ProcedureRoom room = simulation_manager.getProcedureRoom(i);
@@ -709,11 +706,15 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 scopeImg.changeObject(scope);
 
                 if (scope.getState() == State_Scope.STATE_TRAVEL && scope.getuiUpdated() == false) {
-                    linearLayoutScopes.removeView(scopeImg);
+                    removal.add(i);
                     hall_monitor.addObject(scope);
                     scope.setuiUpdated(true);
                 }
             }
+        }
+
+        for(int i = removal.size(); i > 0; i--) {
+            linearLayoutScopes.removeViewAt(removal.remove(i - 1));
         }
     }
 
