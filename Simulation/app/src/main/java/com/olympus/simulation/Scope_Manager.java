@@ -38,11 +38,15 @@ public class Scope_Manager {
     }
 
     public boolean removeScope(Scope s) {
-        return list.remove(s);
+       boolean success = list.remove(s);
+       sortList();
+       return success;
     }
 
     public void removeScopeByIndex(int i) {
+
         list.remove(i);
+        sortList();
     }
 
     public void runTick() {
@@ -57,8 +61,9 @@ public class Scope_Manager {
     public Scope getAvaliableScope(Procedure p) {
         int i = 0;
 
-        while(i < list.size() && list.get(i).getState() == State_Scope.STATE_FREE) {
+        while(i < list.size() && list.get(i).getState() == State_Scope.STATE_FREE ) {
             if(list.get(i).checkProcedure(p)) {
+                Scope scope = list.get(i);
                 return list.get(i);
             }
             i++;

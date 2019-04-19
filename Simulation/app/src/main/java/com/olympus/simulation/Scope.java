@@ -12,6 +12,7 @@ public class Scope implements Comparable<Scope>, Serializable {
     private boolean uiUpdated;
     private ProcedureRoom room;
 
+
     private int id;
 
     public int getCleaningTime() {
@@ -30,7 +31,6 @@ public class Scope implements Comparable<Scope>, Serializable {
         this.uiUpdated = false;
         this.room = null;
     }
-
     public int getState() {
         return state;
     }
@@ -48,15 +48,19 @@ public class Scope implements Comparable<Scope>, Serializable {
 
     public void tick() {
         this.timeLeft--;
+        if (timeLeft < 0) {
+            timeLeft = 0;
+        }
         if (this.timeLeft == 0) {
-            //Scope has arrived at its destination
-            if (this.state == State_Scope.STATE_TRAVEL) {
-                setState(State_Scope.STATE_USE);
-            }
             //Scope has finished being cleaned
             if (this.state == State_Scope.STATE_DIRTY) {
                 setState(State_Scope.STATE_FREE);
             }
+            //Scope has arrived at its destination
+            if (this.state == State_Scope.STATE_TRAVEL) {
+                setState(State_Scope.STATE_USE);
+            }
+
         }
     }
 
@@ -119,4 +123,6 @@ public class Scope implements Comparable<Scope>, Serializable {
     public ProcedureRoom getRoom() {
         return room;
     }
+
+
 }

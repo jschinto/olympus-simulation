@@ -53,6 +53,13 @@ public class ScopeActivity extends AppCompatActivity {
             return;
         }
 
+        for (int i=0; i < scopeTypeNames.length; i++) {
+            if (scopeTypeNames[i].equals(scope.getType().getName())) {
+                edit1.setSelection(i);
+                break;
+            }
+        }
+
         edit2.setText("" + cleaningTime);
 
         viewSetup();
@@ -87,6 +94,9 @@ public class ScopeActivity extends AppCompatActivity {
                     clean = Integer.parseInt(edit2.getText().toString());
                 } catch (NumberFormatException e) {
                     Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
+                    return;
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), "Scopes need a type", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (type == null || type.equals("")) {
@@ -124,6 +134,9 @@ public class ScopeActivity extends AppCompatActivity {
                 clean = Integer.parseInt(edit2.getText().toString());
             } catch (NumberFormatException e) {
                 Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
+                return;
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), "Scopes need a type", Toast.LENGTH_LONG).show();
                 return;
             }
             if (type == null || type.equals("")) {

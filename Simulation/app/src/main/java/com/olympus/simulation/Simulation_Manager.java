@@ -106,11 +106,12 @@ public class Simulation_Manager {
                 offset++;
             }
         }
-        procedureRoomManager.runTick();
-        clientManager.runTick();
         scopeManager.runTick();
+        clientManager.runTick();
+        procedureRoomManager.runTick();
 
 
+        scopeManager.sortList();
         clientManager.sortQueue();
         return false;
     }

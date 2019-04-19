@@ -67,7 +67,7 @@ public class ProcedureRoom_Manager {
     public ProcedureRoom getProcedureRoom() {
         ProcedureRoom room;
         for (int i=0; i < roomList.size(); i++) {
-            if (roomList.get(i).isAvailable()) {
+            if (roomList.get(i).isAvailable() && !roomList.get(i).isReady()) {
                 return roomList.get(i);
             }
         }
