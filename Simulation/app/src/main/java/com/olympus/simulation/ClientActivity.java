@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import org.w3c.dom.Text;
@@ -49,8 +50,8 @@ public class ClientActivity extends AppCompatActivity {
     private void setValues(int arrivalTime, ArrayList<Procedure> procedureList) {
         TextView textTitle = findViewById(R.id.clientTitle);
         textTitle.setText("Client " + client.getId());
-
-        EditText edit1 = findViewById(R.id.clientEdit1);
+        TimePicker edit1 = findViewById(R.id.clientEdit1);
+        edit1.setIs24HourView(true);
         TextView text2 = findViewById(R.id.clientText2);
         EditText edit2 = findViewById(R.id.clientEdit2);
 
@@ -68,18 +69,21 @@ public class ClientActivity extends AppCompatActivity {
             text2.setVisibility(View.VISIBLE);
             edit2.setVisibility(View.VISIBLE);
             if (arrivalTime >= 0) {
-                edit1.setText(Time.convertToString(arrivalTime));
+                edit1.setCurrentHour(arrivalTime/60);
+                edit1.setCurrentMinute(arrivalTime%60);
             } else {
-                edit1.setText("");
+                //edit1.setText("");
             }
             edit2.setText("1");
 
             addSetup();
             return;
         }
+
         text2.setVisibility(View.INVISIBLE);
         edit2.setVisibility(View.INVISIBLE);
-        edit1.setText(Time.convertToString(arrivalTime));
+        edit1.setCurrentHour(arrivalTime/60);
+        edit1.setCurrentMinute(arrivalTime%60);
 
         ArrayList<String> procedureListNames = new ArrayList<String>();
         for (int i=0; i < procedureList.size(); i++) {
@@ -117,8 +121,16 @@ public class ClientActivity extends AppCompatActivity {
                 String arrivalString = "";
                 int amount = 0;
                 try {
-                    EditText edit1 = findViewById(R.id.clientEdit1);
-                    arrivalString = edit1.getText().toString();
+                    TimePicker edit1 = findViewById(R.id.clientEdit1);
+                    String hr = (edit1.getCurrentHour()) + "";
+                    if(hr.length() == 1) {
+                        hr = "0"+hr;
+                    }
+                    String min = (edit1.getCurrentMinute()) + "";
+                    if(min.length() == 1) {
+                        min = "0"+min;
+                    }
+                    arrivalString = hr + ":" + min;
                     EditText edit2 = findViewById(R.id.clientEdit2);
                     amount = Integer.parseInt(edit2.getText().toString());
                 } catch (NumberFormatException e) {
@@ -174,8 +186,16 @@ public class ClientActivity extends AppCompatActivity {
         } else if (view.getId() == R.id.clientButtonEdit) {
             String arrivalString = "";
             try {
-                EditText edit1 = findViewById(R.id.clientEdit1);
-                arrivalString = edit1.getText().toString();
+                TimePicker edit1 = findViewById(R.id.clientEdit1);
+                String hr = (edit1.getCurrentHour()) + "";
+                if(hr.length() == 1) {
+                    hr = "0"+hr;
+                }
+                String min = (edit1.getCurrentMinute()) + "";
+                if(min.length() == 1) {
+                    min = "0"+min;
+                }
+                arrivalString = hr + ":" + min;
             } catch (NumberFormatException e) {
                 Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
                 return;
