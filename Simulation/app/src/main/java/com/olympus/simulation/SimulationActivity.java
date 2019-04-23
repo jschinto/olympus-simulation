@@ -173,13 +173,13 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             startActivityForResult(procedureRoomIntent, procedureRoom_Request);
         } else if (id == R.id.addScope) {
             Intent scopeIntent = new Intent(getApplicationContext(), ScopeActivity.class);
-            Scope scope = new Scope(null, -1);
+            Scope scope = new Scope(null);
             scopeIntent.putExtra("scope", scope);
             scopeIntent.putExtra("scopeTypeNames", simulation_manager.getScopeTypeNames());
             startActivityForResult(scopeIntent, scope_Request);
         } else if (id == R.id.addScopeType) {
             Intent scopeTypeIntent = new Intent(getApplicationContext(), ScopeTypeActivity.class);
-            Scope_Type scopeType = new Scope_Type("", -1);
+            Scope_Type scopeType = new Scope_Type("", -1, -1);
             scopeTypeIntent.putExtra("scopeType", scopeType);
             scopeTypeIntent.putExtra("procedureNames", simulation_manager.getProcedureNames());
             startActivityForResult(scopeTypeIntent, scopeType_Request);
@@ -362,35 +362,35 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
             if (resultCode == RESULT_FIRST_USER) {//adding
                 String type = (String) data.getSerializableExtra("scopeType");
-                int clean = (int) data.getSerializableExtra("cleaningTime");
-
                 Scope_Type scopeType = simulation_manager.getScopeTypeByName(type);
 
-                Scope scope = new Scope(scopeType, clean);
+                int amount = (int)data.getSerializableExtra("amount");
 
-                simulation_manager.addScope(scope);
+                for(int i = 0; i < amount; i++) {
+                    Scope scope = new Scope(scopeType);
 
-                LinearLayout linearLayoutScope = findViewById(R.id.LinearLayoutScopes);
-                ObjectView scopeImage = new ObjectView(scope, getApplicationContext());
-                scopeImage.changeOrientation(LinearLayout.HORIZONTAL);
-                scopeImage.setOnClickListener(this);
+                    simulation_manager.addScope(scope);
 
-                int index = simulation_manager.getScopeNum() - 1;
-                Tag tag = new Tag(index, "Scope");
+                    LinearLayout linearLayoutScope = findViewById(R.id.LinearLayoutScopes);
+                    ObjectView scopeImage = new ObjectView(scope, getApplicationContext());
+                    scopeImage.changeOrientation(LinearLayout.HORIZONTAL);
+                    scopeImage.setOnClickListener(this);
 
-                scopeImage.setTag(tag);
+                    int index = simulation_manager.getScopeNum() - 1;
+                    Tag tag = new Tag(index, "Scope");
 
-                linearLayoutScope.addView(scopeImage);
+                    scopeImage.setTag(tag);
 
+                    linearLayoutScope.addView(scopeImage);
+                }
 
             } else if (resultCode == RESULT_OK) {
                 String type = (String) data.getSerializableExtra("scopeType");
-                int clean = (int) data.getSerializableExtra("cleaningTime");
 
                 int index = currentClicked.index;
 
                 //Deleting
-                if (clean < 0) {
+                if (type == null) {
                     simulation_manager.removeScope(index);
                     LinearLayout linearLayoutScopes = findViewById(R.id.LinearLayoutScopes);
                     View scopeImg = linearLayoutScopes.getChildAt(simulation_manager.getScopeNum()); //TODO:: not -1?????/
@@ -399,7 +399,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 //Editing
                 else {
                     Scope_Type scopeType = simulation_manager.getScopeTypeByName(type);
-                    Scope scope = new Scope(scopeType, clean);
+                    Scope scope = new Scope(scopeType);
                     simulation_manager.removeScope(index);
                     simulation_manager.addScope(scope);
                     updateUI();
@@ -414,7 +414,8 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             if (resultCode == RESULT_FIRST_USER) {
                 String name = data.getStringExtra("name");
                 int price = data.getIntExtra("price", 1);
-                Scope_Type scope_type = new Scope_Type(name, price);
+                int cleaningTime = data.getIntExtra("cleaningTime", 1);
+                Scope_Type scope_type = new Scope_Type(name, cleaningTime, price);
                 String[] procedureList = data.getStringArrayExtra("procedures");
                 for (int i = 0; i < procedureList.length; i++) {
                     scope_type.addProcedure(simulation_manager.getProcedureByName(procedureList[i]));

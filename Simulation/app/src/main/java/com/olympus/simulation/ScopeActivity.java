@@ -32,11 +32,11 @@ public class ScopeActivity extends AppCompatActivity {
         scope = (Scope) fromIntent.getSerializableExtra("scope");
         scopeTypeNames = fromIntent.getStringArrayExtra("scopeTypeNames");
         if (scope != null) {
-            setValues(scope.getType(), scope.getCleaningTime());
+            setValues(scope.getType());
         }
     }
 
-    public void setValues(Scope_Type scopeType, int cleaningTime) {
+    public void setValues(Scope_Type scopeType) {
         TextView textTitle = findViewById(R.id.scopeTitle);
         textTitle.setText("Scope "+scope.getId());
 
@@ -47,8 +47,10 @@ public class ScopeActivity extends AppCompatActivity {
             edit1.setAdapter(adapter);
         }
 
-        if (cleaningTime < 0) {
-            edit2.setText("");
+        if (scopeType == null) {
+            edit2.setVisibility(View.VISIBLE);
+            TextView text2 = findViewById(R.id.scopeText2);
+            text2.setVisibility(View.VISIBLE);
             addSetup();
             return;
         }
@@ -59,9 +61,9 @@ public class ScopeActivity extends AppCompatActivity {
                 break;
             }
         }
-
-        edit2.setText("" + cleaningTime);
-
+        edit2.setVisibility(View.INVISIBLE);
+        TextView text2 = findViewById(R.id.scopeText2);
+        text2.setVisibility(View.INVISIBLE);
         viewSetup();
     }
 
@@ -86,12 +88,12 @@ public class ScopeActivity extends AppCompatActivity {
 
             if (adding) {
                 String type = null;
-                int clean = 0;
+                int amount = 0;
                 try {
                     Spinner edit1 = findViewById(R.id.scopeEdit1);
                     type = edit1.getSelectedItem().toString();
                     EditText edit2 = findViewById(R.id.scopeEdit2);
-                    clean = Integer.parseInt(edit2.getText().toString());
+                    amount = Integer.parseInt(edit2.getText().toString());
                 } catch (NumberFormatException e) {
                     Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
                     return;
@@ -103,35 +105,32 @@ public class ScopeActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Invalid Name Entered!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (clean <= 0) {
-                    Toast.makeText(getApplicationContext(), "Invalid Price Entered!", Toast.LENGTH_LONG).show();
+                if (amount <= 0) {
+                    Toast.makeText(getApplicationContext(), "Invalid Amount Entered!", Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("scopeType", type);
-                returnIntent.putExtra("cleaningTime", clean);
+                returnIntent.putExtra("amount", amount);
                 setResult(RESULT_FIRST_USER, returnIntent);
                 finish();
 
                 //deleting
             } else {
-                String type = "";
-                int clean = -1;
+                String type = null;
+                int amount = -1;
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("scopeType", type);
-                returnIntent.putExtra("cleaningTime", clean);
+                returnIntent.putExtra("amount", amount);
                 setResult(RESULT_OK, returnIntent);
                 finish();
             }
         } else if (view.getId() == R.id.scopeButtonUpdate) {
             String type = null;
-            int clean = 0;
             try {
                 Spinner edit1 = findViewById(R.id.scopeEdit1);
                 type = edit1.getSelectedItem().toString();
-                EditText edit2 = findViewById(R.id.scopeEdit2);
-                clean = Integer.parseInt(edit2.getText().toString());
             } catch (NumberFormatException e) {
                 Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
                 return;
@@ -143,14 +142,9 @@ public class ScopeActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Invalid Name Entered!", Toast.LENGTH_LONG).show();
                 return;
             }
-            if (clean <= 0) {
-                Toast.makeText(getApplicationContext(), "Invalid Price Entered!", Toast.LENGTH_LONG).show();
-                return;
-            }
 
             Intent returnIntent = new Intent();
             returnIntent.putExtra("scopeType", type);
-            returnIntent.putExtra("cleaningTime", clean);
             setResult(RESULT_OK, returnIntent);
             finish();
 

@@ -76,7 +76,7 @@ public class Simulation_Manager {
     public boolean runTick() {
         //Grabs an open procedure room and attempts to assign a client to it. Continues to match
         //Clients to procedure rooms until a pair cannot be made.
-        
+
         scopeManager.runTick();
         clientManager.runTick();
         procedureRoomManager.runTick();

@@ -7,12 +7,14 @@ public class Scope_Type implements Serializable {
 
     private String name;
     private ArrayList<Procedure> procedureList;
+    private int cleaningTime;
     private int price;
 
-    public Scope_Type (String n, int p) {
+    public Scope_Type (String n, int c, int p) {
         this.name = n;
         procedureList = new ArrayList<Procedure>();
         this.price = p;
+        this.cleaningTime = c;
     }
 
     public String getName() {
@@ -60,5 +62,13 @@ public class Scope_Type implements Serializable {
             }
         }
         return false;
+    }
+
+    public int getCleaningTime() {
+        return cleaningTime;
+    }
+
+    public void setCleaningTime(int cleaningTime) {
+        this.cleaningTime = cleaningTime;
     }
 }
