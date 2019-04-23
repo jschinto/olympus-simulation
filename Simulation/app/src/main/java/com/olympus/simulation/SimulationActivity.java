@@ -729,4 +729,14 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         loadLoadout(fileName);
         isPaused = false;
     }
+
+    @Override
+    public void cancelLoad() {
+        isPaused = false;
+    }
+
+    @Override
+    public void cancelSave() {
+        isPaused = false;
+    }
 }

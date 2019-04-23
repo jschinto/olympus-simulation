@@ -34,7 +34,7 @@ public class LoadPromptDialog extends AppCompatDialogFragment {
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
+                        listener.cancelLoad();
                     }
                 })
                 .setPositiveButton("ok", new DialogInterface.OnClickListener() {
@@ -62,5 +62,6 @@ public class LoadPromptDialog extends AppCompatDialogFragment {
 
     public interface LoadPromptDialogListener {
         void loadFileName(String fileName);
+        void cancelLoad();
     }
 }

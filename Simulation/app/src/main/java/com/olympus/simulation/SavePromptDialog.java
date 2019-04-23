@@ -26,7 +26,7 @@ public class SavePromptDialog extends AppCompatDialogFragment {
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
+                        listener.cancelSave();
                     }
                 })
                 .setPositiveButton("ok", new DialogInterface.OnClickListener() {
@@ -56,5 +56,6 @@ public class SavePromptDialog extends AppCompatDialogFragment {
 
     public interface SavePromptDialogListener {
         void submitFileName(String fileName);
+        void cancelSave();
     }
 }
