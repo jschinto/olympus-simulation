@@ -8,7 +8,6 @@ public class Scope implements Comparable<Scope>, Serializable {
     private Scope_Type type;
     private int state;
     private int timeLeft;
-    private int cleaningTime;
     private boolean uiUpdated;
     private ProcedureRoom room;
 
@@ -16,18 +15,13 @@ public class Scope implements Comparable<Scope>, Serializable {
     private int id;
 
     public int getCleaningTime() {
-        return cleaningTime;
+        return type.getCleaningTime();
     }
 
-    public void setCleaningTime(int cleaningTime) {
-        this.cleaningTime = cleaningTime;
-    }
-
-    public Scope(Scope_Type t, int c) {
+    public Scope(Scope_Type t) {
         this.type = t;
         this.state = State_Scope.STATE_FREE;
         this.timeLeft = 0;
-        this.cleaningTime = c;
         this.uiUpdated = false;
         this.room = null;
     }
@@ -68,7 +62,7 @@ public class Scope implements Comparable<Scope>, Serializable {
     public void freeScope() {
         this.room = null;
         setState(State_Scope.STATE_DIRTY);
-        this.timeLeft = this.cleaningTime;
+        this.timeLeft = this.type.getCleaningTime();
     }
 
     public int getTimeLeft() {

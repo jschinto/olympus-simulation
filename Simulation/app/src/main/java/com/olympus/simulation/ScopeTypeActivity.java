@@ -34,13 +34,14 @@ public class ScopeTypeActivity extends AppCompatActivity {
         scope_type = (Scope_Type) fromIntent.getSerializableExtra("scopeType");
         procedureNames = fromIntent.getStringArrayExtra("procedureNames");
         if (scope_type != null) {
-            setValues(scope_type.getName(),scope_type.getPrice(), scope_type.getProcedureList());
+            setValues(scope_type.getName(),scope_type.getCleaningTime(), scope_type.getPrice(), scope_type.getProcedureList());
         }
     }
 
-    public void setValues(String name, int price, ArrayList<Procedure> procedureList) {
+    public void setValues(String name, int cleaningTime, int price, ArrayList<Procedure> procedureList) {
         EditText edit1 = findViewById(R.id.scopeTypeEdit1);
         EditText edit2 = findViewById(R.id.scopeTypeEdit2);
+        EditText edit4 = findViewById(R.id.scopeTypeEdit4);
         LinearLayout checkbox3  = findViewById(R.id.scopeTypeCheckbox3);
         if (procedureNames != null) {
             for (int i = 0; i < procedureNames.length; i++) {
@@ -54,12 +55,14 @@ public class ScopeTypeActivity extends AppCompatActivity {
         if (price <= 0 || procedureList == null) { //adding
             edit1.setText("");
             edit2.setText("");
+            edit4.setText("");
             addSetup();
             return;
         }
 
         edit1.setText(name);
         edit2.setText(String.valueOf(price));
+        edit4.setText(String.valueOf(cleaningTime));
         //viewing
 
         ArrayList<String> procedureListNames = new ArrayList<String>();
@@ -97,11 +100,14 @@ public class ScopeTypeActivity extends AppCompatActivity {
             if (adding) {
                 String name = null;
                 int price = 0;
+                int cleaningTime = 0;
                 try {
                     EditText edit1 = findViewById(R.id.scopeTypeEdit1);
                     name = edit1.getText().toString();
                     EditText edit2 = findViewById(R.id.scopeTypeEdit2);
                     price = Integer.parseInt(edit2.getText().toString());
+                    EditText edit4 = findViewById(R.id.scopeTypeEdit4);
+                    cleaningTime = Integer.parseInt(edit4.getText().toString());
                 } catch (NumberFormatException e) {
                     Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
                     return;
@@ -112,6 +118,10 @@ public class ScopeTypeActivity extends AppCompatActivity {
                 }
                 if (price <= 0) {
                     Toast.makeText(getApplicationContext(), "Invalid Price Entered!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(cleaningTime <= 0) {
+                    Toast.makeText(getApplicationContext(), "Invalid Cleaning Entered!", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -135,6 +145,7 @@ public class ScopeTypeActivity extends AppCompatActivity {
                 returnIntent.putExtra("procedures", procedureList.toArray(procedureListArray));
                 returnIntent.putExtra("name", name);
                 returnIntent.putExtra("price", price);
+                returnIntent.putExtra("cleaningTime", cleaningTime);
                 setResult(RESULT_FIRST_USER, returnIntent);
                 finish();
 
@@ -142,6 +153,7 @@ public class ScopeTypeActivity extends AppCompatActivity {
                 //deleting
             } else {
                 scope_type.setPrice(-1);
+                scope_type.setCleaningTime(-1);
                 scope_type.setProcedureList(null);
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("scopeType", scope_type);
@@ -152,11 +164,14 @@ public class ScopeTypeActivity extends AppCompatActivity {
         } else if (view.getId() == R.id.scopeTypeButtonEdit) {
             String name = null;
             int price = 0;
+            int cleaningTime = 0;
             try {
                 EditText edit1 = findViewById(R.id.scopeTypeEdit1);
                 name = edit1.getText().toString();
                 EditText edit2 = findViewById(R.id.scopeTypeEdit2);
                 price = Integer.parseInt(edit2.getText().toString());
+                EditText edit4 = findViewById(R.id.scopeTypeEdit4);
+                cleaningTime = Integer.parseInt(edit4.getText().toString());
             } catch (NumberFormatException e) {
                 Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
                 return;
@@ -167,6 +182,10 @@ public class ScopeTypeActivity extends AppCompatActivity {
             }
             if (price <= 0) {
                 Toast.makeText(getApplicationContext(), "Invalid Price Entered!", Toast.LENGTH_LONG).show();
+                return;
+            }
+            if(cleaningTime <= 0) {
+                Toast.makeText(getApplicationContext(), "Invalid Cleaning Entered!", Toast.LENGTH_LONG).show();
                 return;
             }
 
@@ -187,6 +206,7 @@ public class ScopeTypeActivity extends AppCompatActivity {
             String oldName = scope_type.getName();
             scope_type.setName(name);
             scope_type.setPrice(price);
+            scope_type.setCleaningTime(cleaningTime);
             Intent returnIntent = new Intent();
             String[] procedureListArray = new String[procedureList.size()];
             returnIntent.putExtra("oldName", oldName);
