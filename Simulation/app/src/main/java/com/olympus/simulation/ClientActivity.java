@@ -47,8 +47,6 @@ public class ClientActivity extends AppCompatActivity {
     }
 
     private void setValues(int arrivalTime, ArrayList<Procedure> procedureList) {
-        TextView textTitle = findViewById(R.id.clientTitle);
-        textTitle.setText("Client " + client.getId());
 
         EditText edit1 = findViewById(R.id.clientEdit1);
         TextView text2 = findViewById(R.id.clientText2);
@@ -74,6 +72,8 @@ public class ClientActivity extends AppCompatActivity {
             }
             edit2.setText("1");
 
+            TextView textTitle = findViewById(R.id.clientTitle);
+            textTitle.setText("Patient");
             addSetup();
             return;
         }
@@ -91,6 +91,8 @@ public class ClientActivity extends AppCompatActivity {
                 checkBox.setChecked(true);
             }
         }
+        TextView textTitle = findViewById(R.id.clientTitle);
+        textTitle.setText("Patient " + client.getId());
         viewSetup();
     }
 
