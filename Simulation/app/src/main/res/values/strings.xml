@@ -13,7 +13,7 @@
     <string name="travelTime">Travel Time:</string>
     <string name="cooldownTime">Cooldown Time:</string>
     <string name="buttonExit">Exit</string>
-    <string name="textClientTitle">Client</string>
+    <string name="textClientTitle">Patient</string>
     <string name="ArrivalTime">Arrival Time:</string>
     <string name="AmountToAdd">Amount To Add:</string>
     <string name="textProcedureTitle">Procedure</string>

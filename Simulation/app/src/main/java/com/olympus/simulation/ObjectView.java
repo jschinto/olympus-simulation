@@ -82,14 +82,14 @@ public class ObjectView extends LinearLayout {
         if (type.equals("client")) {
 
             Client client = (Client)object;
-            changeText("Client "+client.getId());
+            changeText("Patient "+client.getId());
             if (client.getState() == State.STATE_WAIT) {
                 ArrayList<Procedure> procedureList = client.getProcedureList();
                 for (int i=0; i < procedureList.size(); i++) {
                     addLine(procedureList.get(i).getName());
                 }
             } else if (client.getState() == State.STATE_TRAVEL) {
-                addLine("Destination: Room "+client.getProcedureRoom().getId());
+                addLine("Room "+client.getProcedureRoom().getId());
             } else if (client.getState() == State.STATE_DONE) {
                 addLine("DONE");
             } else if (client.getState() == State.STATE_OPERATION) {
@@ -104,7 +104,7 @@ public class ObjectView extends LinearLayout {
             Scope scope = (Scope)object;
             changeText("Scope "+scope.getId());
             if (scope.getState() == State_Scope.STATE_TRAVEL) {
-                addLine("Destination: Room "+scope.getRoom().getId());
+                addLine("Room "+scope.getRoom().getId());
             } else if (scope.getState() == State_Scope.STATE_FREE) {
                 addLine(scope.getType().getName());
             } else if (scope.getState() == State_Scope.STATE_USE) {
@@ -121,11 +121,11 @@ public class ObjectView extends LinearLayout {
             ProcedureRoom procedureRoom = (ProcedureRoom)object;
             changeText("Room "+procedureRoom.getId());
             if (procedureRoom.isAvailable()) {
-                addLine("Room Available");
+                addLine("Available");
             } else if (procedureRoom.isOccupied()) {
-                addLine("Occupied: Client "+procedureRoom.getClient().getId());
+                addLine("Patient "+procedureRoom.getClient().getId());
             } else if (!procedureRoom.isOccupied() && !procedureRoom.isAvailable()) {
-                addLine("Room Cleaning");
+                addLine("Cleaning");
             }
             else {
                 addLine("ERROR");

@@ -32,7 +32,7 @@
         <menu>
             <item
                 android:id="@+id/addClient"
-                android:title="Add Client" />
+                android:title="Add Patient" />
             <item
                 android:id="@+id/addProcedureRoom"
                 android:title="Add Procedure Room" />
