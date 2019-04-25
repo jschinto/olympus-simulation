@@ -175,7 +175,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
         else if (id == R.id.addProcedureType) {
             Intent procedureIntent = new Intent(getApplicationContext(), ProcedureActivity.class);
-            Procedure procedure = new Procedure("", 0, 0);
+            Procedure procedure = new Procedure("",  0);
             procedureIntent.putExtra("procedure", procedure);
             startActivityForResult(procedureIntent, procedure_Request);
         } else if (id == R.id.addClient) {
@@ -363,7 +363,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 Procedure procedure = (Procedure) data.getSerializableExtra("procedure");
 
                 //deleting a procedure
-                if (procedure.getMinTime() <= 0 || procedure.getMaxTime() <= 0 || procedure.getMinTime() > procedure.getMaxTime()) {
+                if (procedure.getTime() <= 0) {
                     simulation_manager.deleteProcedure(procedure.getName());
 
                     //editing a procedure

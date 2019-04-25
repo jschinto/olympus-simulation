@@ -7,14 +7,12 @@ public class Procedure implements Serializable {
     //name given to the operation
     private String name;
     //the minimum and maximum time the operation will last, to account for variance in completion time
-    private int minTime;
-    private int maxTime;
+    private int time;
     //needs? TODO: need a way to store and check a procedure's needs
 
-    public Procedure(String name, int minTime, int maxTime) {
+    public Procedure(String name, int time) {
         this.name = name;
-        this.minTime = minTime;
-        this.maxTime = maxTime;
+        this.time = time;
     }
 
     public String getName() {
@@ -25,20 +23,12 @@ public class Procedure implements Serializable {
         this.name = name;
     }
 
-    public int getMinTime() {
-        return minTime;
+    public int getTime() {
+        return time;
     }
 
-    public void setMinTime(int minTime) {
-        this.minTime = minTime;
-    }
-
-    public int getMaxTime() {
-        return maxTime;
-    }
-
-    public void setMaxTime(int maxTime) {
-        this.maxTime = maxTime;
+    public void setTime (int time) {
+        this.time = time;
     }
 
     @Override

@@ -12,8 +12,7 @@ import android.widget.Toast;
 public class ProcedureActivity extends AppCompatActivity {
 
     // 1 : name
-    // 2 : min time
-    // 3 : max time
+    // 2 : expected time
 
     Procedure procedure;
     private boolean adding;
@@ -28,24 +27,21 @@ public class ProcedureActivity extends AppCompatActivity {
         Intent fromIntent = getIntent();
         procedure = (Procedure) fromIntent.getSerializableExtra("procedure");
         if (procedure != null) {
-            setValues(procedure.getName(), procedure.getMinTime(), procedure.getMaxTime());
+            setValues(procedure.getName(), procedure.getTime());
         }
     }
 
-    private void setValues(String name, int minTime, int maxTime) {
+    private void setValues(String name, int time) {
         EditText edit1 = findViewById(R.id.procedureEdit1);
         EditText edit2 = findViewById(R.id.procedureEdit2);
-        EditText edit3 = findViewById(R.id.procedureEdit3);
-        if (minTime <= 0 || maxTime <= 0 || minTime > maxTime) {
+        if (time <= 0) {
             edit1.setText("");
             edit2.setText("");
-            edit3.setText("");
             addSetup();
             return;
         }
         edit1.setText(name);
-        edit2.setText(String.valueOf(minTime));
-        edit3.setText(String.valueOf(maxTime));
+        edit2.setText(String.valueOf(time));
         viewSetup();
     }
 
@@ -69,15 +65,12 @@ public class ProcedureActivity extends AppCompatActivity {
         if (view.getId() == R.id.procedureButtonAddDelete) {
             if (adding) {
                 String name = null;
-                int minTime = 0;
-                int maxTime = 0;
+                int time = 0;
                 try {
                     EditText editData1 = findViewById(R.id.procedureEdit1);
                     name = editData1.getText().toString();
                     EditText editData2 = findViewById(R.id.procedureEdit2);
-                    minTime = Integer.parseInt(editData2.getText().toString());
-                    EditText editData3 = findViewById(R.id.procedureEdit3);
-                    maxTime = Integer.parseInt(editData3.getText().toString());
+                    time = Integer.parseInt(editData2.getText().toString());
                 } catch (NumberFormatException e) {
                     Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
                     return;
@@ -86,16 +79,12 @@ public class ProcedureActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Invalid Name!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (minTime <= 0 || maxTime <= 0) {
-                    Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if (minTime > maxTime) {
-                    Toast.makeText(getApplicationContext(), "Min time can't be greater than max time!", Toast.LENGTH_LONG).show();
+                if (time <= 0) {
+                    Toast.makeText(getApplicationContext(), "Invalid Time Entered!", Toast.LENGTH_LONG).show();
                     return;
                 }
 
-                Procedure procedure = new Procedure(name, minTime, maxTime);
+                Procedure procedure = new Procedure(name, time);
 
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("procedure", procedure);
@@ -104,8 +93,7 @@ public class ProcedureActivity extends AppCompatActivity {
 
                 //deleting
             } else {
-                procedure.setMinTime(0);
-                procedure.setMaxTime(0);
+                procedure.setTime(0);
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("procedure", procedure);
                 setResult(RESULT_OK, returnIntent);
@@ -113,15 +101,12 @@ public class ProcedureActivity extends AppCompatActivity {
             }
         } else if (view.getId() == R.id.procedureButtonEdit) {
             String name = null;
-            int minTime = 0;
-            int maxTime = 0;
+            int time = 0;
             try {
                 EditText editData1 = findViewById(R.id.procedureEdit1);
                 name = editData1.getText().toString();
                 EditText editData2 = findViewById(R.id.procedureEdit2);
-                minTime = Integer.parseInt(editData2.getText().toString());
-                EditText editData3 = findViewById(R.id.procedureEdit3);
-                maxTime = Integer.parseInt(editData3.getText().toString());
+                time = Integer.parseInt(editData2.getText().toString());
             } catch (NumberFormatException e) {
                 Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
                 return;
@@ -130,18 +115,13 @@ public class ProcedureActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Invalid Name!", Toast.LENGTH_LONG).show();
                 return;
             }
-            if (minTime <= 0 || maxTime <= 0) {
-                Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
-                return;
-            }
-            if (minTime > maxTime) {
-                Toast.makeText(getApplicationContext(), "Min time can't be greater than max time!", Toast.LENGTH_LONG).show();
+            if (time <= 0) {
+                Toast.makeText(getApplicationContext(), "Invalid Time Entered!", Toast.LENGTH_LONG).show();
                 return;
             }
             String oldName = procedure.getName();
             procedure.setName(name);
-            procedure.setMinTime(minTime);
-            procedure.setMaxTime(maxTime);
+            procedure.setTime(time);
             Intent returnIntent = new Intent();
             returnIntent.putExtra("procedure", procedure);
             returnIntent.putExtra("oldName", oldName);

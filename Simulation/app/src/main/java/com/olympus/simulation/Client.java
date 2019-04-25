@@ -78,9 +78,7 @@ public class Client implements Comparable<Client>, Serializable {
     //set appropriate state and time left to client
     public void beginProcedure(int i) {
         //check procedure constraints
-        int minTime = procedures.get(i).getMinTime();
-        int maxTime = procedures.get(i).getMaxTime();
-        timeLeft = (int) (minTime + Math.random()*(maxTime-minTime));
+        timeLeft = procedures.get(i).getTime();
         setState(State.STATE_OPERATION);
     }
 
