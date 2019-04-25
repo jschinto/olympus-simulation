@@ -55,10 +55,16 @@ public class ObjectView extends LinearLayout {
 
         if (type.equals("client")) {
             imageView.setImageResource(R.drawable.client);
+            LayoutParams params = new LayoutParams(50, 100);
+            imageView.setLayoutParams(params);
         } else if (type.equals("scope")) {
             imageView.setImageResource(R.drawable.scope);
+            LayoutParams params = new LayoutParams(100, 100);
+            imageView.setLayoutParams(params);
         } else if (type.equals("procedureRoom")) {
             imageView.setImageResource(R.drawable.procedure_room);
+            LayoutParams params = new LayoutParams(125, 100);
+            imageView.setLayoutParams(params);
         }
 
         update();
@@ -174,12 +180,12 @@ public class ObjectView extends LinearLayout {
     public void changeOrientation(int orientation) {
         if (orientation == VERTICAL) {
             this.setOrientation(VERTICAL);
-            imageView.setPadding(0,0,0,-10);
-            textView.setPadding(10,0,0,0);
+            imageView.setPadding(-30,0,0,-10);
+            textView.setPadding(10,0,30,0);
         } else if (orientation == HORIZONTAL) {
             this.setOrientation(HORIZONTAL);
-            imageView.setPadding(0,0,-30,0);
-            textView.setPadding(0,20,0,0);
+            imageView.setPadding(-30,0,-30,0);
+            textView.setPadding(0,20,30,0);
         }
     }
 }
