@@ -27,12 +27,10 @@
     </item>
     <item
         android:icon="@drawable/plus_button2"
+        android:id="@+id/plus_button"
         app:showAsAction="always"
         android:title="">
         <menu>
-            <item
-                android:id="@+id/addClient"
-                android:title="Add Patient" />
             <item
                 android:id="@+id/addProcedureRoom"
                 android:title="Add Procedure Room" />
@@ -40,11 +38,14 @@
                 android:id="@+id/addProcedureType"
                 android:title="Add Procedure Type" />
             <item
-                android:id="@+id/addScope"
-                android:title="Add Scope" />
+                android:id="@+id/addClient"
+                android:title="Add Patient" />
             <item
                 android:id="@+id/addScopeType"
                 android:title="Add Scope Type" />
+            <item
+                android:id="@+id/addScope"
+                android:title="Add Scope" />
         </menu>
     </item>
 </menu>

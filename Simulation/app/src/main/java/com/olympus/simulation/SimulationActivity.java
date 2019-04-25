@@ -3,14 +3,12 @@ package com.olympus.simulation;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -27,6 +25,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     Simulation_Manager simulation_manager;
     Hall_Monitor hall_monitor;
     Tag currentClicked;
+    Menu menu;
 
     public static final int procedureRoom_Request = 1;
     public static final int client_Request = 2;
@@ -143,6 +142,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+        this.menu = menu;
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -151,8 +151,29 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        if (id == R.id.plus_button) {
+            MenuItem addClient = menu.findItem(R.id.addClient);
+            MenuItem addScope = menu.findItem(R.id.addScope);
+            MenuItem addScopeType = menu.findItem(R.id.addScopeType);
 
-        if (id == R.id.addProcedureType) {
+            if (simulation_manager.getProcedureNum() > 0) {
+                addClient.setVisible(true);
+                addScopeType.setVisible(true);
+            } else  {
+                addClient.setVisible(false);
+                addScopeType.setVisible(false);
+            }
+            String[] scopeTypes = simulation_manager.getScopeTypeNames();
+            if (scopeTypes == null || scopeTypes.length <= 0) {
+                addScope.setVisible(false);
+            } else {
+                addScope.setVisible(true);
+            }
+
+        }
+
+
+        else if (id == R.id.addProcedureType) {
             Intent procedureIntent = new Intent(getApplicationContext(), ProcedureActivity.class);
             Procedure procedure = new Procedure("", 0, 0);
             procedureIntent.putExtra("procedure", procedure);
