@@ -8,7 +8,8 @@
     android:orientation="vertical"
     tools:context=".SimulationActivity"
     android:descendantFocusability="beforeDescendants"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    android:background="@color/orangeYellow">
 
     <LinearLayout
         android:id="@+id/LinearLayoutViewBar"
@@ -22,7 +23,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="00:00"
-            android:textSize="30sp" />
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="7dp"
+            android:textSize="30sp"
+            android:textColor="@color/black"/>
 
         <Button
             android:id="@+id/buttonViewProcedures"

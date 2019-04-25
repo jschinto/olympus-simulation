@@ -54,15 +54,15 @@ public class ObjectView extends LinearLayout {
         }
 
         if (type.equals("client")) {
-            imageView.setImageResource(R.drawable.client);
+            imageView.setImageResource(R.drawable.client_color);
             LayoutParams params = new LayoutParams(50, 100);
             imageView.setLayoutParams(params);
         } else if (type.equals("scope")) {
-            imageView.setImageResource(R.drawable.scope);
+            imageView.setImageResource(R.drawable.scope_color);
             LayoutParams params = new LayoutParams(100, 100);
             imageView.setLayoutParams(params);
         } else if (type.equals("procedureRoom")) {
-            imageView.setImageResource(R.drawable.procedure_room);
+            imageView.setImageResource(R.drawable.procedure_room_color);
             LayoutParams params = new LayoutParams(125, 100);
             imageView.setLayoutParams(params);
         }
