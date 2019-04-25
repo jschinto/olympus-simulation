@@ -77,7 +77,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simulation);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//set orientation to lock on portrait
-        simulation_manager = new Simulation_Manager(0,100,1);
+        simulation_manager = new Simulation_Manager(0,120,1);
         hall_monitor = new Hall_Monitor();
 
         //TODO: TEST CODE REMOVE PLZ
