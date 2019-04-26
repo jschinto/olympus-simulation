@@ -31,5 +31,6 @@
     <string name="Price">Price:</string>
     <string name="scopeTypeProcedures">Valid Procedures:</string>
     <string name="buttonViewProcedures">View Procedure Types</string>
-    <string name="buttonViewScopeTypes">View Scope Types</string>>
+    <string name="buttonViewScopeTypes">View Scope Types</string>
+    <string name="avgProcedureTime">Average Completion Time:</string>>
 </resources>
