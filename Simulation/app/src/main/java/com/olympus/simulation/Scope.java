@@ -10,9 +10,17 @@ public class Scope implements Comparable<Scope>, Serializable {
     private int timeLeft;
     private boolean uiUpdated;
     private ProcedureRoom room;
-
-
     private int id;
+
+    private boolean tempGrab;
+
+    public boolean getTempGrab() {
+        return tempGrab;
+    }
+
+    public void setTempGrab(boolean tempGrab) {
+        this.tempGrab = tempGrab;
+    }
 
     public int getCleaningTime() {
         return type.getCleaningTime();
@@ -24,6 +32,7 @@ public class Scope implements Comparable<Scope>, Serializable {
         this.timeLeft = 0;
         this.uiUpdated = false;
         this.room = null;
+        this.tempGrab = false;
     }
     public int getState() {
         return state;
@@ -38,6 +47,7 @@ public class Scope implements Comparable<Scope>, Serializable {
         setState(State_Scope.STATE_TRAVEL);
         this.room = room;
         this.timeLeft = time;
+        this.tempGrab = false;
     }
 
     public void tick() {

@@ -20,8 +20,6 @@ public class Client implements Comparable<Client>, Serializable {
     //when the client enters the waiting room
     private int arrivalTime;
 
-    private int step;
-
     private boolean uiUpdated;
 
     private int id;
@@ -32,7 +30,6 @@ public class Client implements Comparable<Client>, Serializable {
         procedureRoom = null;
         timeLeft = 0;
         this.arrivalTime = arrivalTime;
-        step = 0;
         this.uiUpdated = false;
     }
 
@@ -42,7 +39,6 @@ public class Client implements Comparable<Client>, Serializable {
         procedureRoom = client.getProcedureRoom();
         timeLeft = client.getTimeLeft();
         arrivalTime = client.getArrivalTime();
-        this.step = client.getStep();
         this.uiUpdated = false;
     }
 
@@ -70,15 +66,18 @@ public class Client implements Comparable<Client>, Serializable {
         //client is done traveling to operation room
         if (timeLeft <= 0 && state.equals(State.STATE_TRAVEL) && this.procedureRoom.isReady()) {
             setState(State.STATE_OPERATION);
-            beginProcedure(this.step);
+            beginProcedure();
         }
     }
 
     //start the operation, pick a random time between min and max procedure times
     //set appropriate state and time left to client
-    public void beginProcedure(int i) {
+    public void beginProcedure() {
         //check procedure constraints
-        timeLeft = procedures.get(i).getTime();
+        timeLeft = 0;
+        for (int i = 0; i < this.procedures.size(); i++) {
+            timeLeft += procedures.get(i).getTime();
+        }
         setState(State.STATE_OPERATION);
     }
 
@@ -145,14 +144,6 @@ public class Client implements Comparable<Client>, Serializable {
             return 1;
         }
         return this.arrivalTime - o.getArrivalTime();
-    }
-
-    public int getStep() {
-        return step;
-    }
-
-    public void setStep(int step) {
-        this.step = step;
     }
 
     public int getId() {

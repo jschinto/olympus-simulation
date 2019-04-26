@@ -94,10 +94,17 @@ public class Simulation_Manager {
             ArrayList<Scope> scopeList = new ArrayList<Scope>();
             for(int i = 0; i < nextClient.getProcedureList().size(); i++) {
                 Scope freeScope = scopeManager.getAvaliableScope(nextClient.getProcedureList().get(i));
+                System.out.print("Got Scope " + freeScope.getId() + "\n");
                 if (freeScope == null) {
+                    for(int j = 0; j < scopeList.size(); j++){
+                        scopeList.get(i).setTempGrab(false);
+                    }
                     break;
                 }
-                scopeList.add(freeScope);
+                if(!scopeList.contains(freeScope)) {
+                    scopeList.add(freeScope);
+                    freeScope.setTempGrab(true);
+                }
             }
 
             if(scopeList.size() == nextClient.getProcedureList().size()) {

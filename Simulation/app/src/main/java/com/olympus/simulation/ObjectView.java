@@ -55,7 +55,7 @@ public class ObjectView extends LinearLayout {
 
         if (type.equals("client")) {
             imageView.setImageResource(R.drawable.client_color);
-            LayoutParams params = new LayoutParams(50, 100);
+            LayoutParams params = new LayoutParams(70, 100);
             imageView.setLayoutParams(params);
         } else if (type.equals("scope")) {
             imageView.setImageResource(R.drawable.scope_color);
@@ -180,8 +180,8 @@ public class ObjectView extends LinearLayout {
     public void changeOrientation(int orientation) {
         if (orientation == VERTICAL) {
             this.setOrientation(VERTICAL);
-            imageView.setPadding(-30,0,0,-10);
-            textView.setPadding(10,0,30,0);
+            imageView.setPadding(10,0,0,-10);
+            textView.setPadding(10,0,0,0);
         } else if (orientation == HORIZONTAL) {
             this.setOrientation(HORIZONTAL);
             imageView.setPadding(-30,0,-30,0);
