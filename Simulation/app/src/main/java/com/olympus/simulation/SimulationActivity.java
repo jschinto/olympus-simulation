@@ -570,6 +570,8 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void renderUIFromManager() {
+        ((LinearLayout)findViewById(R.id.LinearLayoutHallway)).removeAllViews();
+
         Integer clientNum = simulation_manager.getClientNum();
         LinearLayout linearLayoutClient = findViewById(R.id.LinearLayoutClients);
         populateSection(linearLayoutClient, "Client", clientNum);
