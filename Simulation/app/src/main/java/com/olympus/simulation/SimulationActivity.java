@@ -80,7 +80,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_simulation);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//set orientation to lock on portrait
 
-        simulation_manager = new Simulation_Manager(0,120,1);
+        simulation_manager = new Simulation_Manager(0,300,1);
         hall_monitor = new Hall_Monitor();
 
         //TODO: TEST CODE REMOVE PLZ
@@ -334,7 +334,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     LinearLayout linearLayoutClients = findViewById(R.id.LinearLayoutClients);
                     View clientView = linearLayoutClients.getChildAt(simulation_manager.getClientNum()); //TODO:: not -1???
                     linearLayoutClients.removeView(clientView);
-
+                    updateUI();
                     //editing a client
                 } else {
                     String[] procedures = data.getStringArrayExtra("procedures");
@@ -346,6 +346,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     LinearLayout linearLayoutClients = findViewById(R.id.LinearLayoutClients);
                     ObjectView clientView = (ObjectView) linearLayoutClients.getChildAt(index);
                     clientView.update();
+                    updateUI();
                 }
                 //nothing to be done, represents just viewing or canceling an add to a client
             } else if (resultCode == RESULT_CANCELED) {
@@ -408,6 +409,8 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     linearLayoutScope.addView(scopeImage);
                 }
 
+                updateUI();
+
             } else if (resultCode == RESULT_OK) {
                 String type = (String) data.getSerializableExtra("scopeType");
 
@@ -419,6 +422,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     LinearLayout linearLayoutScopes = findViewById(R.id.LinearLayoutScopes);
                     View scopeImg = linearLayoutScopes.getChildAt(simulation_manager.getScopeNum()); //TODO:: not -1?????/
                     linearLayoutScopes.removeView(scopeImg);
+                    updateUI();
                 }
                 //Editing
                 else {
@@ -558,6 +562,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 });
             }
             ranAlready = false;
+            simulation_manager.setEndTime(500);
         } else {
             Toast.makeText(getApplicationContext(), "Error Loading File " + fileName + "!", Toast.LENGTH_LONG).show();
             return;
@@ -717,6 +722,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 hall_monitor.removeObject(scope);
             }
             else if(scope.getState() == State_Scope.STATE_DIRTY && scope.getuiUpdated() == false){
+                System.err.print("Scope " + scope.getId() + " " + scope.getState() + "\n");
                 ObjectView scopeImage = new ObjectView(scope, getApplicationContext());
                 scopeImage.changeOrientation(LinearLayout.HORIZONTAL);
                 scopeImage.setOnClickListener(this);

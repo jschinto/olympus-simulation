@@ -77,8 +77,8 @@ public class Simulation_Manager {
         //Grabs an open procedure room and attempts to assign a client to it. Continues to match
         //Clients to procedure rooms until a pair cannot be made.
 
-        scopeManager.runTick();
         clientManager.runTick();
+        scopeManager.runTick();
         procedureRoomManager.runTick();
 
         ProcedureRoom openRoom = procedureRoomManager.getProcedureRoom();
@@ -86,10 +86,8 @@ public class Simulation_Manager {
         while (openRoom != null) {
             Client nextClient = clientManager.getNextClient(currTime, offset);
             if (nextClient == null) {
-                System.err.print("No new Clients\n");
                 break;
             }
-            System.err.print("Client " + nextClient.getId() + "\n");
 
             ArrayList<Scope> scopeList = new ArrayList<Scope>();
             for(int i = 0; i < nextClient.getProcedureList().size(); i++) {
@@ -112,12 +110,6 @@ public class Simulation_Manager {
                 openRoom.claimScope(scopeList);
                 openRoom = procedureRoomManager.getProcedureRoom();
                 clientManager.sortQueue();
-                if(openRoom != null) {
-                    System.err.print("ROOM " + openRoom.getId() + "\n");
-                }
-                else{
-                    System.err.print("No ROOM\n");
-                }
             }
             else
             {
