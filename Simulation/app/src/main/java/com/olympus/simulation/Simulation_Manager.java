@@ -157,9 +157,23 @@ public class Simulation_Manager {
         return clientManager.getClientByIndex(index);
     }
 
+    public ArrayList<Client> getWaitingRoom() {
+        ArrayList<Client> waitingRoom = new ArrayList<>();
+        for (Client c:clientManager.getQueue()) {
+            if(c.getState() == State.STATE_WAIT || c.getState() == State.STATE_DONE) {
+                waitingRoom.add(c);
+            }
+        }
+        return waitingRoom;
+    }
+
     //Returns the procedure room based on the given index. Associated with their position in the list.
     public ProcedureRoom getProcedureRoom(int index){
         return procedureRoomManager.getProcedureRoomByIndex(index);
+    }
+
+    public ArrayList<ProcedureRoom> getProcedureRooms() {
+        return procedureRoomManager.getProcedureRooms();
     }
 
     //Returns a list of all the available procedures.
@@ -244,6 +258,16 @@ public class Simulation_Manager {
     public int getScopeNum() {return scopeManager.getScopeNum();}
 
     public Scope getScopeByIndex(int index) {return scopeManager.getScopeByIndex(index);}
+
+    public ArrayList<Scope> getFreeScopes() {
+        ArrayList<Scope> scopes = new ArrayList<>();
+        for(Scope s:scopeManager.getScopes()) {
+            if(s.getState() == State_Scope.STATE_FREE || s.getState() == State_Scope.STATE_DIRTY) {
+                scopes.add(s);
+            }
+        }
+        return scopes;
+    }
 
     public void setIDs() {
         clientManager.setIDs();

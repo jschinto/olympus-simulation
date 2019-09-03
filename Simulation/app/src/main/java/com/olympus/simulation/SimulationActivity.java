@@ -48,6 +48,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             ObjectView obj = new ObjectView(o, getApplicationContext());
             obj.changeOrientation(LinearLayout.VERTICAL);
             hallway.addView(obj);
+            list.add(o);
         }
 
         public void getObjectByIndex(int i) {
@@ -58,11 +59,22 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             //TODO: Implement
         }
 
+        public void renderList() {
+            hallway.removeAllViews();
+            for(int i = 0; i < list.size(); i++) {
+                Object o = list.get(i);
+                ObjectView obj = new ObjectView(o, getApplicationContext());
+                obj.changeOrientation(LinearLayout.VERTICAL);
+                hallway.addView(obj);
+            }
+        }
+
         public void removeObject(Object o) {
             for(int i = 0; i < hallway.getChildCount(); i++) {
                 ObjectView obj = (ObjectView)hallway.getChildAt(i);
                 if(obj.contains(o)){
                     hallway.removeViewAt(i);
+                    list.remove(o);
                     return;
                 }
             }
@@ -570,34 +582,28 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void renderUIFromManager() {
-        ((LinearLayout)findViewById(R.id.LinearLayoutHallway)).removeAllViews();
+        TextView textTime = findViewById(R.id.textViewTime);
+        textTime.setText(Time.convertToString(simulation_manager.getCurrTime()));
 
-        Integer clientNum = simulation_manager.getClientNum();
+        hall_monitor.renderList();
+
+        ArrayList<Client> waitingRoom = simulation_manager.getWaitingRoom();
         LinearLayout linearLayoutClient = findViewById(R.id.LinearLayoutClients);
-        populateSection(linearLayoutClient, "Client", clientNum);
+        populateSection(linearLayoutClient, "Client", waitingRoom);
 
-        Integer procedureRoomNum = simulation_manager.getProcedureRoomNum();
+        ArrayList<ProcedureRoom> procedureRooms = simulation_manager.getProcedureRooms();
         LinearLayout linearLayoutProcedureRoom = findViewById(R.id.LinearLayoutRooms);
-        populateSection(linearLayoutProcedureRoom, "Procedure Room", procedureRoomNum);
+        populateSection(linearLayoutProcedureRoom, "Procedure Room", procedureRooms);
 
-        Integer scopeNum = simulation_manager.getScopeNum();
+        ArrayList<Scope> scopes = simulation_manager.getFreeScopes();
         LinearLayout linearLayoutScope = findViewById(R.id.LinearLayoutScopes);
-        populateSection(linearLayoutScope, "Scope", scopeNum);
+        populateSection(linearLayoutScope, "Scope", scopes);
     }
 
-    public void populateSection(LinearLayout theLinearLayout, String tagType, Integer elemNum) {
+    public <T> void populateSection(LinearLayout theLinearLayout, String tagType, ArrayList<T> list) {
         theLinearLayout.removeAllViews();
-        for(int index = 0; index < elemNum; index++) {
-            Object insert = null;
-            if(tagType == "Client"){
-                insert = simulation_manager.getClient(index);
-            }
-            else if(tagType == "Procedure Room") {
-                insert = simulation_manager.getProcedureRoom(index);
-            }
-            else if(tagType == "Scope") {
-                insert = simulation_manager.getScopeByIndex(index);
-            }
+        for(int index = 0; index < list.size(); index++) {
+            Object insert = list.get(index);
 
             ObjectView viewImage = new ObjectView(insert, getApplicationContext());
             viewImage.changeOrientation(LinearLayout.HORIZONTAL);
@@ -662,6 +668,10 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void updateUI() {
+        renderUIFromManager();
+    }
+
+    public void updateUI2() {
 
         TextView textTime = findViewById(R.id.textViewTime);
         textTime.setText(Time.convertToString(simulation_manager.getCurrTime()));
@@ -718,7 +728,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         LinearLayout linearLayoutScopes = findViewById(R.id.LinearLayoutScopes);
         for (int i = 0; i < numScopes; i++) {
             Scope scope = simulation_manager.getScopeByIndex(i);
-            
+
             if(scope.getState() == State_Scope.STATE_USE && scope.getuiUpdated() == false){
                 scope.setuiUpdated(true);
                 hall_monitor.removeObject(scope);

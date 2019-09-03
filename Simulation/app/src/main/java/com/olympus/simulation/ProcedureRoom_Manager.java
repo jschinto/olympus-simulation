@@ -79,4 +79,8 @@ public class ProcedureRoom_Manager {
             roomList.get(i).setId(i + 1);
         }
     }
+
+    public ArrayList<ProcedureRoom> getProcedureRooms() {
+        return roomList;
+    }
 }
