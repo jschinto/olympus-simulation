@@ -167,6 +167,15 @@ public class Simulation_Manager {
         return waitingRoom;
     }
 
+    public ArrayList<Object> getHallway() {
+        ArrayList<Object> hallway = new ArrayList<>();
+        hallway.addAll(clientManager.getQueue());
+        hallway.removeAll(getWaitingRoom());
+        hallway.addAll(scopeManager.getScopes());
+        hallway.removeAll(getFreeScopes());
+        return hallway;
+    }
+
     //Returns the procedure room based on the given index. Associated with their position in the list.
     public ProcedureRoom getProcedureRoom(int index){
         return procedureRoomManager.getProcedureRoomByIndex(index);

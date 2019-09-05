@@ -67,6 +67,10 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             }
         }
 
+        public void setListFromBackend() {
+            list = simulation_manager.getHallway();
+        }
+
         public void removeObject(Object o) {
             for(int i = 0; i < hallway.getChildCount(); i++) {
                 ObjectView obj = (ObjectView)hallway.getChildAt(i);
@@ -583,6 +587,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         TextView textTime = findViewById(R.id.textViewTime);
         textTime.setText(Time.convertToString(simulation_manager.getCurrTime()));
 
+        hall_monitor.setListFromBackend();
         hall_monitor.renderList();
 
         ArrayList<Client> waitingRoom = simulation_manager.getWaitingRoom();
