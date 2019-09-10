@@ -169,10 +169,16 @@ public class Simulation_Manager {
 
     public ArrayList<Object> getHallway() {
         ArrayList<Object> hallway = new ArrayList<>();
-        hallway.addAll(clientManager.getQueue());
-        hallway.removeAll(getWaitingRoom());
-        hallway.addAll(scopeManager.getScopes());
-        hallway.removeAll(getFreeScopes());
+        for (Client c:clientManager.getQueue()) {
+            if(c.getState() == State.STATE_TRAVEL) {
+                hallway.add(c);
+            }
+        }
+        for(Scope s:scopeManager.getScopes()) {
+            if(s.getState() == State_Scope.STATE_TRAVEL) {
+                hallway.add(s);
+            }
+        }
         return hallway;
     }
 
