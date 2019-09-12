@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Scope_Manager {
-    private ArrayList<Scope_Type> types;
     private ArrayList<Scope> list;
 
     public Scope_Manager(){
@@ -15,19 +14,7 @@ public class Scope_Manager {
     public Scope getScopeByIndex(int index) {
         return list.get(index);
     }
-    /*
-    public void addScopeType(Scope_Type t) {
-        types.add(t);
-    }
 
-    public void removeScopeType(Scope_Type t) {
-        types.remove(t);
-    }
-
-    public ArrayList<Scope_Type> getScopeTypes() {
-        return types;
-    }
-*/
     public int getScopeNum() {
         return list.size();
     }

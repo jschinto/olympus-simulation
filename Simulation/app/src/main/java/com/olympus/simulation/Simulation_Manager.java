@@ -15,6 +15,7 @@ public class Simulation_Manager {
     private Procedure_Manager procedureManager;
     private  Scope_Manager scopeManager;
     private ScopeType_Manager scopeTypeManager;
+    private TowerType_Manager towerTypeManager;
 
     //the time the simulated hospital should open and close
     //Represented as a integer from 0 - some value
@@ -62,6 +63,7 @@ public class Simulation_Manager {
         procedureManager = new Procedure_Manager();
         scopeManager = new Scope_Manager();
         scopeTypeManager = new ScopeType_Manager();
+        towerTypeManager = new TowerType_Manager();
         this.startTime = startTime;
         this.endTime = endTime;
         this.waitTime = waitTime;
@@ -81,12 +83,26 @@ public class Simulation_Manager {
         scopeManager.runTick();
         procedureRoomManager.runTick();
 
-        ProcedureRoom openRoom = procedureRoomManager.getProcedureRoom();
-        int offset = 0;
+        int patientOffset = 0;
+        int roomOffset = 0;
+        ProcedureRoom openRoom = procedureRoomManager.getProcedureRoom(roomOffset);
         while (openRoom != null) {
-            Client nextClient = clientManager.getNextClient(currTime, offset);
+            Client nextClient = clientManager.getNextClient(currTime, patientOffset);
             if (nextClient == null) {
                 break;
+            }
+
+            if(!openRoom.checkCanProcess(nextClient)){
+                roomOffset++;
+                openRoom = procedureRoomManager.getProcedureRoom(roomOffset);
+                if(openRoom == null && clientManager.getNextClient(currTime, patientOffset + 1) == null){
+                    break;
+                }
+                else {
+                    roomOffset = 0;
+                    patientOffset++;
+                    continue;
+                }
             }
 
             ArrayList<Scope> scopeList = new ArrayList<Scope>();
@@ -105,15 +121,17 @@ public class Simulation_Manager {
             }
 
             if(scopeList.size() == nextClient.getProcedureList().size()) {
+                roomOffset = 0;
                 clientManager.addToOperating(nextClient);
                 nextClient.setProcedureRoom(openRoom);
                 openRoom.claimScope(scopeList);
-                openRoom = procedureRoomManager.getProcedureRoom();
+                openRoom = procedureRoomManager.getProcedureRoom(roomOffset);
                 clientManager.sortQueue();
             }
             else
             {
-                offset++;
+                roomOffset = 0;
+                patientOffset++;
             }
         }
         scopeManager.sortList();
@@ -288,5 +306,19 @@ public class Simulation_Manager {
         clientManager.setIDs();
         procedureRoomManager.setIDs();
         scopeManager.setIDs();
+    }
+
+    public void addTowerType(Tower_Type type){
+        towerTypeManager.addTowerType(type);
+    }
+
+    public String[] getTowerTypeNames(){
+        ArrayList<String> list = towerTypeManager.getTowerTypeNames();
+        String[] towerTypeNamesArray = new String[list.size()];
+        return list.toArray(towerTypeNamesArray);
+    }
+
+    public void removeTowerTypeByName(String name){
+        towerTypeManager.removeTowerType(name);
     }
 }
