@@ -1,8 +1,9 @@
 package com.olympus.simulation;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Tower_Type {
+public class Tower_Type implements Serializable {
     String name;
     ArrayList<Scope_Type> holds;
     int price;
