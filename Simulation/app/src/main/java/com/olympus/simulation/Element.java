@@ -2,10 +2,11 @@ package com.olympus.simulation;
 
 import android.support.annotation.IntDef;
 
+import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-public class Element {
+public class Element implements Serializable {
     public int element;
 
     public static final int ELEMENT_CLIENT = 0;
@@ -25,6 +26,9 @@ public class Element {
     public @interface ElementDef {
     }
 
+    public Element() {
+
+    }
     public Element(@Element.ElementDef int element) {
         this.element = element;
     }

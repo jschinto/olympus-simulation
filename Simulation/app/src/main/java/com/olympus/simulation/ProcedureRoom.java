@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class ProcedureRoom implements Serializable {
+public class ProcedureRoom extends Element implements Serializable{
     //TODO: IMPLEMENT DIFFERENT TRAVEL TIMES FOR SCOPES AND PATIENTS
 
     //whether the room is currently being used or not
@@ -24,6 +24,7 @@ public class ProcedureRoom implements Serializable {
     private ArrayList<Scope> scope;
 
     public ProcedureRoom(int travelTime, int cooldownTime) {
+        this.element = Element.ELEMENT_PROCEDUREROOM;
         this.occupied = false;
         this.ready = false;
         this.travelTime = travelTime;
@@ -132,5 +133,9 @@ public class ProcedureRoom implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public boolean validate() {
+        return cooldownTime > 0 && travelTime > 0;
     }
 }

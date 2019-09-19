@@ -33,6 +33,8 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     public static final int scopeType_Request = 4;
     public static final int scope_Request = 5;
 
+    public static final int element_Request = 8;
+
     public class Hall_Monitor {
         ArrayList<Object> list;
         LinearLayout hallway;
@@ -205,10 +207,12 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             startActivityForResult(clientIntent, client_Request);
         } else if (id == R.id.addProcedureRoom) {
 
-            Intent procedureRoomIntent = new Intent(getApplicationContext(), ProcedureRoomActivity.class);
-            ProcedureRoom procedureRoom = new ProcedureRoom(0, 0);
-            procedureRoomIntent.putExtra("procedureRoom", procedureRoom);
-            startActivityForResult(procedureRoomIntent, procedureRoom_Request);
+            Intent procedureRoomIntent = new Intent(getApplicationContext(), ElementActivity.class);
+            ProcedureRoom procedureRoom = new ProcedureRoom(-1, -1);
+            procedureRoomIntent.putExtra("element", procedureRoom);
+            procedureRoomIntent.putExtra("mode", "add");
+            startActivityForResult(procedureRoomIntent, element_Request);
+
         } else if (id == R.id.addScope) {
             Intent scopeIntent = new Intent(getApplicationContext(), ScopeActivity.class);
             Scope scope = new Scope(null);
@@ -251,6 +255,66 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_CANCELED) {
+            return;
+        }
+
+        if (requestCode == element_Request) { //TODO::: fix since UI isnt updated like this anymore
+            Element element = (Element) data.getSerializableExtra("element");
+
+            if (element.equals(Element.ELEMENT_PROCEDUREROOM)) {
+                ProcedureRoom procedureRoom = (ProcedureRoom)element;
+
+                //adding a new procedure room
+                if (resultCode == RESULT_FIRST_USER) {
+                    simulation_manager.addProcedureRoom(procedureRoom);
+
+                    LinearLayout linearLayoutRooms = findViewById(R.id.LinearLayoutRooms);
+                    ObjectView roomImage = new ObjectView(procedureRoom, getApplicationContext());
+                    roomImage.changeOrientation(LinearLayout.HORIZONTAL);
+                    roomImage.setOnClickListener(this);
+
+                    int index = simulation_manager.getProcedureRoomNum() - 1;
+                    Tag tag = new Tag(index, "Procedure Room");
+
+                    roomImage.setTag(tag);
+
+                    linearLayoutRooms.addView(roomImage);
+                    updateUI();
+
+                } else if (resultCode == RESULT_OK) {
+                    int index = currentClicked.index;
+
+                    //editing a procedure room
+                    if (procedureRoom.validate()) {
+                        simulation_manager.editProcedureRoom(procedureRoom, index);
+                        updateUI();
+                    //deleting a procedure room
+                    } else {
+                        simulation_manager.deleteProcedureRoom(index);
+
+                        LinearLayout linearLayoutRooms = findViewById(R.id.LinearLayoutRooms);
+                        View room = linearLayoutRooms.getChildAt(simulation_manager.getProcedureRoomNum()); //TODO:: not -1?????/
+                        linearLayoutRooms.removeView(room);
+                    }
+
+                }
+
+
+            } else if (element.equals(Element.ELEMENT_CLIENT)) {
+
+            }
+        }
+
+
+
+
+
+
+
+
+
+
 
         //returned from ProcedureRoomActivity
         if (requestCode == procedureRoom_Request) {
@@ -497,11 +561,13 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         String type = tag.type;
 
         if (type.equals("Procedure Room")) {
-            ProcedureRoom procedureRoom = simulation_manager.getProcedureRoom(index);
 
-            Intent procedureRoomIntent = new Intent(getApplicationContext(), ProcedureRoomActivity.class);
-            procedureRoomIntent.putExtra("procedureRoom", procedureRoom);
-            startActivityForResult(procedureRoomIntent, procedureRoom_Request);
+            ProcedureRoom procedureRoom = simulation_manager.getProcedureRoom(index);
+            Intent procedureRoomIntent = new Intent(getApplicationContext(), ElementActivity.class);
+            procedureRoomIntent.putExtra("element", procedureRoom);
+            procedureRoomIntent.putExtra("mode", "view");
+            startActivityForResult(procedureRoomIntent, element_Request);
+
         } else if (type.equals("Client")) {
             Client client = simulation_manager.getClient(index);
 
