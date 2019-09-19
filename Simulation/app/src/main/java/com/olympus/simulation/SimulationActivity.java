@@ -194,6 +194,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             ProcedureRoom procedureRoom = new ProcedureRoom(-1, -1);
             procedureRoomIntent.putExtra("element", procedureRoom);
             procedureRoomIntent.putExtra("mode", "add");
+            procedureRoomIntent.putExtra("towerTypes", simulation_manager.getTowerTypeNames());
             startActivityForResult(procedureRoomIntent, element_Request);
 
         } else if (id == R.id.addScope) {
