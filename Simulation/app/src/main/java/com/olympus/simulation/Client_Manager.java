@@ -96,4 +96,17 @@ public class Client_Manager {
             queue.get(i).setId(i + 1);
         }
     }
+
+    public int removeClientsOutsideRange(int startBound, int endBound) {
+        int count = 0;
+        for(int i = 0; i < queue.size(); i++) {
+            if(queue.get(i).getArrivalTime() > endBound || queue.get(i).getArrivalTime() < startBound) {
+                queue.remove(i);
+                i--;
+                count++;
+            }
+        }
+        setIDs();
+        return count;
+    }
 }

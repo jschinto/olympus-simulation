@@ -318,7 +318,11 @@ public class Simulation_Manager {
         return list.toArray(towerTypeNamesArray);
     }
 
-    public void removeTowerTypeByName(String name){
+    public void removeTowerTypeByName(String name) {
         towerTypeManager.removeTowerType(name);
+    }
+
+    public int removeClientsOutsideRange() {
+        return clientManager.removeClientsOutsideRange(startTime, endTime);
     }
 }

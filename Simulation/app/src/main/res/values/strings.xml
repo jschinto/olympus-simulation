@@ -36,4 +36,6 @@
     <string name="textTowerType">Tower Type</string>
     <string name="nameTowerType">Name:</string>
     <string name="priceTowerType">Price:</string>>
+    <string name="startTime">Start Time:</string>
+    <string name="endTime">End Time:</string>
 </resources>
