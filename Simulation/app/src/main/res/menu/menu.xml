@@ -49,6 +49,9 @@
             <item
                 android:id="@+id/addTowerType"
                 android:title="Add Tower Type" />
+            <item
+                android:id="@+id/addLeakTesterType"
+                android:title="Add Leak Tester Type"/>
         </menu>
     </item>
 </menu>

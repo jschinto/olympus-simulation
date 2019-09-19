@@ -161,7 +161,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             if (simulation_manager.getProcedureNum() > 0) {
                 addClient.setVisible(true);
                 addScopeType.setVisible(true);
-            } else  {
+            } else {
                 addClient.setVisible(false);
                 addScopeType.setVisible(false);
             }
@@ -172,12 +172,9 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 addScope.setVisible(true);
             }
 
-        }
-
-
-        else if (id == R.id.addProcedureType) {
+        } else if (id == R.id.addProcedureType) {
             Intent procedureIntent = new Intent(getApplicationContext(), ProcedureActivity.class);
-            Procedure procedure = new Procedure("",  0);
+            Procedure procedure = new Procedure("", 0);
             procedureIntent.putExtra("procedure", procedure);
             startActivityForResult(procedureIntent, procedure_Request);
         } else if (id == R.id.addClient) {
@@ -189,13 +186,11 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             clientIntent.putExtra("procedures", simulation_manager.getProcedureNames());
             startActivityForResult(clientIntent, client_Request);
         } else if (id == R.id.addProcedureRoom) {
-
             Intent procedureRoomIntent = new Intent(getApplicationContext(), ElementActivity.class);
             ProcedureRoom procedureRoom = new ProcedureRoom(-1, -1);
             procedureRoomIntent.putExtra("element", procedureRoom);
             procedureRoomIntent.putExtra("mode", "add");
             startActivityForResult(procedureRoomIntent, element_Request);
-
         } else if (id == R.id.addScope) {
             Intent scopeIntent = new Intent(getApplicationContext(), ScopeActivity.class);
             Scope scope = new Scope(null);
@@ -214,6 +209,12 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             towerTypeIntent.putExtra("towerType", type);
             towerTypeIntent.putExtra("scopeTypes", simulation_manager.getScopeTypeNames());
             startActivityForResult(towerTypeIntent, towerType_Request);
+        } else if(id == R.id.addLeakTesterType) {
+            Intent leakTesterTypeIntent = new Intent(getApplicationContext(), ElementActivity.class);
+            LeakTester_Type leakTester = new LeakTester_Type("", -1, -1, -1);
+            leakTesterTypeIntent.putExtra("element", leakTester);
+            leakTesterTypeIntent.putExtra("mode", "add");
+            startActivityForResult(leakTesterTypeIntent, element_Request);
         } else if (id == R.id.startSimulation) {
             ActionMenuItemView playImage = findViewById(R.id.playButton);
             if (item.getTitle().equals("Confirm Start")) {

@@ -65,8 +65,21 @@ public class ElementActivity extends AppCompatActivity {
         } else if (element.equals(Element.ELEMENT_SCOPETYPE)) {
 
         }
-
-
+        else if(element.equals(Element.ELEMENT_LEAKTESTERTYPE)){
+            setText(R.id.elementTextTitle, Element.ELEMENT_LEAKTESTERTYPE);
+            ids = new int[4];
+            ids[0] = addField("Leak Tester Type Name", "text");
+            ids[1] = addField("Time to Complete", "number");
+            ids[2] = addField("Required Attention Time", "number");
+            ids[3] = addField("Price", "number");
+            if(mode.equals("view")){
+                LeakTester_Type leakTesterType = (LeakTester_Type) element;
+                setText(ids[0], leakTesterType.getName());
+                setText(ids[1], leakTesterType.getTimeToComplete());
+                setText(ids[2], leakTesterType.getRequiredAttentionTime());
+                setText(ids[3], leakTesterType.getPrice());
+            }
+        }
     }
 
     //process button clicks
@@ -86,24 +99,37 @@ public class ElementActivity extends AppCompatActivity {
                         return;
                     }
                 }
-
+                else if(element.equals(Element.ELEMENT_LEAKTESTERTYPE)){
+                    String name = getTextString(ids[0]);
+                    int timeToComplete = getTextInt(ids[1]);
+                    int requiredAttentionTime = getTextInt(ids[2]);
+                    int price = getTextInt(ids[3]);
+                    LeakTester_Type leakTesterType = new LeakTester_Type(name, timeToComplete, requiredAttentionTime, price);
+                    leaveActivity(RESULT_FIRST_USER, leakTesterType);
+                }
              //clicked the delete button
             } else if (mode.equals("view")) {
-                leaveActivity(RESULT_OK, new ProcedureRoom(-1,-1));
+                if(element.equals(Element.ELEMENT_PROCEDUREROOM)) {
+                    leaveActivity(RESULT_OK, new ProcedureRoom(-1, -1));
+                }
+                else if(element.equals(Element.ELEMENT_LEAKTESTERTYPE)){
+                    leaveActivity(RESULT_OK, new LeakTester_Type("", -1, -1, -1));
+                }
             }
 
          //clicked the update button
         } else if (view.getId() == R.id.elementButtonEdit) {
-            int travelTime = getTextInt(ids[0]);
-            int cooldownTime = getTextInt(ids[1]);
-            ProcedureRoom procedureRoom = new ProcedureRoom(travelTime, cooldownTime);
-            if (procedureRoom.validate()) {
-                leaveActivity(RESULT_OK, procedureRoom);
-            } else {
-                makeToast("INVALID VALUES ENTERED");
-                return;
+            if(element.equals(Element.ELEMENT_PROCEDUREROOM)) {
+                int travelTime = getTextInt(ids[0]);
+                int cooldownTime = getTextInt(ids[1]);
+                ProcedureRoom procedureRoom = new ProcedureRoom(travelTime, cooldownTime);
+                if (procedureRoom.validate()) {
+                    leaveActivity(RESULT_OK, procedureRoom);
+                } else {
+                    makeToast("INVALID VALUES ENTERED");
+                    return;
+                }
             }
-
         //clicked the exit button
         } else if (view.getId() == R.id.elementButtonExit) {
             leaveActivity(RESULT_CANCELED, element);

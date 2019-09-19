@@ -115,7 +115,7 @@ public class TowerTypeActivity extends AppCompatActivity {
                     }
                 }
                 if (scopeTypeList == null || scopeTypeList.size() <= 0) {
-                    Toast.makeText(getApplicationContext(), "A scope type needs a valid procedure", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "A Tower Type needs a valid Scope Type", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -164,7 +164,7 @@ public class TowerTypeActivity extends AppCompatActivity {
                 }
             }
             if (scopeTypeList == null || scopeTypeList.size() <= 0) {
-                Toast.makeText(getApplicationContext(), "A scope type needs a valid procedure", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "A Tower Type needs a valid Scope Type", Toast.LENGTH_LONG).show();
                 return;
             }
 

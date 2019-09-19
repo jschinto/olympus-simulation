@@ -35,5 +35,7 @@
     <string name="avgProcedureTime">Average Completion Time:</string>
     <string name="textTowerType">Tower Type</string>
     <string name="nameTowerType">Name:</string>
-    <string name="priceTowerType">Price:</string>>
+    <string name="priceTowerType">Price:</string>
+    <string name="procedureTowerTypes">Tower Types:</string>
+    <string name="towerTypeScopes">Scope Types:</string>>
 </resources>
