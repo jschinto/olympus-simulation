@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -32,6 +33,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     public static final int procedure_Request = 3;
     public static final int scopeType_Request = 4;
     public static final int scope_Request = 5;
+    public static final int towerType_Request = 6;
 
     public static final int element_Request = 8;
 
@@ -49,14 +51,6 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             obj.changeOrientation(LinearLayout.VERTICAL);
             hallway.addView(obj);
             list.add(o);
-        }
-
-        public void getObjectByIndex(int i) {
-            //TODO: Implement
-        }
-
-        public void getObjectList() {
-            //TODO: Implement
         }
 
         public void renderList() {
@@ -98,17 +92,6 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
 
         simulation_manager = new Simulation_Manager(0,300,1);
         hall_monitor = new Hall_Monitor();
-
-        //TODO: TEST CODE REMOVE PLZ
-      /*  Procedure proc = new Procedure("Bark", 3, 5);
-        Scope_Type type = new Scope_Type("TESTSCOPE", 5);
-        type.addProcedure(proc);
-        Scope scope = new Scope(type, 5);
-
-        simulation_manager.addProcedure(proc);
-        simulation_manager.addScopeType(type);
-        simulation_manager.addScope(scope);*/
-        //TEST CODE REMOVE PLZ
         currentClicked = null;
     }
 
@@ -225,6 +208,12 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             scopeTypeIntent.putExtra("scopeType", scopeType);
             scopeTypeIntent.putExtra("procedureNames", simulation_manager.getProcedureNames());
             startActivityForResult(scopeTypeIntent, scopeType_Request);
+        } else if (id == R.id.addTowerType) {
+            Intent towerTypeIntent = new Intent(getApplicationContext(), TowerTypeActivity.class);
+            Tower_Type type = new Tower_Type(null, null, 0);
+            towerTypeIntent.putExtra("towerType", type);
+            towerTypeIntent.putExtra("scopeTypes", simulation_manager.getScopeTypeNames());
+            startActivityForResult(towerTypeIntent, towerType_Request);
         } else if (id == R.id.startSimulation) {
             ActionMenuItemView playImage = findViewById(R.id.playButton);
             if (item.getTitle().equals("Confirm Start")) {
@@ -280,7 +269,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     roomImage.setTag(tag);
 
                     linearLayoutRooms.addView(roomImage);
-                    updateUI();
+
 
                 } else if (resultCode == RESULT_OK) {
                     int index = currentClicked.index;
@@ -288,7 +277,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     //editing a procedure room
                     if (procedureRoom.validate()) {
                         simulation_manager.editProcedureRoom(procedureRoom, index);
-                        updateUI();
+
                     //deleting a procedure room
                     } else {
                         simulation_manager.deleteProcedureRoom(index);
@@ -378,15 +367,6 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     simulation_manager.addClient(newClient);
 
                     LinearLayout linearLayoutClients = findViewById(R.id.LinearLayoutClients);
-                    /*
-                    ImageView clientImage = new ImageView(getApplicationContext());
-                    clientImage.setImageResource(R.drawable.client);
-
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
-                    clientImage.setLayoutParams(layoutParams);
-                    clientImage.setPadding(10, 0, 0, 0);
-                    clientImage.setOnClickListener(this);
-                    */
                     ObjectView clientImage = new ObjectView(newClient, getApplicationContext());
                     clientImage.changeOrientation(LinearLayout.HORIZONTAL);
                     clientImage.setOnClickListener(this);
@@ -549,6 +529,37 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 }
 
             } else if (resultCode == RESULT_CANCELED) {
+                return;
+            }
+        }
+
+        if(requestCode == towerType_Request){
+            if(resultCode == RESULT_FIRST_USER){
+                String name = data.getStringExtra("name");
+                int price = data.getIntExtra("price", 0);
+                String[] scopeTypeList = data.getStringArrayExtra("scopeTypes");
+                ArrayList<Scope_Type> scopeTypes = new ArrayList<>();
+                for(int i = 0; i < scopeTypeList.length; i++){
+                    scopeTypes.add(simulation_manager.getScopeTypeByName(scopeTypeList[i]));
+                }
+                Tower_Type type = new Tower_Type(name, scopeTypes, price);
+                simulation_manager.addTowerType(type);
+            }
+            else if(resultCode == RESULT_OK){
+                String oldName = data.getStringExtra("oldName");
+                simulation_manager.removeTowerTypeByName(oldName);
+
+                String name = data.getStringExtra("name");
+                int price = data.getIntExtra("price", 0);
+                String[] scopeTypeList = data.getStringArrayExtra("scopeTypes");
+                ArrayList<Scope_Type> scopeTypes = new ArrayList<>();
+                for(int i = 0; i < scopeTypeList.length; i++){
+                    scopeTypes.add(simulation_manager.getScopeTypeByName(scopeTypeList[i]));
+                }
+                Tower_Type type = new Tower_Type(name, scopeTypes, price);
+                simulation_manager.addTowerType(type);
+            }
+            else if(resultCode == RESULT_CANCELED){
                 return;
             }
         }

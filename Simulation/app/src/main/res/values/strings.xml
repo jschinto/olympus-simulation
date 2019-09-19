@@ -32,5 +32,8 @@
     <string name="scopeTypeProcedures">Valid Procedures:</string>
     <string name="buttonViewProcedures">View Procedure Types</string>
     <string name="buttonViewScopeTypes">View Scope Types</string>
-    <string name="avgProcedureTime">Average Completion Time:</string>>
+    <string name="avgProcedureTime">Average Completion Time:</string>
+    <string name="textTowerType">Tower Type</string>
+    <string name="nameTowerType">Name:</string>
+    <string name="priceTowerType">Price:</string>>
 </resources>

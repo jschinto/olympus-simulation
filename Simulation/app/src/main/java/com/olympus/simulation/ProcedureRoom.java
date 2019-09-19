@@ -22,6 +22,7 @@ public class ProcedureRoom extends Element implements Serializable{
 
     private Client client;
     private ArrayList<Scope> scope;
+    private ArrayList<Tower_Type> towerTypes;
 
     public ProcedureRoom(int travelTime, int cooldownTime) {
         this.element = Element.ELEMENT_PROCEDUREROOM;
@@ -31,7 +32,8 @@ public class ProcedureRoom extends Element implements Serializable{
         this.cooldownTime = cooldownTime;
         this.cooldownTimeLeft = 0;
         this.client = null;
-        this.scope = new ArrayList<Scope>();
+        this.scope = new ArrayList<>();
+        this.towerTypes = new ArrayList<>();
     }
 
     public void claimScope(ArrayList<Scope> list) {
@@ -135,7 +137,45 @@ public class ProcedureRoom extends Element implements Serializable{
         this.id = id;
     }
 
+
     public boolean validate() {
         return cooldownTime > 0 && travelTime > 0;
+    }
+    public void addTowerType(Tower_Type type){
+        this.towerTypes.add(type);
+    }
+
+    public void removeTowerType(String name){
+        for(int i = 0; i < this.towerTypes.size(); i++){
+            if(this.towerTypes.get(i).getName() == name){
+                this.towerTypes.remove(i);
+                break;
+            }
+        }
+    }
+
+    //Returns true if the procedure room has the required tower types to process that patient, false
+    //otherwise.
+    public boolean checkCanProcess(Client c){
+        ArrayList<Procedure> procList = c.getProcedureList();
+        ArrayList<Tower_Type> tower_types = this.towerTypes;
+
+        int counter = 0;
+        for(int i = 0; i < procList.size(); i++){
+            for(int j = 0; j < tower_types.size(); j++){
+                if(tower_types.get(j).checkProcessProcedure(procList.get(i))){
+                    counter++;
+                    tower_types.remove(j);
+                    j--;
+                    break;
+                }
+            }
+        }
+
+        if(counter == procList.size()){
+            return true;
+        }
+
+        return false;
     }
 }
