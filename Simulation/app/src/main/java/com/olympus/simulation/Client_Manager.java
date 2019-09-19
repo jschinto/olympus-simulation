@@ -34,6 +34,10 @@ public class Client_Manager {
         Collections.sort(queue);
     }
 
+    public ArrayList<Client> getQueue() {
+        return queue;
+    }
+
     //add at the end of the queue
     public void addClient(Client client) {
         queue.add(client);

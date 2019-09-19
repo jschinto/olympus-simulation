@@ -78,4 +78,8 @@ public class Scope_Manager {
             list.get(i).setId(i + 1);
         }
     }
+
+    public ArrayList<Scope> getScopes() {
+        return list;
+    }
 }
