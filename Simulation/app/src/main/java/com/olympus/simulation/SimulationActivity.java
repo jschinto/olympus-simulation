@@ -21,7 +21,12 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class SimulationActivity extends AppCompatActivity implements View.OnClickListener, SavePromptDialog.SavePromptDialogListener, LoadPromptDialog.LoadPromptDialogListener {
+public class SimulationActivity
+        extends AppCompatActivity
+        implements View.OnClickListener,
+        SavePromptDialog.SavePromptDialogListener,
+        LoadPromptDialog.LoadPromptDialogListener,
+        SetTimePromptDialog.SetTimePromptDialogListener {
 
     Simulation_Manager simulation_manager;
     Hall_Monitor hall_monitor;
@@ -90,7 +95,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_simulation);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//set orientation to lock on portrait
 
-        simulation_manager = new Simulation_Manager(0,300,1);
+        simulation_manager = new Simulation_Manager(0,720,1);
         hall_monitor = new Hall_Monitor();
         currentClicked = null;
     }
@@ -136,6 +141,11 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                 }
             });
             popupMenu.show();
+        } else if (view.getId() == R.id.textViewTime) {
+            if(!simulationStarted) {
+                SetTimePromptDialog setTimePromptDialog = new SetTimePromptDialog(simulation_manager.getStartTime(), simulation_manager.getEndTime());
+                setTimePromptDialog.show(getSupportFragmentManager(), "set time dialog");
+            }
         }
     }
 
@@ -190,6 +200,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
             ProcedureRoom procedureRoom = new ProcedureRoom(-1, -1);
             procedureRoomIntent.putExtra("element", procedureRoom);
             procedureRoomIntent.putExtra("mode", "add");
+            procedureRoomIntent.putExtra("towerTypes", simulation_manager.getTowerTypeNames());
             startActivityForResult(procedureRoomIntent, element_Request);
         } else if (id == R.id.addScope) {
             Intent scopeIntent = new Intent(getApplicationContext(), ScopeActivity.class);
@@ -378,6 +389,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     clientImage.setTag(tag);
 
                     linearLayoutClients.addView(clientImage);
+                    simulation_manager.removeClientsOutsideRange();
                     renderUIFromManager();
                 }
 
@@ -405,6 +417,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                     LinearLayout linearLayoutClients = findViewById(R.id.LinearLayoutClients);
                     ObjectView clientView = (ObjectView) linearLayoutClients.getChildAt(index);
                     clientView.update();
+                    simulation_manager.removeClientsOutsideRange();
                     renderUIFromManager();
                 }
                 //nothing to be done, represents just viewing or canceling an add to a client
@@ -648,13 +661,12 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                         startItem.setTitle("Confirm Start");
                         ActionMenuItemView playImage = findViewById(R.id.playButton);
                         playImage.setIcon(getResources().getDrawable(R.drawable.play_button));
-                        TextView textTime = findViewById(R.id.textViewTime);
-                        textTime.setText(Time.convertToString(0));
                     }
                 });
             }
             ranAlready = false;
-            simulation_manager.setEndTime(500);
+            simulationStarted = false;
+            //simulation_manager.setEndTime(600);
         } else {
             Toast.makeText(getApplicationContext(), "Error Loading File " + fileName + "!", Toast.LENGTH_LONG).show();
             return;
@@ -702,18 +714,20 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     static boolean isPaused = false;
     static boolean ranAlready = false;
     static boolean hideToast = false;
+    static boolean simulationStarted = false;
     Timer time = null;
     MenuItem startItem = null;
 
     public void startSimulation(final MenuItem item) {
         startItem = item;
+        simulationStarted = true;
         if (ranAlready) {
             hideToast = true;
             loadLoadout("LastRun");
         }
         saveLoadout(null);
         ranAlready = true;
-        simulation_manager.setCurrTime(0);
+        simulation_manager.setCurrTime(simulation_manager.getStartTime());
         time = new Timer();
         time.scheduleAtFixedRate(new TimerTask() {
             @SuppressLint("RestrictedApi")
@@ -728,6 +742,7 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                simulationStarted = false;
                                 item.setTitle("Confirm Start");
                                 ActionMenuItemView playImage = findViewById(R.id.playButton);
                                 playImage.setIcon(getResources().getDrawable(R.drawable.play_button));
@@ -768,5 +783,23 @@ public class SimulationActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void cancelSave() {
         isPaused = false;
+    }
+
+    @Override
+    public void setStartEndTime(int start, int end) {
+        if(end <= start) {
+            Toast.makeText(getApplicationContext(), "Start time must be before end time!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        simulation_manager.setStartTime(start);
+        simulation_manager.setCurrTime(start);
+        simulation_manager.setEndTime(end);
+        simulation_manager.removeClientsOutsideRange();
+        renderUIFromManager();
+    }
+
+    @Override
+    public void cancelTime() {
+
     }
 }

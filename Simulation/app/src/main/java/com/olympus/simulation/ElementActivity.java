@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -51,10 +52,14 @@ public class ElementActivity extends AppCompatActivity {
         } else if (element.equals(Element.ELEMENT_PROCEDURE)) {
 
         } else if (element.equals(Element.ELEMENT_PROCEDUREROOM)) {
-            setText(R.id.elementTextTitle, Element.ELEMENT_PROCEDUREROOM);
-            ids = new int[2];
+            setText(R.id.elementTextTitle, "Procedure Room");
+            ids = new int[3];
             ids[0] = addField("Travel Time", "number");
             ids[1] = addField("Cooldown Time", "number");
+
+            String[] towerTypes = fromIntent.getStringArrayExtra("towerTypes");
+            ids[2] = addField("Tower Types", "checkbox", towerTypes);
+
             if (mode.equals("view")) {
                 ProcedureRoom procedureRoom = (ProcedureRoom) element;
                 setText(ids[0], procedureRoom.getTravelTime());
@@ -165,10 +170,47 @@ public class ElementActivity extends AppCompatActivity {
             fieldView.setId(id);
             newLayout.addView(fieldView);
             return id;
+        } else {
+            return 0;
         }
 
-        return 0;
+    }
 
+    public int addField(String label, String type, String[] values) {
+        LinearLayout linearLayout = findViewById(R.id.elementLinearLayout);
+        LinearLayout newLayout = new LinearLayout(getApplicationContext());
+        newLayout.setOrientation(LinearLayout.HORIZONTAL);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        newLayout.setLayoutParams(params);
+        linearLayout.addView(newLayout);
+
+        TextView labelView = new TextView(getApplicationContext());
+        labelView.setText(label);
+        newLayout.addView(labelView);
+
+        if (type.equals("checkbox")) {
+            LinearLayout checkBoxes = new LinearLayout(getApplicationContext());
+
+            LinearLayout.LayoutParams checkboxParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            checkBoxes.setLayoutParams(checkboxParams);
+            checkBoxes.setOrientation(LinearLayout.VERTICAL);
+
+            for (int i=0; i < values.length; i++) {
+                CheckBox checkBox = new CheckBox(getApplicationContext());
+                checkBox.setText(values[i]);
+                checkBox.setChecked(false);
+                checkBoxes.addView(checkBox);
+            }
+
+            int id = View.generateViewId();
+            checkBoxes.setId(id);
+            newLayout.addView(checkBoxes);
+            return id;
+
+        }
+
+
+        return 0;
     }
 
     public void setText(int id, String value) {

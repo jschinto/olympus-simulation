@@ -318,7 +318,12 @@ public class Simulation_Manager {
         return list.toArray(towerTypeNamesArray);
     }
 
-    public void removeTowerTypeByName(String name){
+    public void removeTowerTypeByName(String name) {
         towerTypeManager.removeTowerType(name);
+    }
+
+    //TODO: maybe show toast for patients deleted
+    public int removeClientsOutsideRange() {
+        return clientManager.removeClientsOutsideRange(startTime, endTime);
     }
 }
