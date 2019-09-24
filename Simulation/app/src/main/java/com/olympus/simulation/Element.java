@@ -15,6 +15,8 @@ public class Element implements Serializable {
     public static final int ELEMENT_SCOPE = 3;
     public static final int ELEMENT_SCOPETYPE = 4;
     public static final int ELEMENT_LEAKTESTERTYPE = 5;
+    public static final int ELEMENT_TOWERTYPE = 6;
+    public static final int ELEMENT_NURSE = 7;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({
@@ -23,7 +25,9 @@ public class Element implements Serializable {
             ELEMENT_PROCEDUREROOM,
             ELEMENT_SCOPE,
             ELEMENT_SCOPETYPE,
-            ELEMENT_LEAKTESTERTYPE
+            ELEMENT_LEAKTESTERTYPE,
+            ELEMENT_TOWERTYPE,
+            ELEMENT_NURSE
     })
     public @interface ElementDef {
     }

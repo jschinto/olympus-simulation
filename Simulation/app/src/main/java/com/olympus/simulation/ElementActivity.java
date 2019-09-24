@@ -12,6 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+
 public class ElementActivity extends AppCompatActivity {
 
     Element element;
@@ -49,8 +53,14 @@ public class ElementActivity extends AppCompatActivity {
         //add all the text and edit boxes to the layout based on element type
         if (element.equals(Element.ELEMENT_CLIENT)) {
 
-        } else if (element.equals(Element.ELEMENT_PROCEDURE)) {
-
+        } else if (element.equals(Element.ELEMENT_NURSE)) {
+            setText(R.id.elementTextTitle, "Nurse");
+            ids = new int[1];
+            ids[0] = addField("Post Procedure Time", "number");
+            if (mode.equals("view")) {
+                Nurse nurse = (Nurse)element;
+                setText(ids[0], nurse.getPostProcedureTime());
+            }
         } else if (element.equals(Element.ELEMENT_PROCEDUREROOM)) {
             setText(R.id.elementTextTitle, "Procedure Room");
             ids = new int[3];
@@ -103,6 +113,16 @@ public class ElementActivity extends AppCompatActivity {
                         makeToast("INVALID VALUES ENTERED");
                         return;
                     }
+                } else if (element.equals(Element.ELEMENT_NURSE)) {
+                    int postProcedureTime = getTextInt(ids[0]);
+                    Nurse nurse = new Nurse(postProcedureTime);
+                    if (nurse.validate()) {
+                        leaveActivity(RESULT_FIRST_USER, nurse);
+                    } else {
+                        makeToast("INVALID VALUES ENTERED");
+                        return;
+                    }
+
                 }
                 else if(element.equals(Element.ELEMENT_LEAKTESTERTYPE)){
                     String name = getTextString(ids[0]);
@@ -117,14 +137,23 @@ public class ElementActivity extends AppCompatActivity {
                 if(element.equals(Element.ELEMENT_PROCEDUREROOM)) {
                     leaveActivity(RESULT_OK, new ProcedureRoom(-1, -1));
                 }
-                else if(element.equals(Element.ELEMENT_LEAKTESTERTYPE)){
+                else if(element.equals(Element.ELEMENT_LEAKTESTERTYPE)) {
                     leaveActivity(RESULT_OK, new LeakTester_Type("", -1, -1, -1));
+                }
+
+                if (element.equals(Element.ELEMENT_PROCEDUREROOM)) {
+                    leaveActivity(RESULT_OK, new ProcedureRoom(-1, -1));
+                } else if (element.equals(Element.ELEMENT_NURSE)) {
+                    leaveActivity(RESULT_OK, new Nurse(-1));
+
                 }
             }
 
          //clicked the update button
         } else if (view.getId() == R.id.elementButtonEdit) {
-            if(element.equals(Element.ELEMENT_PROCEDUREROOM)) {
+
+            if (element.equals(Element.ELEMENT_PROCEDUREROOM)) {
+
                 int travelTime = getTextInt(ids[0]);
                 int cooldownTime = getTextInt(ids[1]);
                 ProcedureRoom procedureRoom = new ProcedureRoom(travelTime, cooldownTime);
@@ -134,6 +163,17 @@ public class ElementActivity extends AppCompatActivity {
                     makeToast("INVALID VALUES ENTERED");
                     return;
                 }
+
+            } else if (element.equals(Element.ELEMENT_NURSE)) {
+                int postProcedureTime = getTextInt(ids[0]);
+                Nurse nurse = new Nurse(postProcedureTime);
+                if (nurse.validate()) {
+                    leaveActivity(RESULT_OK, nurse);
+                } else {
+                    makeToast("INVALID VALUES ENTERED");
+                    return;
+                }
+
             }
         //clicked the exit button
         } else if (view.getId() == R.id.elementButtonExit) {
@@ -222,6 +262,21 @@ public class ElementActivity extends AppCompatActivity {
         setText(id, ""+value);
     }
 
+    public void setChecked(int id, String[] values) {
+        LinearLayout checkboxes = findViewById(id);
+        for (int i=0; i < checkboxes.getChildCount(); i++) {
+            CheckBox checkBox = (CheckBox) checkboxes.getChildAt(i);
+            String text = checkBox.getText().toString();
+            for (int j=0; j < values.length; j++) {
+                if (values[j].equals(text)) {
+                    checkBox.setChecked(true);
+                    break;
+                }
+            }
+        }
+
+    }
+
     public String getTextString(int id) {
         TextView textView = findViewById(id);
         return textView.getText().toString();
@@ -238,6 +293,20 @@ public class ElementActivity extends AppCompatActivity {
             return -1;
         }
         return x;
+    }
+
+    public String[] getChecked(int id) {
+        LinearLayout checkboxes = findViewById(id);
+        ArrayList<String> valueList = new ArrayList<String>();
+        for (int i=0; i < checkboxes.getChildCount(); i++) {
+            CheckBox checkBox = (CheckBox) checkboxes.getChildAt(i);
+            if (checkBox.isChecked()) {
+                valueList.add(checkBox.getText().toString());
+            }
+        }
+        String[] values = new String[valueList.size()];
+        values = valueList.toArray(values);
+        return values;
     }
 
 

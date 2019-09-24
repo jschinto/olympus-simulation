@@ -167,6 +167,8 @@ public class SimulationActivity
             MenuItem addClient = menu.findItem(R.id.addClient);
             MenuItem addScope = menu.findItem(R.id.addScope);
             MenuItem addScopeType = menu.findItem(R.id.addScopeType);
+            MenuItem addTowerType = menu.findItem(R.id.addTowerType);
+            MenuItem addProcedureRoom = menu.findItem(R.id.addProcedureRoom);
 
             if (simulation_manager.getProcedureNum() > 0) {
                 addClient.setVisible(true);
@@ -178,11 +180,29 @@ public class SimulationActivity
             String[] scopeTypes = simulation_manager.getScopeTypeNames();
             if (scopeTypes == null || scopeTypes.length <= 0) {
                 addScope.setVisible(false);
+                addTowerType.setVisible(false);
             } else {
                 addScope.setVisible(true);
+                addTowerType.setVisible(true);
+            }
+            if (simulation_manager.getTowerTypeNum() > 0) {
+                addProcedureRoom.setVisible(true);
+            } else {
+                addProcedureRoom.setVisible(false);
             }
 
         } else if (id == R.id.addProcedureType) {
+
+        }
+
+        else if (id == R.id.addNurse) {
+            Intent nurseIntent = new Intent(getApplicationContext(), ElementActivity.class);
+            Nurse nurse = new Nurse(-1);
+            nurseIntent.putExtra("element", nurse);
+            nurseIntent.putExtra("mode", "add");
+            startActivityForResult(nurseIntent, element_Request);
+        }
+        else if (id == R.id.addProcedureType) {
             Intent procedureIntent = new Intent(getApplicationContext(), ProcedureActivity.class);
             Procedure procedure = new Procedure("", 0);
             procedureIntent.putExtra("procedure", procedure);

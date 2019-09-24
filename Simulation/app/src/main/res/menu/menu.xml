@@ -52,6 +52,10 @@
             <item
                 android:id="@+id/addLeakTesterType"
                 android:title="Add Leak Tester Type"/>
+            <item
+                android:id="@+id/addNurse"
+                android:title="Add Nurse" />
+
         </menu>
     </item>
 </menu>

@@ -16,6 +16,7 @@ public class Simulation_Manager {
     private  Scope_Manager scopeManager;
     private ScopeType_Manager scopeTypeManager;
     private TowerType_Manager towerTypeManager;
+    private Nurse_Manager nurse_manager;
 
     //the time the simulated hospital should open and close
     //Represented as a integer from 0 - some value
@@ -64,6 +65,7 @@ public class Simulation_Manager {
         scopeManager = new Scope_Manager();
         scopeTypeManager = new ScopeType_Manager();
         towerTypeManager = new TowerType_Manager();
+        nurse_manager = new Nurse_Manager();
         this.startTime = startTime;
         this.endTime = endTime;
         this.waitTime = waitTime;
@@ -316,6 +318,10 @@ public class Simulation_Manager {
         ArrayList<String> list = towerTypeManager.getTowerTypeNames();
         String[] towerTypeNamesArray = new String[list.size()];
         return list.toArray(towerTypeNamesArray);
+    }
+
+    public int getTowerTypeNum() {
+        return towerTypeManager.getTowerTypeNum();
     }
 
     public void removeTowerTypeByName(String name) {
