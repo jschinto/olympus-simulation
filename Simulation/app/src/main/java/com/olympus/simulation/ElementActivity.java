@@ -74,6 +74,8 @@ public class ElementActivity extends AppCompatActivity {
                 ProcedureRoom procedureRoom = (ProcedureRoom) element;
                 setText(ids[0], procedureRoom.getTravelTime());
                 setText(ids[1], procedureRoom.getCooldownTime());
+                String[] checked = procedureRoom.getTowerTypeNames();
+                setChecked(ids[2], checked);
             }
         } else if (element.equals(Element.ELEMENT_SCOPE)) {
 
@@ -106,9 +108,10 @@ public class ElementActivity extends AppCompatActivity {
                 if (element.equals(Element.ELEMENT_PROCEDUREROOM)) {
                     int travelTime = getTextInt(ids[0]);
                     int cooldownTime = getTextInt(ids[1]);
+                    String [] checked = getChecked(ids[2]);
                     ProcedureRoom procedureRoom = new ProcedureRoom(travelTime, cooldownTime);
                     if (procedureRoom.validate()) {
-                        leaveActivity(RESULT_FIRST_USER, procedureRoom);
+                        leaveActivity(RESULT_FIRST_USER, procedureRoom, checked);
                     } else {
                         makeToast("INVALID VALUES ENTERED");
                         return;
@@ -156,9 +159,10 @@ public class ElementActivity extends AppCompatActivity {
 
                 int travelTime = getTextInt(ids[0]);
                 int cooldownTime = getTextInt(ids[1]);
+                String [] checked = getChecked(ids[2]);
                 ProcedureRoom procedureRoom = new ProcedureRoom(travelTime, cooldownTime);
                 if (procedureRoom.validate()) {
-                    leaveActivity(RESULT_OK, procedureRoom);
+                    leaveActivity(RESULT_OK, procedureRoom, checked);
                 } else {
                     makeToast("INVALID VALUES ENTERED");
                     return;
@@ -326,6 +330,17 @@ public class ElementActivity extends AppCompatActivity {
         returnIntent.putExtra("element", newElement);
         setResult(code, returnIntent);
         finish();
+    }
 
+    public void leaveActivity(int code, Element newElement, String[] list) {
+        if (code == RESULT_CANCELED) {
+            setResult(RESULT_CANCELED);
+            finish();
+        }
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("element", newElement);
+        returnIntent.putExtra("list", list);
+        setResult(code, returnIntent);
+        finish();
     }
 }

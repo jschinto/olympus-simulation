@@ -154,19 +154,24 @@ public class ProcedureRoom extends Element implements Serializable{
         }
     }
 
+    public String[] getTowerTypeNames(){
+        String[] types = new String[this.towerTypes.size()];
+        for(int i = 0; i < this.towerTypes.size(); i++){
+            types[i] = this.towerTypes.get(i).getName();
+        }
+        return types;
+    }
+
     //Returns true if the procedure room has the required tower types to process that patient, false
     //otherwise.
     public boolean checkCanProcess(Client c){
         ArrayList<Procedure> procList = c.getProcedureList();
-        ArrayList<Tower_Type> tower_types = this.towerTypes;
 
         int counter = 0;
         for(int i = 0; i < procList.size(); i++){
-            for(int j = 0; j < tower_types.size(); j++){
-                if(tower_types.get(j).checkProcessProcedure(procList.get(i))){
+            for(int j = 0; j < this.towerTypes.size(); j++){
+                if(this.towerTypes.get(j).checkProcessProcedure(procList.get(i))){
                     counter++;
-                    tower_types.remove(j);
-                    j--;
                     break;
                 }
             }

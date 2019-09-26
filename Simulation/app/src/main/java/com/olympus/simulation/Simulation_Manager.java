@@ -88,23 +88,30 @@ public class Simulation_Manager {
         int patientOffset = 0;
         int roomOffset = 0;
         ProcedureRoom openRoom = procedureRoomManager.getProcedureRoom(roomOffset);
+        System.out.println("RUNNING");
         while (openRoom != null) {
             Client nextClient = clientManager.getNextClient(currTime, patientOffset);
             if (nextClient == null) {
                 break;
             }
+            System.out.println(nextClient.getId());
+            System.out.println(openRoom.getId());
 
             if(!openRoom.checkCanProcess(nextClient)){
+                System.out.println("CANT CHECK");
                 roomOffset++;
                 openRoom = procedureRoomManager.getProcedureRoom(roomOffset);
                 if(openRoom == null && clientManager.getNextClient(currTime, patientOffset + 1) == null){
+                    System.out.println("ERROR: Breaking");
                     break;
                 }
-                else {
+                else if(clientManager.getNextClient(currTime, patientOffset + 1) == null){
                     roomOffset = 0;
+                    openRoom = procedureRoomManager.getProcedureRoom(roomOffset);
                     patientOffset++;
-                    continue;
                 }
+
+                continue;
             }
 
             ArrayList<Scope> scopeList = new ArrayList<Scope>();
@@ -318,6 +325,10 @@ public class Simulation_Manager {
         ArrayList<String> list = towerTypeManager.getTowerTypeNames();
         String[] towerTypeNamesArray = new String[list.size()];
         return list.toArray(towerTypeNamesArray);
+    }
+
+    public Tower_Type getTowerTypeByName(String name){
+        return towerTypeManager.getTowerTypeByName(name);
     }
 
     public int getTowerTypeNum() {

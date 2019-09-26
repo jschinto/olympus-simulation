@@ -60,10 +60,12 @@ public class Tower_Type implements Serializable {
     public boolean checkProcessProcedure(Procedure p){
         for(int i = 0; i < this.holds.size(); i++){
             if (this.holds.get(i).checkProcedure(p)){
+                System.out.println("Returning True");
                 return true;
             }
         }
 
+        System.out.println("Returning false");
         return false;
     }
 }
