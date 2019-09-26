@@ -18,7 +18,7 @@ public class TowerType_Manager {
     //Returns a specific tower type based on the name
     public Tower_Type getTowerTypeByName(String name){
         for(int i = 0; i < this.typeList.size(); i++){
-            if(this.typeList.get(i).getName() == name){
+            if(this.typeList.get(i).getName().equals(name)){
                 return this.typeList.get(i);
             }
         }
@@ -46,6 +46,7 @@ public class TowerType_Manager {
 
     public ArrayList<String> getTowerTypeNames(){
         ArrayList<String> nameList = new ArrayList<>();
+        System.out.println(this.typeList);
         for(int i = 0; i < this.typeList.size(); i++){
             nameList.add(this.typeList.get(i).getName());
         }

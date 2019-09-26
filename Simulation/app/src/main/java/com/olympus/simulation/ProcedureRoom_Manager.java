@@ -65,7 +65,6 @@ public class ProcedureRoom_Manager {
 
     //when getting a room, find the first room (least travel time) that is not occupied
     public ProcedureRoom getProcedureRoom(int offset) {
-        ProcedureRoom room;
         int offsetCounter = 0;
         for (int i=0; i < roomList.size(); i++) {
             if (roomList.get(i).isAvailable() && !roomList.get(i).isReady()) {

@@ -191,10 +191,7 @@ public class SimulationActivity
                 addProcedureRoom.setVisible(false);
             }
 
-        } else if (id == R.id.addProcedureType) {
-
         }
-
         else if (id == R.id.addNurse) {
             Intent nurseIntent = new Intent(getApplicationContext(), ElementActivity.class);
             Nurse nurse = new Nurse(-1);
@@ -282,9 +279,14 @@ public class SimulationActivity
 
         if (requestCode == element_Request) { //TODO::: fix since UI isnt updated like this anymore
             Element element = (Element) data.getSerializableExtra("element");
+            String[] list = (String[]) data.getSerializableExtra("list");
 
             if (element.equals(Element.ELEMENT_PROCEDUREROOM)) {
                 ProcedureRoom procedureRoom = (ProcedureRoom)element;
+                for(int i = 0; i < list.length; i++){
+                    Tower_Type type = simulation_manager.getTowerTypeByName(list[i]);
+                    procedureRoom.addTowerType(type);
+                }
 
                 //adding a new procedure room
                 if (resultCode == RESULT_FIRST_USER) {
@@ -324,61 +326,6 @@ public class SimulationActivity
 
             } else if (element.equals(Element.ELEMENT_CLIENT)) {
 
-            }
-        }
-
-
-
-
-
-
-
-
-
-
-
-        //returned from ProcedureRoomActivity
-        if (requestCode == procedureRoom_Request) {
-            //added a procedureRoom
-            if (resultCode == RESULT_FIRST_USER) {
-
-                ProcedureRoom procedureRoom = (ProcedureRoom) data.getSerializableExtra("procedureRoom");
-                simulation_manager.addProcedureRoom(procedureRoom);
-
-                LinearLayout linearLayoutRooms = findViewById(R.id.LinearLayoutRooms);
-                ObjectView roomImage = new ObjectView(procedureRoom, getApplicationContext());
-                roomImage.changeOrientation(LinearLayout.HORIZONTAL);
-                roomImage.setOnClickListener(this);
-
-                int index = simulation_manager.getProcedureRoomNum() - 1;
-                Tag tag = new Tag(index, "Procedure Room");
-
-                roomImage.setTag(tag);
-
-                linearLayoutRooms.addView(roomImage);
-                renderUIFromManager();
-
-                //edited or deleted a procedureRoom
-            } else if (resultCode == RESULT_OK) {
-                ProcedureRoom procedureRoom = (ProcedureRoom) data.getSerializableExtra("procedureRoom");
-                int index = currentClicked.index;
-
-                //deleting a procedureRoom
-                if (procedureRoom.getTravelTime() <= 0 || procedureRoom.getCooldownTime() <= 0) {
-                    simulation_manager.deleteProcedureRoom(index);
-
-                    LinearLayout linearLayoutRooms = findViewById(R.id.LinearLayoutRooms);
-                    View room = linearLayoutRooms.getChildAt(simulation_manager.getProcedureRoomNum()); //TODO:: not -1?????/
-                    linearLayoutRooms.removeView(room);
-
-                    //editing a procedureRoom
-                } else {
-                    simulation_manager.editProcedureRoom(procedureRoom, index);
-                    renderUIFromManager();
-                }
-                //nothing to be done, represents just viewing or canceling an add to procedureRoom
-            } else if (resultCode == RESULT_CANCELED) {
-                return;
             }
         }
 
@@ -611,6 +558,7 @@ public class SimulationActivity
             Intent procedureRoomIntent = new Intent(getApplicationContext(), ElementActivity.class);
             procedureRoomIntent.putExtra("element", procedureRoom);
             procedureRoomIntent.putExtra("mode", "view");
+            procedureRoomIntent.putExtra("towerTypes", simulation_manager.getTowerTypeNames());
             startActivityForResult(procedureRoomIntent, element_Request);
 
         } else if (type.equals("Client")) {
@@ -759,6 +707,7 @@ public class SimulationActivity
             @SuppressLint("RestrictedApi")
             @Override
             public void run() {
+                System.out.println("RUNNINGHERE");
                 if (!isRunning && !isPaused) {
                     isRunning = true;
                     simulation_manager.runTick();
