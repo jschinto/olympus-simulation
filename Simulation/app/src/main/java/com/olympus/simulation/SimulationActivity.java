@@ -693,6 +693,12 @@ public class SimulationActivity
         }
     }
 
+    //Method to create each log file
+    public void createLogs() {
+        //Equipment Log:
+        simulation_manager.createLog(getApplicationContext(), "equipment", new EquipmentCSV().getCSVHeader(), simulation_manager.getEquipmentList());
+    }
+
     public void renderUIFromManager() {
         TextView textTime = findViewById(R.id.textViewTime);
         textTime.setText(Time.convertToString(simulation_manager.getCurrTime()));
@@ -768,6 +774,7 @@ public class SimulationActivity
                                 playImage.setIcon(getResources().getDrawable(R.drawable.play_button));
                             }
                         });
+                        createLogs();
                         this.cancel();
                     }
                     runOnUiThread(new Runnable() {

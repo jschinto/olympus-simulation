@@ -1,5 +1,6 @@
 package com.olympus.simulation;
 
+import android.content.Context;
 import android.widget.Toast;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -331,5 +332,33 @@ public class Simulation_Manager {
     //TODO: maybe show toast for patients deleted
     public int removeClientsOutsideRange() {
         return clientManager.removeClientsOutsideRange(startTime, endTime);
+    }
+
+    public ArrayList<CSVable> getEquipmentList() {
+        //Add all equipment (must implement equipment interface) here:
+        ArrayList<EquipmentCSV.Equipment> equip = new ArrayList<>();
+        equip.addAll(scopeManager.getScopes());
+
+        //Convert to CSVable Equipment Type:
+        ArrayList<CSVable> toReturn = new ArrayList<>();
+        for(EquipmentCSV.Equipment e : equip) {
+            toReturn.add(e.getEquipmentCSV());
+        }
+        return toReturn;
+    }
+
+    public void createLog(Context mcoContext, String filename, String CSVHeader, ArrayList<CSVable> logItems) {
+        String body = CSVHeader;
+        for(int i = 0; i < logItems.size(); i++) {
+            body += "\n";
+            body += logItems.get(i).getCSV();
+        }
+        FileHelper fileHelper = new FileHelper(filename + "-log.csv");
+        fileHelper.writeFileOnInternalStorage(mcoContext, body);
+    }
+
+    public interface CSVable {
+        String getCSV();
+        String getCSVHeader();
     }
 }

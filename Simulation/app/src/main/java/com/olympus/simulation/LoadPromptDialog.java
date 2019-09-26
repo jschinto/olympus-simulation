@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.Spinner;
 
 public class LoadPromptDialog extends AppCompatDialogFragment {
@@ -24,7 +23,7 @@ public class LoadPromptDialog extends AppCompatDialogFragment {
 
         spinnerFileName = view.findViewById(R.id.spinner_filename);
 
-        String[] items = (new FileHelper()).getFileNames(getContext());
+        String[] items = (new FileHelper()).getJSONFileNames(getContext());
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, items);
         spinnerFileName.setAdapter(adapter);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

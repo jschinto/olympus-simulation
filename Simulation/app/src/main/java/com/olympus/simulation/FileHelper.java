@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 /**
  * Created by Tan on 2/18/2016.
@@ -110,12 +111,18 @@ public class FileHelper {
         }
     }
 
-    public String[] getFileNames(Context mcoContext) {
+    public String[] getJSONFileNames(Context mcoContext) {
         File folder = mcoContext.getExternalFilesDir(null);
         File[] listOfFiles = folder.listFiles();
+        ArrayList<File> JSONfiles = new ArrayList<>();
+        for (File f : listOfFiles) {
+            if(f.getName().substring(f.getName().length() - 5).equals(".json")) {
+                JSONfiles.add(f);
+            }
+        }
         String[] ret = new String[listOfFiles.length];
-        for(int i = 0; i < listOfFiles.length; i++){
-            ret[i] = listOfFiles[i].getName().substring(0, listOfFiles[i].getName().length() - 5);
+        for(int i = 0; i < JSONfiles.size(); i++){
+            ret[i] = JSONfiles.get(i).getName().substring(0, JSONfiles.get(i).getName().length() - 5);
         }
         return ret;
     }

@@ -4,13 +4,14 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class Scope implements Comparable<Scope>, Serializable {
+public class Scope implements Comparable<Scope>, Serializable, EquipmentCSV.Equipment {
     private Scope_Type type;
     private int state;
     private int timeLeft;
     private boolean uiUpdated;
     private ProcedureRoom room;
     private int id;
+    private EquipmentCSV equipmentCSV;
 
     private boolean tempGrab;
 
@@ -33,6 +34,7 @@ public class Scope implements Comparable<Scope>, Serializable {
         this.uiUpdated = false;
         this.room = null;
         this.tempGrab = false;
+        this.equipmentCSV = new EquipmentCSV("Scope", t.getName(), "");
     }
     public int getState() {
         return state;
@@ -122,6 +124,7 @@ public class Scope implements Comparable<Scope>, Serializable {
 
     public void setId(int id) {
         this.id = id;
+        equipmentCSV.setSerialNum(Integer.toString(id));
     }
 
     public ProcedureRoom getRoom() {
@@ -129,4 +132,8 @@ public class Scope implements Comparable<Scope>, Serializable {
     }
 
 
+    @Override
+    public EquipmentCSV getEquipmentCSV() {
+        return equipmentCSV;
+    }
 }
