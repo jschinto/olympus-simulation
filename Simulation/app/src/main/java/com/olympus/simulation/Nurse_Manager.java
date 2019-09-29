@@ -5,8 +5,11 @@ import java.util.ArrayList;
 public class Nurse_Manager {
     private ArrayList<Nurse> nurses;
 
+    private int postProcedureTime;
+
     public Nurse_Manager() {
         nurses = new ArrayList<Nurse>();
+        postProcedureTime = 1;
     }
 
     public int getNurseNum() {
@@ -20,5 +23,18 @@ public class Nurse_Manager {
             }
         }
         return false;
+    }
+
+    public int getPostProcedureTime() {
+        return postProcedureTime;
+    }
+    public void setPostProcedureTime(int postProcedureTime) {
+        this.postProcedureTime = postProcedureTime;
+    }
+    public void setNurseNum(int num) {
+        nurses = new ArrayList<Nurse>();
+        for (int i=0; i < num; i++) {
+            nurses.add(new Nurse());
+        }
     }
 }

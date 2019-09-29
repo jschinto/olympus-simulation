@@ -19,8 +19,7 @@ import java.util.ArrayList;
 public class ElementActivity extends AppCompatActivity {
 
     Element element;
-    String mode; // "add" or "view"
-
+    String mode; // "add" or "view" or "actor"
     int[] ids;
 
     @Override
@@ -41,11 +40,18 @@ public class ElementActivity extends AppCompatActivity {
         else if (mode.equals("add")) {
             Button buttonAdd = findViewById(R.id.elementButtonAddDelete);
             buttonAdd.setText(R.string.buttonAdd);
+            buttonAdd.setVisibility(View.VISIBLE);
             Button buttonEdit = findViewById(R.id.elementButtonEdit);
             buttonEdit.setVisibility(View.INVISIBLE);
         } else if (mode.equals("view")) {
             Button buttonAdd = findViewById(R.id.elementButtonAddDelete);
             buttonAdd.setText(R.string.buttonDelete);
+            buttonAdd.setVisibility(View.VISIBLE);
+            Button buttonEdit = findViewById(R.id.elementButtonEdit);
+            buttonEdit.setVisibility(View.VISIBLE);
+        } else if (mode.equals("actor")) {
+            Button buttonAdd = findViewById(R.id.elementButtonAddDelete);
+            buttonAdd.setVisibility(View.INVISIBLE);
             Button buttonEdit = findViewById(R.id.elementButtonEdit);
             buttonEdit.setVisibility(View.VISIBLE);
         }
@@ -54,13 +60,14 @@ public class ElementActivity extends AppCompatActivity {
         if (element.equals(Element.ELEMENT_CLIENT)) {
 
         } else if (element.equals(Element.ELEMENT_NURSE)) {
-            setText(R.id.elementTextTitle, "Nurse");
-            ids = new int[1];
-            ids[0] = addField("Post Procedure Time", "number");
-            if (mode.equals("view")) {
-                Nurse nurse = (Nurse)element;
-                setText(ids[0], nurse.getPostProcedureTime());
-            }
+            setText(R.id.elementTextTitle, "Nurses");
+            ids = new int[2];
+            ids[0] = addField("Number of Nurses", "number");
+            ids[1] = addField("Post Procedure Time", "number");
+            int num = fromIntent.getIntExtra("number", -1);
+            int cooldown = fromIntent.getIntExtra("cooldown", -1);
+            setText(ids[0], num);
+            setText(ids[1], cooldown);
         } else if (element.equals(Element.ELEMENT_PROCEDUREROOM)) {
             setText(R.id.elementTextTitle, "Procedure Room");
             ids = new int[3];
@@ -117,14 +124,7 @@ public class ElementActivity extends AppCompatActivity {
                         return;
                     }
                 } else if (element.equals(Element.ELEMENT_NURSE)) {
-                    int postProcedureTime = getTextInt(ids[0]);
-                    Nurse nurse = new Nurse(postProcedureTime);
-                    if (nurse.validate()) {
-                        leaveActivity(RESULT_FIRST_USER, nurse);
-                    } else {
-                        makeToast("INVALID VALUES ENTERED");
-                        return;
-                    }
+
 
                 }
                 else if(element.equals(Element.ELEMENT_LEAKTESTERTYPE)){
@@ -147,7 +147,6 @@ public class ElementActivity extends AppCompatActivity {
                 if (element.equals(Element.ELEMENT_PROCEDUREROOM)) {
                     leaveActivity(RESULT_OK, new ProcedureRoom(-1, -1));
                 } else if (element.equals(Element.ELEMENT_NURSE)) {
-                    leaveActivity(RESULT_OK, new Nurse(-1));
 
                 }
             }
@@ -168,16 +167,14 @@ public class ElementActivity extends AppCompatActivity {
                     return;
                 }
 
-            } else if (element.equals(Element.ELEMENT_NURSE)) {
-                int postProcedureTime = getTextInt(ids[0]);
-                Nurse nurse = new Nurse(postProcedureTime);
-                if (nurse.validate()) {
-                    leaveActivity(RESULT_OK, nurse);
-                } else {
+            } else if (mode.equals("actor")) {
+                int num = getTextInt(ids[0]);
+                int cooldown = getTextInt(ids[1]);
+                if (num < 1 || cooldown < 1) {
                     makeToast("INVALID VALUES ENTERED");
                     return;
                 }
-
+                leaveActivity(RESULT_OK, element, num, cooldown);
             }
         //clicked the exit button
         } else if (view.getId() == R.id.elementButtonExit) {
@@ -342,5 +339,17 @@ public class ElementActivity extends AppCompatActivity {
         returnIntent.putExtra("list", list);
         setResult(code, returnIntent);
         finish();
+    }
+    public void leaveActivity(int code, Element newElement, int number, int cooldown) {
+            if (code == RESULT_CANCELED) {
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("element", newElement);
+            returnIntent.putExtra("number", number);
+            returnIntent.putExtra("cooldown", cooldown);
+            setResult(code, returnIntent);
+            finish();
     }
 }

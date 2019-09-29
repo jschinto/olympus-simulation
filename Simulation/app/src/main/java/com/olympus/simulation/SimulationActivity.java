@@ -190,14 +190,6 @@ public class SimulationActivity
             } else {
                 addProcedureRoom.setVisible(false);
             }
-
-        }
-        else if (id == R.id.addNurse) {
-            Intent nurseIntent = new Intent(getApplicationContext(), ElementActivity.class);
-            Nurse nurse = new Nurse(-1);
-            nurseIntent.putExtra("element", nurse);
-            nurseIntent.putExtra("mode", "add");
-            startActivityForResult(nurseIntent, element_Request);
         }
         else if (id == R.id.addProcedureType) {
             Intent procedureIntent = new Intent(getApplicationContext(), ProcedureActivity.class);
@@ -324,8 +316,13 @@ public class SimulationActivity
                 }
 
 
-            } else if (element.equals(Element.ELEMENT_CLIENT)) {
-
+            } else if (element.equals(Element.ELEMENT_NURSE)) {
+                if (resultCode == RESULT_OK) {
+                    int number = data.getIntExtra("number", -1);
+                    int cooldown = data.getIntExtra("cooldown", -1);
+                    simulation_manager.setNurseNum(number);
+                    simulation_manager.setNursePostProcedureTime(cooldown);
+                }
             }
         }
 
@@ -575,6 +572,14 @@ public class SimulationActivity
             scopeIntent.putExtra("scope", scope);
             scopeIntent.putExtra("scopeTypeNames", simulation_manager.getScopeTypeNames());
             startActivityForResult(scopeIntent, scope_Request);
+        } else if (type.equals("Nurse")) {
+            Intent nurseIntent = new Intent(getApplicationContext(), ElementActivity.class);
+            Nurse nurse = new Nurse();
+            nurseIntent.putExtra("element", nurse);
+            nurseIntent.putExtra("mode", "actor");
+            nurseIntent.putExtra("number", simulation_manager.getNurseNum());
+            nurseIntent.putExtra("cooldown", simulation_manager.getNursePostProcedureTime());
+            startActivityForResult(nurseIntent, element_Request);
         }
     }
 

@@ -8,21 +8,11 @@ public class Nurse extends Element implements Serializable {
 
     private int timeLeft;
 
-    private int postProcedureTime;
 
-    public Nurse(int postProcedureTime) {
+    public Nurse() {
         this.element = ELEMENT_NURSE;
-        this.postProcedureTime = postProcedureTime;
         setState(State.STATE_WAIT);
         timeLeft = 0;
-    }
-
-    public boolean validate() {
-        return postProcedureTime > 0;
-    }
-
-    public int getPostProcedureTime() {
-        return postProcedureTime;
     }
 
     public int getState() {
@@ -54,7 +44,7 @@ public class Nurse extends Element implements Serializable {
         setState(State.STATE_OPERATION);
     }
 
-    public void startPostProcedure() {
+    public void startPostProcedure(int postProcedureTime) {
         this.timeLeft = postProcedureTime;
         setState(State.STATE_DONE);
     }

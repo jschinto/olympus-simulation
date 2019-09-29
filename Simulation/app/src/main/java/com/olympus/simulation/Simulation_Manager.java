@@ -343,4 +343,17 @@ public class Simulation_Manager {
     public int removeClientsOutsideRange() {
         return clientManager.removeClientsOutsideRange(startTime, endTime);
     }
+
+    public int getNurseNum() {
+        return nurse_manager.getNurseNum();
+    }
+    public int getNursePostProcedureTime() {
+        return nurse_manager.getPostProcedureTime();
+    }
+    public void setNurseNum(int num) {
+        nurse_manager.setNurseNum(num);
+    }
+    public void setNursePostProcedureTime(int time) {
+        nurse_manager.setPostProcedureTime(time);
+    }
 }
