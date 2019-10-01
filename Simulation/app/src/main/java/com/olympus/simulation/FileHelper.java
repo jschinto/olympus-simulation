@@ -116,11 +116,11 @@ public class FileHelper {
         File[] listOfFiles = folder.listFiles();
         ArrayList<File> JSONfiles = new ArrayList<>();
         for (File f : listOfFiles) {
-            if(f.getName().substring(f.getName().length() - 5).equals(".json")) {
+            if(f.getName().length() >= 5  && f.getName().substring(f.getName().length() - 5).equals(".json")) {
                 JSONfiles.add(f);
             }
         }
-        String[] ret = new String[listOfFiles.length];
+        String[] ret = new String[JSONfiles.size()];
         for(int i = 0; i < JSONfiles.size(); i++){
             ret[i] = JSONfiles.get(i).getName().substring(0, JSONfiles.get(i).getName().length() - 5);
         }
