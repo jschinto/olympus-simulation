@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -644,7 +643,9 @@ public class SimulationActivity
     //Method to create each log file
     public void createLogs() {
         //Equipment Log:
-        simulation_manager.createLog(getApplicationContext(), "equipment", new EquipmentCSV().getCSVHeader(), simulation_manager.getEquipmentList());
+        simulation_manager.createLog(getApplicationContext(), "equipment", new EquipmentCSV().getCSVHeader(), simulation_manager.getEquipmentCSVList());
+        //Station Log:
+        simulation_manager.createLog(getApplicationContext(), "station", new StationCSV().getCSVHeader(), simulation_manager.getStationCSVList());
     }
 
     public void renderUIFromManager() {

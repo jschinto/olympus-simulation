@@ -1,6 +1,8 @@
 package com.olympus.simulation;
 
-public class EquipmentCSV implements Simulation_Manager.CSVable {
+import java.io.Serializable;
+
+public class EquipmentCSV implements Simulation_Manager.CSVable, Serializable {
     String equipType;
     String model;
     String serialNum;

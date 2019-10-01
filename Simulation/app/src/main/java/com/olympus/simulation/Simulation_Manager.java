@@ -345,7 +345,7 @@ public class Simulation_Manager {
         return clientManager.removeClientsOutsideRange(startTime, endTime);
     }
 
-    public ArrayList<CSVable> getEquipmentList() {
+    public ArrayList<CSVable> getEquipmentCSVList() {
         //Add all equipment (must implement equipment interface) here:
         ArrayList<EquipmentCSV.Equipment> equip = new ArrayList<>();
         equip.addAll(scopeManager.getScopes());
@@ -354,6 +354,18 @@ public class Simulation_Manager {
         ArrayList<CSVable> toReturn = new ArrayList<>();
         for(EquipmentCSV.Equipment e : equip) {
             toReturn.add(e.getEquipmentCSV());
+        }
+        return toReturn;
+    }
+
+    public ArrayList<CSVable> getStationCSVList() {
+        StationCSV waitingRoom = new StationCSV("Waiting Room", "Waiting Room");
+        ArrayList<StationCSV.Station> stations = new ArrayList<>();
+
+        ArrayList<CSVable> toReturn = new ArrayList<>();
+        toReturn.add(waitingRoom);
+        for(StationCSV.Station s : stations) {
+            toReturn.add(s.getStationCSV());
         }
         return toReturn;
     }

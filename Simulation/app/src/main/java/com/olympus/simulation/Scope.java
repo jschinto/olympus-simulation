@@ -34,7 +34,12 @@ public class Scope implements Comparable<Scope>, Serializable, EquipmentCSV.Equi
         this.uiUpdated = false;
         this.room = null;
         this.tempGrab = false;
-        this.equipmentCSV = new EquipmentCSV("Scope", t.getName(), "");
+
+        String typeName = "";
+        if(t != null) {
+            typeName = t.getName();
+        }
+        this.equipmentCSV = new EquipmentCSV("Scope", typeName, "");
     }
     public int getState() {
         return state;
@@ -108,6 +113,11 @@ public class Scope implements Comparable<Scope>, Serializable, EquipmentCSV.Equi
 
     public void setType(Scope_Type type) {
         this.type = type;
+        String typeName = "";
+        if(type != null) {
+            typeName = type.getName();
+        }
+        this.equipmentCSV.setModel(typeName);
     }
 
     public boolean getuiUpdated() {
