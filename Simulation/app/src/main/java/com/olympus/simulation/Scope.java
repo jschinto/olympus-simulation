@@ -10,6 +10,7 @@ public class Scope implements Comparable<Scope>, Serializable {
     private int timeLeft;
     private boolean uiUpdated;
     private ProcedureRoom room;
+    private ManualCleaningStation station;
     private int id;
 
     private boolean tempGrab;
@@ -57,22 +58,30 @@ public class Scope implements Comparable<Scope>, Serializable {
         }
         if (this.timeLeft == 0) {
             //Scope has finished being cleaned
-            if (this.state == State_Scope.STATE_DIRTY) {
+            if (this.state == State_Scope.STATE_CLEANING) {
+                this.station.setCurrentScope(null);
+                this.station = null;
                 setState(State_Scope.STATE_FREE);
             }
             //Scope has arrived at its destination
             if (this.state == State_Scope.STATE_TRAVEL) {
                 setState(State_Scope.STATE_USE);
             }
-
+            if(this.state == State_Scope.STATE_DIRTY) {
+                this.station = ManualCleaningStation_Manager.getFreeStation();
+                if(this.station != null){
+                    this.station.setCurrentScope(this);
+                    setTimeLeft(this.getCleaningTime() + this.station.getCurrentLeakTester().getTimeToComplete());
+                    setState(State_Scope.STATE_CLEANING);
+                }
+            }
         }
     }
 
-    //TEMPORARY CODE UNTIL WE WORK ON CLEANING
     public void freeScope() {
+        this.timeLeft = this.room.getTravelTime();
         this.room = null;
         setState(State_Scope.STATE_DIRTY);
-        this.timeLeft = this.type.getCleaningTime();
     }
 
     public int getTimeLeft() {

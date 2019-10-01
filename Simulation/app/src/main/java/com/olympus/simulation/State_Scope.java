@@ -14,13 +14,15 @@ public class State_Scope implements Serializable {
     public static final int STATE_TRAVEL = 3;
     public static final int STATE_USE = 2;
     public static final int STATE_DIRTY = 1;
+    public static final int STATE_CLEANING= 4;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({
             STATE_FREE,
             STATE_TRAVEL,
             STATE_USE,
-            STATE_DIRTY
+            STATE_DIRTY,
+            STATE_CLEANING
     })
     public @interface StateDef {
     }
