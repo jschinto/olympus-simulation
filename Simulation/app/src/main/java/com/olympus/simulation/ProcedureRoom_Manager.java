@@ -28,7 +28,11 @@ public class ProcedureRoom_Manager {
                 }
 
                 if(checker == roomList.get(i).getScopeList().size()) {
-                    roomList.get(i).setReady(true);
+                    if(roomList.get(i).getCurrentNurse() != null && roomList.get(i).getCurrentNurse().getState() == State.STATE_OPERATION){
+                        if(roomList.get(i).getCurrentDoctor() != null && roomList.get(i).getCurrentDoctor().getState() == State.STATE_OPERATION){
+                            roomList.get(i).setReady(true);
+                        }
+                    }
                 }
             }
         }

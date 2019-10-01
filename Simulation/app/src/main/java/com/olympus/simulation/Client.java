@@ -60,7 +60,7 @@ public class Client implements Comparable<Client>, Serializable {
         if (timeLeft <= 0 && state.equals(State.STATE_OPERATION)) {
             setState(State.STATE_DONE);
             procedureRoom.removeClient();
-            procedureRoom.removeScope();
+            procedureRoom.removeElements();
             this.procedureRoom = null;
         }
         //client is done traveling to operation room

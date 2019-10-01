@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Doctor_Manager {
     private ArrayList<Doctor> doctors;
 
-    private int postProcedureTime;
+    private static int postProcedureTime;
 
     public Doctor_Manager() {
         doctors = new ArrayList<Doctor>();
@@ -14,23 +14,31 @@ public class Doctor_Manager {
         doctors.add(new Doctor());
     }
 
+    public void runTick(){
+        for(int i = 0; i < this.doctors.size(); i++){
+            this.doctors.get(i).tick();
+        }
+    }
+
     public int getDoctorNum() {
         return doctors.size();
     }
 
-    public boolean getDoctor() {
+    public Doctor getDoctor() {
         for (int i=0; i < doctors.size(); i++) {
             if (doctors.get(i).getState() == State.STATE_WAIT) {
-                return true;
+                Doctor doctor = doctors.get(i);
+                return doctor;
             }
         }
-        return false;
+        return null;
     }
+
     public void operationComplete(Doctor doctor) {
         doctor.startPostProcedure(postProcedureTime);
     }
 
-    public int getPostProcedureTime() {
+    public static int getPostProcedureTime() {
         return postProcedureTime;
     }
     public void setPostProcedureTime(int postProcedureTime) {

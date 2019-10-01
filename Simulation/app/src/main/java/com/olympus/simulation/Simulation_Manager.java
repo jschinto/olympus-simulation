@@ -86,6 +86,8 @@ public class Simulation_Manager {
         clientManager.runTick();
         scopeManager.runTick();
         procedureRoomManager.runTick();
+        nurse_manager.runTick();
+        doctor_manager.runTick();
 
         int patientOffset = 0;
         int roomOffset = 0;
@@ -96,8 +98,16 @@ public class Simulation_Manager {
             if (nextClient == null) {
                 break;
             }
-            System.out.println(nextClient.getId());
-            System.out.println(openRoom.getId());
+
+            Nurse freeNurse = nurse_manager.getNurse();
+            if(freeNurse == null){
+                break;
+            }
+
+            Doctor freeDoctor = doctor_manager.getDoctor();
+            if(freeDoctor == null){
+                break;
+            }
 
             if(!openRoom.checkCanProcess(nextClient)){
                 System.out.println("CANT CHECK");
@@ -135,7 +145,7 @@ public class Simulation_Manager {
                 roomOffset = 0;
                 clientManager.addToOperating(nextClient);
                 nextClient.setProcedureRoom(openRoom);
-                openRoom.claimScope(scopeList);
+                openRoom.claimElements(scopeList, freeDoctor, freeNurse);
                 openRoom = procedureRoomManager.getProcedureRoom(roomOffset);
                 clientManager.sortQueue();
             }

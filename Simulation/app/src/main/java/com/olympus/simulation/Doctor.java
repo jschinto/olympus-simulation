@@ -39,11 +39,6 @@ public class Doctor extends Element implements Serializable {
         setState(State.STATE_TRAVEL);
     }
 
-    public void startOperation() {
-        this.timeLeft = 0;
-        setState(State.STATE_OPERATION);
-    }
-
     public void startPostProcedure(int postProcedureTime) {
         this.timeLeft = postProcedureTime;
         setState(State.STATE_DONE);
