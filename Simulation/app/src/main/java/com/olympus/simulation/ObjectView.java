@@ -38,8 +38,9 @@ public class ObjectView extends LinearLayout {
             type = "procedureRoom";
         } else if (object instanceof  Nurse) {
             type = "Nurse";
-        }
-        else  {
+        } else if (object instanceof Doctor) {
+            type = "Doctor";
+        } else  {
             type = null;
         }
         init();
@@ -68,6 +69,10 @@ public class ObjectView extends LinearLayout {
             LayoutParams params = new LayoutParams(125, 100);
             imageView.setLayoutParams(params);
         } else if (type.equals("Nurse")) {
+            imageView.setImageResource(R.drawable.client_color);
+            LayoutParams params = new LayoutParams(70, 100);
+            imageView.setLayoutParams(params);
+        } else if (type.equals("Doctor")) {
             imageView.setImageResource(R.drawable.client_color);
             LayoutParams params = new LayoutParams(70, 100);
             imageView.setLayoutParams(params);
@@ -149,7 +154,9 @@ public class ObjectView extends LinearLayout {
             }
         } else if (type.equals("Nurse")) {
             changeText("Number of Nurses: ");
-        }
+        } else if (type.equals("Doctor")) {
+            changeText("Number of Doctors: ");
+    }
         else {
             addLine("TYPE INVALID");
         }

@@ -328,6 +328,14 @@ public class SimulationActivity
                     updateActorUI();
 
                 }
+            } else if (element.equals(Element.ELEMENT_DOCTOR)) {
+                if (resultCode == RESULT_OK) {
+                    int number = data.getIntExtra("number", -1);
+                    int cooldown = data.getIntExtra("cooldown", -1);
+                    simulation_manager.setDoctorNum(number);
+                    simulation_manager.setDoctorPostProcedureTime(cooldown);
+                    updateActorUI();
+                }
             }
         }
 
@@ -585,6 +593,15 @@ public class SimulationActivity
             nurseIntent.putExtra("number", simulation_manager.getNurseNum());
             nurseIntent.putExtra("cooldown", simulation_manager.getNursePostProcedureTime());
             startActivityForResult(nurseIntent, element_Request);
+        } else if (type.equals("Doctor")) {
+            Intent doctorIntent = new Intent(getApplicationContext(), ElementActivity.class);
+            Doctor doctor = new Doctor();
+            doctorIntent.putExtra("element", doctor);
+            doctorIntent.putExtra("mode", "actor");
+            doctorIntent.putExtra("number", simulation_manager.getDoctorNum());
+            doctorIntent.putExtra("cooldown", simulation_manager.getDoctorPostProcedureTime());
+            startActivityForResult(doctorIntent, element_Request);
+
         }
     }
 
@@ -786,12 +803,21 @@ public class SimulationActivity
     public void updateActorUI() {
         LinearLayout nurseLayout = findViewById(R.id.LinearLayoutNurses);
         nurseLayout.removeAllViews();
+
         ObjectView nurse = new ObjectView(new Nurse(), getApplicationContext());
         nurse.changeOrientation(ObjectView.HORIZONTAL);
         nurse.addLine("" + simulation_manager.getNurseNum());
-        Tag tag =  new Tag(0, "Nurse");
-        nurse.setTag(tag);
+        Tag tagN =  new Tag(0, "Nurse");
+        nurse.setTag(tagN);
         nurse.setOnClickListener(this);
         nurseLayout.addView(nurse);
+
+        ObjectView doctor = new ObjectView(new Doctor(), getApplicationContext());
+        doctor.changeOrientation(ObjectView.HORIZONTAL);
+        doctor.addLine("" + simulation_manager.getDoctorNum());
+        Tag tagD =  new Tag(0, "Doctor");
+        doctor.setTag(tagD);
+        doctor.setOnClickListener(this);
+        nurseLayout.addView(doctor);
     }
 }

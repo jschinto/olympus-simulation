@@ -57,7 +57,15 @@ public class ElementActivity extends AppCompatActivity {
         }
 
         //add all the text and edit boxes to the layout based on element type
-        if (element.equals(Element.ELEMENT_CLIENT)) {
+        if (element.equals(Element.ELEMENT_DOCTOR)) {
+            setText(R.id.elementTextTitle, "Doctors");
+            ids = new int[2];
+            ids[0] = addField("Number of Doctors", "number");
+            ids[1] = addField("Post Procedure Time", "number");
+            int num = fromIntent.getIntExtra("number", -1);
+            int cooldown = fromIntent.getIntExtra("cooldown", -1);
+            setText(ids[0], num);
+            setText(ids[1], cooldown);
 
         } else if (element.equals(Element.ELEMENT_NURSE)) {
             setText(R.id.elementTextTitle, "Nurses");
@@ -143,8 +151,6 @@ public class ElementActivity extends AppCompatActivity {
 
                 if (element.equals(Element.ELEMENT_PROCEDUREROOM)) {
                     leaveActivity(RESULT_OK, new ProcedureRoom(-1, -1));
-                } else if (element.equals(Element.ELEMENT_NURSE)) {
-
                 }
             }
 

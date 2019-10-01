@@ -17,6 +17,7 @@ public class Simulation_Manager {
     private ScopeType_Manager scopeTypeManager;
     private TowerType_Manager towerTypeManager;
     private Nurse_Manager nurse_manager;
+    private Doctor_Manager doctor_manager;
 
     //the time the simulated hospital should open and close
     //Represented as a integer from 0 - some value
@@ -66,6 +67,7 @@ public class Simulation_Manager {
         scopeTypeManager = new ScopeType_Manager();
         towerTypeManager = new TowerType_Manager();
         nurse_manager = new Nurse_Manager();
+        doctor_manager = new Doctor_Manager();
         this.startTime = startTime;
         this.endTime = endTime;
         this.waitTime = waitTime;
@@ -355,5 +357,18 @@ public class Simulation_Manager {
     }
     public void setNursePostProcedureTime(int time) {
         nurse_manager.setPostProcedureTime(time);
+    }
+
+    public int getDoctorNum() {
+        return doctor_manager.getDoctorNum();
+    }
+    public int getDoctorPostProcedureTime() {
+        return doctor_manager.getPostProcedureTime();
+    }
+    public void setDoctorNum(int num) {
+        doctor_manager.setDoctorNum(num);
+    }
+    public void setDoctorPostProcedureTime(int time) {
+        doctor_manager.setPostProcedureTime(time);
     }
 }

@@ -18,13 +18,18 @@ public class Nurse_Manager {
         return nurses.size();
     }
 
-    public boolean nurseAvailable() {
+    public Nurse getNurse(int travelTime) {
         for (int i=0; i < nurses.size(); i++) {
             if (nurses.get(i).getState() == State.STATE_WAIT) {
-                return true;
+                Nurse nurse = nurses.get(i);
+                return nurse;
             }
         }
-        return false;
+        return null;
+    }
+
+    public void operationComplete(Nurse nurse) {
+        nurse.startPostProcedure(postProcedureTime);
     }
 
     public int getPostProcedureTime() {
