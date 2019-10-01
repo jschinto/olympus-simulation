@@ -98,6 +98,9 @@ public class SimulationActivity
         simulation_manager = new Simulation_Manager(0,720,1);
         hall_monitor = new Hall_Monitor();
         currentClicked = null;
+
+        updateActorUI(); //TODO::::
+
     }
 
     //handle view bar button clicks
@@ -322,6 +325,8 @@ public class SimulationActivity
                     int cooldown = data.getIntExtra("cooldown", -1);
                     simulation_manager.setNurseNum(number);
                     simulation_manager.setNursePostProcedureTime(cooldown);
+                    updateActorUI();
+
                 }
             }
         }
@@ -775,5 +780,18 @@ public class SimulationActivity
     @Override
     public void cancelTime() {
 
+    }
+
+
+    public void updateActorUI() {
+        LinearLayout nurseLayout = findViewById(R.id.LinearLayoutNurses);
+        nurseLayout.removeAllViews();
+        ObjectView nurse = new ObjectView(new Nurse(), getApplicationContext());
+        nurse.changeOrientation(ObjectView.HORIZONTAL);
+        nurse.addLine("" + simulation_manager.getNurseNum());
+        Tag tag =  new Tag(0, "Nurse");
+        nurse.setTag(tag);
+        nurse.setOnClickListener(this);
+        nurseLayout.addView(nurse);
     }
 }

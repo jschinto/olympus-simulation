@@ -123,9 +123,6 @@ public class ElementActivity extends AppCompatActivity {
                         makeToast("INVALID VALUES ENTERED");
                         return;
                     }
-                } else if (element.equals(Element.ELEMENT_NURSE)) {
-
-
                 }
                 else if(element.equals(Element.ELEMENT_LEAKTESTERTYPE)){
                     String name = getTextString(ids[0]);

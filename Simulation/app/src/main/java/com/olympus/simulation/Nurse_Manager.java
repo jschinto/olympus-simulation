@@ -10,6 +10,8 @@ public class Nurse_Manager {
     public Nurse_Manager() {
         nurses = new ArrayList<Nurse>();
         postProcedureTime = 1;
+
+        nurses.add(new Nurse());
     }
 
     public int getNurseNum() {
