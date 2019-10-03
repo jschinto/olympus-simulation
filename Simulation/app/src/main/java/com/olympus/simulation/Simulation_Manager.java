@@ -18,6 +18,8 @@ public class Simulation_Manager {
     private TowerType_Manager towerTypeManager;
     private Nurse_Manager nurse_manager;
     private Doctor_Manager doctor_manager;
+    private LeakTesterType_Manager leakTesterTypeManager;
+    private ManualCleaningStation_Manager manualCleaningStationManager;
 
     //the time the simulated hospital should open and close
     //Represented as a integer from 0 - some value
@@ -66,8 +68,10 @@ public class Simulation_Manager {
         scopeManager = new Scope_Manager();
         scopeTypeManager = new ScopeType_Manager();
         towerTypeManager = new TowerType_Manager();
+        leakTesterTypeManager = new LeakTesterType_Manager();
         nurse_manager = new Nurse_Manager();
         doctor_manager = new Doctor_Manager();
+        manualCleaningStationManager = new ManualCleaningStation_Manager();
         this.startTime = startTime;
         this.endTime = endTime;
         this.waitTime = waitTime;
@@ -349,6 +353,38 @@ public class Simulation_Manager {
 
     public void removeTowerTypeByName(String name) {
         towerTypeManager.removeTowerType(name);
+    }
+
+    public String[] getLeakTesterTypeNames(){
+        return leakTesterTypeManager.getLeakTesterTypeNames();
+    }
+
+    public void addLeakTester(LeakTester_Type type){
+        leakTesterTypeManager.addLeakTesterType(type);
+    }
+
+    public int getLeakTesterTypeNum(){
+        return leakTesterTypeManager.getLeakTesterTypeNames().length;
+    }
+
+    public LeakTester_Type getLeakTesterByName(String name){
+        return leakTesterTypeManager.getLeakTesterTypeByName(name);
+    }
+
+    public void removeLeakTesterType(LeakTester_Type type){
+        leakTesterTypeManager.removeLeakTesterType(type);
+    }
+
+    public ArrayList<ManualCleaningStation> getManualCleaningStations(){
+        return manualCleaningStationManager.getManualCleaningStations();
+    }
+
+    public ManualCleaningStation getManualCleaningStationByIndex(int index){
+        return manualCleaningStationManager.getManualCleaningStationByIndex(index);
+    }
+
+    public int getManualCleaningStationNum(){
+        return manualCleaningStationManager.getManualCleaningStationNum();
     }
 
     //TODO: maybe show toast for patients deleted

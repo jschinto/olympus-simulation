@@ -9,6 +9,18 @@ public class ManualCleaningStation_Manager {
         this.stations = new ArrayList<>();
     }
 
+    public ArrayList<ManualCleaningStation> getManualCleaningStations(){
+        return this.stations;
+    }
+
+    public ManualCleaningStation getManualCleaningStationByIndex(int index){
+        return this.stations.get(index);
+    }
+
+    public int getManualCleaningStationNum(){
+        return this.stations.size();
+    }
+
     public void addManualCleaningStation (ManualCleaningStation station) {
         this.stations.add(station);
         sort();
