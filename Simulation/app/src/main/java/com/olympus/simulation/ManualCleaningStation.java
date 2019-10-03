@@ -24,4 +24,12 @@ public class ManualCleaningStation {
     public void setCurrentLeakTester(LeakTester_Type currentLeakTester) {
         this.currentLeakTester = currentLeakTester;
     }
+
+    public boolean validate(){
+        if(this.currentLeakTester != null){
+            return true;
+        }
+
+        return false;
+    }
 }
