@@ -16,8 +16,8 @@ public class Simulation_Manager {
     private  Scope_Manager scopeManager;
     private ScopeType_Manager scopeTypeManager;
     private TowerType_Manager towerTypeManager;
-    private Nurse_Manager nurse_manager;
-    private Doctor_Manager doctor_manager;
+    private Nurse_Manager nursemanager;
+    private Doctor_Manager doctormanager;
     private LeakTesterType_Manager leakTesterTypeManager;
     private ManualCleaningStation_Manager manualCleaningStationManager;
 
@@ -69,8 +69,8 @@ public class Simulation_Manager {
         scopeTypeManager = new ScopeType_Manager();
         towerTypeManager = new TowerType_Manager();
         leakTesterTypeManager = new LeakTesterType_Manager();
-        nurse_manager = new Nurse_Manager();
-        doctor_manager = new Doctor_Manager();
+        nursemanager = new Nurse_Manager();
+        doctormanager = new Doctor_Manager();
         manualCleaningStationManager = new ManualCleaningStation_Manager();
         this.startTime = startTime;
         this.endTime = endTime;
@@ -90,8 +90,8 @@ public class Simulation_Manager {
         clientManager.runTick();
         scopeManager.runTick();
         procedureRoomManager.runTick();
-        nurse_manager.runTick();
-        doctor_manager.runTick();
+        nursemanager.runTick();
+        doctormanager.runTick();
 
         int patientOffset = 0;
         int roomOffset = 0;
@@ -103,12 +103,12 @@ public class Simulation_Manager {
                 break;
             }
 
-            Nurse freeNurse = nurse_manager.getNurse();
+            Nurse freeNurse = nursemanager.getNurse();
             if(freeNurse == null){
                 break;
             }
 
-            Doctor freeDoctor = doctor_manager.getDoctor();
+            Doctor freeDoctor = doctormanager.getDoctor();
             if(freeDoctor == null){
                 break;
             }
@@ -393,28 +393,28 @@ public class Simulation_Manager {
     }
 
     public int getNurseNum() {
-        return nurse_manager.getNurseNum();
+        return nursemanager.getNurseNum();
     }
     public int getNursePostProcedureTime() {
-        return nurse_manager.getPostProcedureTime();
+        return nursemanager.getPostProcedureTime();
     }
     public void setNurseNum(int num) {
-        nurse_manager.setNurseNum(num);
+        nursemanager.setNurseNum(num);
     }
     public void setNursePostProcedureTime(int time) {
-        nurse_manager.setPostProcedureTime(time);
+        nursemanager.setPostProcedureTime(time);
     }
 
     public int getDoctorNum() {
-        return doctor_manager.getDoctorNum();
+        return doctormanager.getDoctorNum();
     }
     public int getDoctorPostProcedureTime() {
-        return doctor_manager.getPostProcedureTime();
+        return doctormanager.getPostProcedureTime();
     }
     public void setDoctorNum(int num) {
-        doctor_manager.setDoctorNum(num);
+        doctormanager.setDoctorNum(num);
     }
     public void setDoctorPostProcedureTime(int time) {
-        doctor_manager.setPostProcedureTime(time);
+        doctormanager.setPostProcedureTime(time);
     }
 }

@@ -172,6 +172,8 @@ public class SimulationActivity
             MenuItem addScopeType = menu.findItem(R.id.addScopeType);
             MenuItem addTowerType = menu.findItem(R.id.addTowerType);
             MenuItem addProcedureRoom = menu.findItem(R.id.addProcedureRoom);
+            MenuItem addManualCleaningStation = menu.findItem(R.id.addManualCleaningStation);
+            //TODO:add leak tester as prereq to sink
 
             if (simulation_manager.getProcedureNum() > 0) {
                 addClient.setVisible(true);
@@ -312,7 +314,7 @@ public class SimulationActivity
                         simulation_manager.deleteProcedureRoom(index);
 
                         LinearLayout linearLayoutRooms = findViewById(R.id.LinearLayoutRooms);
-                        View room = linearLayoutRooms.getChildAt(simulation_manager.getProcedureRoomNum()); //TODO:: not -1?????/
+                        View room = linearLayoutRooms.getChildAt(simulation_manager.getProcedureRoomNum());
                         linearLayoutRooms.removeView(room);
                     }
 
@@ -380,7 +382,7 @@ public class SimulationActivity
                     simulation_manager.deleteClient(index);
 
                     LinearLayout linearLayoutClients = findViewById(R.id.LinearLayoutClients);
-                    View clientView = linearLayoutClients.getChildAt(simulation_manager.getClientNum()); //TODO:: not -1???
+                    View clientView = linearLayoutClients.getChildAt(simulation_manager.getClientNum());
                     linearLayoutClients.removeView(clientView);
                     renderUIFromManager();
                     //editing a client
@@ -469,7 +471,7 @@ public class SimulationActivity
                 if (type == null) {
                     simulation_manager.removeScope(index);
                     LinearLayout linearLayoutScopes = findViewById(R.id.LinearLayoutScopes);
-                    View scopeImg = linearLayoutScopes.getChildAt(simulation_manager.getScopeNum()); //TODO:: not -1?????/
+                    View scopeImg = linearLayoutScopes.getChildAt(simulation_manager.getScopeNum());
                     linearLayoutScopes.removeView(scopeImg);
                     renderUIFromManager();
                 }

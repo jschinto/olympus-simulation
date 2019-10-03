@@ -24,6 +24,7 @@
     <string name="textProcedureTypes">Procedure Types</string>
     <string name="textScopes">Scope Storage</string>
     <string name="textNurses">Nurses\t\t\t\t\t\t\t\t\tDoctors</string>
+    <string name="textSinks">Sinks</string>
     <string name="textScopeTitle">Scope</string>
     <string name="textCleaningTime">Cleaning Time</string>
     <string name="textScopeType">Scope Type</string>

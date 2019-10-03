@@ -1,6 +1,8 @@
 package com.olympus.simulation;
 
-public class ManualCleaningStation {
+import java.io.Serializable;
+
+public class ManualCleaningStation extends Element implements Serializable {
     Scope currentScope;
     LeakTester_Type currentLeakTester;
 

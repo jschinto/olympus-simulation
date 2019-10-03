@@ -22,6 +22,9 @@ public class ElementActivity extends AppCompatActivity {
     String mode; // "add" or "view" or "actor"
     int[] ids;
 
+    private final int labelLength = 75;
+    private final int textLength = 100;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -195,12 +198,14 @@ public class ElementActivity extends AppCompatActivity {
 
         TextView labelView = new TextView(getApplicationContext());
         labelView.setText(label);
+        labelView.setWidth(labelLength);
         newLayout.addView(labelView);
 
         if (type.equals("text")) {
             EditText fieldView = new EditText(getApplicationContext());
             fieldView.setInputType(InputType.TYPE_CLASS_TEXT);
             fieldView.setText("");
+            fieldView.setWidth(textLength);
             int id = View.generateViewId();
             fieldView.setId(id);
             newLayout.addView(fieldView);
@@ -210,6 +215,7 @@ public class ElementActivity extends AppCompatActivity {
             EditText fieldView = new EditText(getApplicationContext());
             fieldView.setInputType(InputType.TYPE_CLASS_NUMBER);
             fieldView.setText("0");
+            fieldView.setWidth(textLength);
             int id = View.generateViewId();
             fieldView.setId(id);
             newLayout.addView(fieldView);
@@ -230,6 +236,7 @@ public class ElementActivity extends AppCompatActivity {
 
         TextView labelView = new TextView(getApplicationContext());
         labelView.setText(label);
+        labelView.setWidth(labelLength);
         newLayout.addView(labelView);
 
         if (type.equals("checkbox")) {
