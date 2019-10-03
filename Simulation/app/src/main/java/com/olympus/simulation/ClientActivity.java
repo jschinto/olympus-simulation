@@ -29,6 +29,8 @@ public class ClientActivity extends AppCompatActivity {
 
     Client client;
     String[] procedures;
+    int startTime;
+    int endTime;
 
     private boolean adding;
 
@@ -42,6 +44,9 @@ public class ClientActivity extends AppCompatActivity {
         Intent fromIntent = getIntent();
         client = (Client) fromIntent.getSerializableExtra("client");
         procedures = fromIntent.getStringArrayExtra("procedures");
+        startTime = fromIntent.getIntExtra("startTime", 0);
+        endTime = fromIntent.getIntExtra("endTime", Time.convertToInt("23:59"));
+
         if (client != null) {
             setValues(client.getArrivalTime(), client.getProcedureList());
         }
@@ -63,12 +68,12 @@ public class ClientActivity extends AppCompatActivity {
             }
         }
 
-        if (arrivalTime < 0  || procedureList == null) {
+        if (arrivalTime < 0 || procedureList == null) {
             text2.setVisibility(View.VISIBLE);
             edit2.setVisibility(View.VISIBLE);
             if (arrivalTime >= 0) {
-                edit1.setCurrentHour(arrivalTime/60);
-                edit1.setCurrentMinute(arrivalTime%60);
+                edit1.setCurrentHour(arrivalTime / 60);
+                edit1.setCurrentMinute(arrivalTime % 60);
             } else {
                 //edit1.setText("");
             }
@@ -82,14 +87,14 @@ public class ClientActivity extends AppCompatActivity {
 
         text2.setVisibility(View.INVISIBLE);
         edit2.setVisibility(View.INVISIBLE);
-        edit1.setCurrentHour(arrivalTime/60);
-        edit1.setCurrentMinute(arrivalTime%60);
+        edit1.setCurrentHour(arrivalTime / 60);
+        edit1.setCurrentMinute(arrivalTime % 60);
 
         ArrayList<String> procedureListNames = new ArrayList<String>();
-        for (int i=0; i < procedureList.size(); i++) {
+        for (int i = 0; i < procedureList.size(); i++) {
             procedureListNames.add(procedureList.get(i).getName());
         }
-        for (int i=0; i < procedures.length; i++) {
+        for (int i = 0; i < procedures.length; i++) {
             if (procedureListNames.contains(procedures[i])) {
                 CheckBox checkBox = (CheckBox) clientCheckbox3.getChildAt(i);
                 checkBox.setChecked(true);
@@ -125,12 +130,12 @@ public class ClientActivity extends AppCompatActivity {
                 try {
                     TimePicker edit1 = findViewById(R.id.clientEdit1);
                     String hr = (edit1.getCurrentHour()) + "";
-                    if(hr.length() == 1) {
-                        hr = "0"+hr;
+                    if (hr.length() == 1) {
+                        hr = "0" + hr;
                     }
                     String min = (edit1.getCurrentMinute()) + "";
-                    if(min.length() == 1) {
-                        min = "0"+min;
+                    if (min.length() == 1) {
+                        min = "0" + min;
                     }
                     arrivalString = hr + ":" + min;
                     EditText edit2 = findViewById(R.id.clientEdit2);
@@ -139,22 +144,22 @@ public class ClientActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if(!Time.validateTime(arrivalString)) {
+                if (!Time.validateTime(arrivalString)) {
                     Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
                     return;
                 }
                 int arrivalTime = Time.convertToInt(arrivalString);
 
-                if (arrivalTime < 0 || amount <= 0 || amount >= 101) {
-                    Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
+                if (arrivalTime < startTime || arrivalTime > endTime || amount <= 0 || amount >= 101) {
+                    Toast.makeText(getApplicationContext(), "Invalid Time or Amount Entered!", Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 //get checked procedures from checkboxes
                 LinearLayout clientCheckbox4 = findViewById(R.id.clientCheckbox3);
                 ArrayList<String> procedureNames = new ArrayList<String>();
-                for (int i=0; i < clientCheckbox4.getChildCount(); i++) {
-                    CheckBox checkBox = (CheckBox)clientCheckbox4.getChildAt(i);
+                for (int i = 0; i < clientCheckbox4.getChildCount(); i++) {
+                    CheckBox checkBox = (CheckBox) clientCheckbox4.getChildAt(i);
                     if (checkBox.isChecked()) {
                         String name = checkBox.getText().toString();
                         procedureNames.add(name);
@@ -190,12 +195,12 @@ public class ClientActivity extends AppCompatActivity {
             try {
                 TimePicker edit1 = findViewById(R.id.clientEdit1);
                 String hr = (edit1.getCurrentHour()) + "";
-                if(hr.length() == 1) {
-                    hr = "0"+hr;
+                if (hr.length() == 1) {
+                    hr = "0" + hr;
                 }
                 String min = (edit1.getCurrentMinute()) + "";
-                if(min.length() == 1) {
-                    min = "0"+min;
+                if (min.length() == 1) {
+                    min = "0" + min;
                 }
                 arrivalString = hr + ":" + min;
             } catch (NumberFormatException e) {
@@ -203,14 +208,14 @@ public class ClientActivity extends AppCompatActivity {
                 return;
             }
 
-            if(!Time.validateTime(arrivalString)) {
+            if (!Time.validateTime(arrivalString)) {
                 Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
                 return;
             }
             int arrivalTime = Time.convertToInt(arrivalString);
 
-            if (arrivalTime < 0) {
-                Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
+            if (arrivalTime < startTime || arrivalTime > endTime) {
+                Toast.makeText(getApplicationContext(), "Invalid Arrival Time!", Toast.LENGTH_LONG).show();
                 return;
             }
 
@@ -218,8 +223,8 @@ public class ClientActivity extends AppCompatActivity {
             //get checked procedures from checkboxes
             LinearLayout clientCheckbox3 = findViewById(R.id.clientCheckbox3);
             ArrayList<String> procedureNames = new ArrayList<String>();
-            for (int i=0; i < clientCheckbox3.getChildCount(); i++) {
-                CheckBox checkBox = (CheckBox)clientCheckbox3.getChildAt(i);
+            for (int i = 0; i < clientCheckbox3.getChildCount(); i++) {
+                CheckBox checkBox = (CheckBox) clientCheckbox3.getChildAt(i);
                 if (checkBox.isChecked()) {
                     String name = checkBox.getText().toString();
                     procedureNames.add(name);
