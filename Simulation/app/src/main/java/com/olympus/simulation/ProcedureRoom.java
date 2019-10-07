@@ -23,6 +23,8 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
     private Client client;
     private ArrayList<Scope> scope;
     private ArrayList<Tower_Type> towerTypes;
+    private  Nurse currentNurse;
+    private Doctor currentDoctor;
 
     public ProcedureRoom(int travelTime, int cooldownTime) {
         this.element = Element.ELEMENT_PROCEDUREROOM;
@@ -34,13 +36,19 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
         this.client = null;
         this.scope = new ArrayList<>();
         this.towerTypes = new ArrayList<>();
+        this.currentNurse = null;
+        this.currentDoctor = null;
     }
 
-    public void claimScope(ArrayList<Scope> list) {
+    public void claimElements(ArrayList<Scope> list, Doctor doctor, Nurse nurse) {
         this.scope = list;
         for(Scope s : list) {
             s.claim(this, this.travelTime);
         }
+        this.currentDoctor = doctor;
+        this.currentDoctor.startTravel(this.travelTime);
+        this.currentNurse = nurse;
+        this.currentDoctor.startTravel(this.travelTime);
     }
 
     //cooldown time decreases with each tick of time
@@ -57,12 +65,16 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
         this.client = client;
     }
 
-    public void removeScope(String currTime) {
+    public void removeElements(String currTime) {
         setReady(false);
         for(Scope s : this.scope){
             s.freeScope(currTime);
         }
         this.scope.clear();
+        this.currentNurse.startPostProcedure(Nurse_Manager.getPostProcedureTime());
+        this.currentNurse = null;
+        this.currentDoctor.startPostProcedure(Doctor_Manager.getPostProcedureTime());
+        this.currentDoctor = null;
     }
 
     public void removeClient() {
@@ -187,5 +199,21 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
     @Override
     public StationCSV getStationCSV() {
         return new StationCSV("Room", "Procedure Room " + this.id);
+    }
+
+    public Nurse getCurrentNurse() {
+        return currentNurse;
+    }
+
+    public void setCurrentNurse(Nurse currentNurse) {
+        this.currentNurse = currentNurse;
+    }
+
+    public Doctor getCurrentDoctor() {
+        return currentDoctor;
+    }
+
+    public void setCurrentDoctor(Doctor currentDoctor) {
+        this.currentDoctor = currentDoctor;
     }
 }

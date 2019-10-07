@@ -36,6 +36,12 @@ public class ObjectView extends LinearLayout {
             type = "scope";
         } else if (object instanceof  ProcedureRoom) {
             type = "procedureRoom";
+        } else if (object instanceof  Nurse) {
+            type = "Nurse";
+        } else if (object instanceof Doctor) {
+            type = "Doctor";
+        } else if (object instanceof  ManualCleaningStation) {
+            type = "Sink";
         }
         else  {
             type = null;
@@ -62,6 +68,18 @@ public class ObjectView extends LinearLayout {
             LayoutParams params = new LayoutParams(100, 100);
             imageView.setLayoutParams(params);
         } else if (type.equals("procedureRoom")) {
+            imageView.setImageResource(R.drawable.procedure_room_color);
+            LayoutParams params = new LayoutParams(125, 100);
+            imageView.setLayoutParams(params);
+        } else if (type.equals("Nurse")) {
+            imageView.setImageResource(R.drawable.client_color);
+            LayoutParams params = new LayoutParams(70, 100);
+            imageView.setLayoutParams(params);
+        } else if (type.equals("Doctor")) {
+            imageView.setImageResource(R.drawable.client_color);
+            LayoutParams params = new LayoutParams(70, 100);
+            imageView.setLayoutParams(params);
+        } else if (type.equals("Sink")) {
             imageView.setImageResource(R.drawable.procedure_room_color);
             LayoutParams params = new LayoutParams(125, 100);
             imageView.setLayoutParams(params);
@@ -141,6 +159,12 @@ public class ObjectView extends LinearLayout {
             for (int i=0; i < scopes.size(); i++) {
                 addLine(scopes.get(i).getType().getName());
             }
+        } else if (type.equals("Nurse")) {
+            changeText("Number of Nurses: ");
+        } else if (type.equals("Doctor")) {
+            changeText("Number of Doctors: ");
+        } else if (type.equals("Sink")) {
+            changeText("sink");
         }
         else {
             addLine("TYPE INVALID");

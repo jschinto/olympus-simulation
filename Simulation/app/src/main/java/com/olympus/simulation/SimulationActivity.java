@@ -59,7 +59,7 @@ public class SimulationActivity
 
         public void renderList() {
             hallway.removeAllViews();
-            for(int i = 0; i < list.size(); i++) {
+            for (int i = 0; i < list.size(); i++) {
                 Object o = list.get(i);
                 ObjectView obj = new ObjectView(o, getApplicationContext());
                 obj.changeOrientation(LinearLayout.VERTICAL);
@@ -72,9 +72,9 @@ public class SimulationActivity
         }
 
         public void removeObject(Object o) {
-            for(int i = 0; i < hallway.getChildCount(); i++) {
-                ObjectView obj = (ObjectView)hallway.getChildAt(i);
-                if(obj.contains(o)){
+            for (int i = 0; i < hallway.getChildCount(); i++) {
+                ObjectView obj = (ObjectView) hallway.getChildAt(i);
+                if (obj.contains(o)) {
                     hallway.removeViewAt(i);
                     list.remove(o);
                     return;
@@ -94,9 +94,12 @@ public class SimulationActivity
         setContentView(R.layout.activity_simulation);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//set orientation to lock on portrait
 
-        simulation_manager = new Simulation_Manager(0,720,1);
+        simulation_manager = new Simulation_Manager(0, 720, 1);
         hall_monitor = new Hall_Monitor();
         currentClicked = null;
+
+        updateActorUI(); //TODO::::
+
     }
 
     //handle view bar button clicks
@@ -141,7 +144,7 @@ public class SimulationActivity
             });
             popupMenu.show();
         } else if (view.getId() == R.id.textViewTime) {
-            if(!simulationStarted) {
+            if (!simulationStarted) {
                 SetTimePromptDialog setTimePromptDialog = new SetTimePromptDialog(simulation_manager.getStartTime(), simulation_manager.getEndTime());
                 setTimePromptDialog.show(getSupportFragmentManager(), "set time dialog");
             }
@@ -168,6 +171,8 @@ public class SimulationActivity
             MenuItem addScopeType = menu.findItem(R.id.addScopeType);
             MenuItem addTowerType = menu.findItem(R.id.addTowerType);
             MenuItem addProcedureRoom = menu.findItem(R.id.addProcedureRoom);
+            MenuItem addManualCleaningStation = menu.findItem(R.id.addManualCleaningStation);
+            //TODO:add leak tester as prereq to sink
 
             if (simulation_manager.getProcedureNum() > 0) {
                 addClient.setVisible(true);
@@ -189,14 +194,6 @@ public class SimulationActivity
             } else {
                 addProcedureRoom.setVisible(false);
             }
-
-        }
-        else if (id == R.id.addNurse) {
-            Intent nurseIntent = new Intent(getApplicationContext(), ElementActivity.class);
-            Nurse nurse = new Nurse(-1);
-            nurseIntent.putExtra("element", nurse);
-            nurseIntent.putExtra("mode", "add");
-            startActivityForResult(nurseIntent, element_Request);
         }
         else if (id == R.id.addProcedureType) {
             Intent procedureIntent = new Intent(getApplicationContext(), ProcedureActivity.class);
@@ -210,6 +207,8 @@ public class SimulationActivity
             Client client = new Client(null, latest);
             clientIntent.putExtra("client", client);
             clientIntent.putExtra("procedures", simulation_manager.getProcedureNames());
+            clientIntent.putExtra("startTime", simulation_manager.getStartTime());
+            clientIntent.putExtra("endTime", simulation_manager.getEndTime());
             startActivityForResult(clientIntent, client_Request);
         } else if (id == R.id.addProcedureRoom) {
             Intent procedureRoomIntent = new Intent(getApplicationContext(), ElementActivity.class);
@@ -236,7 +235,7 @@ public class SimulationActivity
             towerTypeIntent.putExtra("towerType", type);
             towerTypeIntent.putExtra("scopeTypes", simulation_manager.getScopeTypeNames());
             startActivityForResult(towerTypeIntent, towerType_Request);
-        } else if(id == R.id.addLeakTesterType) {
+        } else if (id == R.id.addLeakTesterType) {
             Intent leakTesterTypeIntent = new Intent(getApplicationContext(), ElementActivity.class);
             LeakTester_Type leakTester = new LeakTester_Type("", -1, -1, -1);
             leakTesterTypeIntent.putExtra("element", leakTester);
@@ -281,8 +280,8 @@ public class SimulationActivity
             String[] list = (String[]) data.getSerializableExtra("list");
 
             if (element.equals(Element.ELEMENT_PROCEDUREROOM)) {
-                ProcedureRoom procedureRoom = (ProcedureRoom)element;
-                for(int i = 0; i < list.length; i++){
+                ProcedureRoom procedureRoom = (ProcedureRoom) element;
+                for (int i = 0; i < list.length; i++) {
                     Tower_Type type = simulation_manager.getTowerTypeByName(list[i]);
                     procedureRoom.addTowerType(type);
                 }
@@ -311,20 +310,35 @@ public class SimulationActivity
                     if (procedureRoom.validate()) {
                         simulation_manager.editProcedureRoom(procedureRoom, index);
 
-                    //deleting a procedure room
+                        //deleting a procedure room
                     } else {
                         simulation_manager.deleteProcedureRoom(index);
 
                         LinearLayout linearLayoutRooms = findViewById(R.id.LinearLayoutRooms);
-                        View room = linearLayoutRooms.getChildAt(simulation_manager.getProcedureRoomNum()); //TODO:: not -1?????/
+                        View room = linearLayoutRooms.getChildAt(simulation_manager.getProcedureRoomNum());
                         linearLayoutRooms.removeView(room);
                     }
 
                 }
 
 
-            } else if (element.equals(Element.ELEMENT_CLIENT)) {
+            } else if (element.equals(Element.ELEMENT_NURSE)) {
+                if (resultCode == RESULT_OK) {
+                    int number = data.getIntExtra("number", -1);
+                    int cooldown = data.getIntExtra("cooldown", -1);
+                    simulation_manager.setNurseNum(number);
+                    simulation_manager.setNursePostProcedureTime(cooldown);
+                    updateActorUI();
 
+                }
+            } else if (element.equals(Element.ELEMENT_DOCTOR)) {
+                if (resultCode == RESULT_OK) {
+                    int number = data.getIntExtra("number", -1);
+                    int cooldown = data.getIntExtra("cooldown", -1);
+                    simulation_manager.setDoctorNum(number);
+                    simulation_manager.setDoctorPostProcedureTime(cooldown);
+                    updateActorUI();
+                }
             }
         }
 
@@ -355,7 +369,9 @@ public class SimulationActivity
                     clientImage.setTag(tag);
 
                     linearLayoutClients.addView(clientImage);
-                    simulation_manager.removeClientsOutsideRange();
+                    if (simulation_manager.removeClientsOutsideRange() > 0) {
+                        Toast.makeText(getApplicationContext(), "Patients outside of range have been deleted!", Toast.LENGTH_LONG).show();
+                    }
                     renderUIFromManager();
                 }
 
@@ -369,7 +385,7 @@ public class SimulationActivity
                     simulation_manager.deleteClient(index);
 
                     LinearLayout linearLayoutClients = findViewById(R.id.LinearLayoutClients);
-                    View clientView = linearLayoutClients.getChildAt(simulation_manager.getClientNum()); //TODO:: not -1???
+                    View clientView = linearLayoutClients.getChildAt(simulation_manager.getClientNum());
                     linearLayoutClients.removeView(clientView);
                     renderUIFromManager();
                     //editing a client
@@ -383,7 +399,9 @@ public class SimulationActivity
                     LinearLayout linearLayoutClients = findViewById(R.id.LinearLayoutClients);
                     ObjectView clientView = (ObjectView) linearLayoutClients.getChildAt(index);
                     clientView.update();
-                    simulation_manager.removeClientsOutsideRange();
+                    if (simulation_manager.removeClientsOutsideRange() > 0) {
+                        Toast.makeText(getApplicationContext(), "Patients outside of range have been deleted!", Toast.LENGTH_LONG).show();
+                    }
                     renderUIFromManager();
                 }
                 //nothing to be done, represents just viewing or canceling an add to a client
@@ -427,9 +445,9 @@ public class SimulationActivity
                 String type = (String) data.getSerializableExtra("scopeType");
                 Scope_Type scopeType = simulation_manager.getScopeTypeByName(type);
 
-                int amount = (int)data.getSerializableExtra("amount");
+                int amount = (int) data.getSerializableExtra("amount");
 
-                for(int i = 0; i < amount; i++) {
+                for (int i = 0; i < amount; i++) {
                     Scope scope = new Scope(scopeType);
 
                     simulation_manager.addScope(scope);
@@ -458,7 +476,7 @@ public class SimulationActivity
                 if (type == null) {
                     simulation_manager.removeScope(index);
                     LinearLayout linearLayoutScopes = findViewById(R.id.LinearLayoutScopes);
-                    View scopeImg = linearLayoutScopes.getChildAt(simulation_manager.getScopeNum()); //TODO:: not -1?????/
+                    View scopeImg = linearLayoutScopes.getChildAt(simulation_manager.getScopeNum());
                     linearLayoutScopes.removeView(scopeImg);
                     renderUIFromManager();
                 }
@@ -513,19 +531,18 @@ public class SimulationActivity
             }
         }
 
-        if(requestCode == towerType_Request){
-            if(resultCode == RESULT_FIRST_USER){
+        if (requestCode == towerType_Request) {
+            if (resultCode == RESULT_FIRST_USER) {
                 String name = data.getStringExtra("name");
                 int price = data.getIntExtra("price", 0);
                 String[] scopeTypeList = data.getStringArrayExtra("scopeTypes");
                 ArrayList<Scope_Type> scopeTypes = new ArrayList<>();
-                for(int i = 0; i < scopeTypeList.length; i++){
+                for (int i = 0; i < scopeTypeList.length; i++) {
                     scopeTypes.add(simulation_manager.getScopeTypeByName(scopeTypeList[i]));
                 }
                 Tower_Type type = new Tower_Type(name, scopeTypes, price);
                 simulation_manager.addTowerType(type);
-            }
-            else if(resultCode == RESULT_OK){
+            } else if (resultCode == RESULT_OK) {
                 String oldName = data.getStringExtra("oldName");
                 simulation_manager.removeTowerTypeByName(oldName);
 
@@ -533,13 +550,12 @@ public class SimulationActivity
                 int price = data.getIntExtra("price", 0);
                 String[] scopeTypeList = data.getStringArrayExtra("scopeTypes");
                 ArrayList<Scope_Type> scopeTypes = new ArrayList<>();
-                for(int i = 0; i < scopeTypeList.length; i++){
+                for (int i = 0; i < scopeTypeList.length; i++) {
                     scopeTypes.add(simulation_manager.getScopeTypeByName(scopeTypeList[i]));
                 }
                 Tower_Type type = new Tower_Type(name, scopeTypes, price);
                 simulation_manager.addTowerType(type);
-            }
-            else if(resultCode == RESULT_CANCELED){
+            } else if (resultCode == RESULT_CANCELED) {
                 return;
             }
         }
@@ -566,6 +582,8 @@ public class SimulationActivity
             Intent clientIntent = new Intent(getApplicationContext(), ClientActivity.class);
             clientIntent.putExtra("client", client);
             clientIntent.putExtra("procedures", simulation_manager.getProcedureNames());
+            clientIntent.putExtra("startTime", simulation_manager.getStartTime());
+            clientIntent.putExtra("endTime", simulation_manager.getEndTime());
             startActivityForResult(clientIntent, client_Request);
         } else if (type.equals("Scope")) {
             Scope scope = simulation_manager.getScopeByIndex(index);
@@ -574,6 +592,23 @@ public class SimulationActivity
             scopeIntent.putExtra("scope", scope);
             scopeIntent.putExtra("scopeTypeNames", simulation_manager.getScopeTypeNames());
             startActivityForResult(scopeIntent, scope_Request);
+        } else if (type.equals("Nurse")) {
+            Intent nurseIntent = new Intent(getApplicationContext(), ElementActivity.class);
+            Nurse nurse = new Nurse();
+            nurseIntent.putExtra("element", nurse);
+            nurseIntent.putExtra("mode", "actor");
+            nurseIntent.putExtra("number", simulation_manager.getNurseNum());
+            nurseIntent.putExtra("cooldown", simulation_manager.getNursePostProcedureTime());
+            startActivityForResult(nurseIntent, element_Request);
+        } else if (type.equals("Doctor")) {
+            Intent doctorIntent = new Intent(getApplicationContext(), ElementActivity.class);
+            Doctor doctor = new Doctor();
+            doctorIntent.putExtra("element", doctor);
+            doctorIntent.putExtra("mode", "actor");
+            doctorIntent.putExtra("number", simulation_manager.getDoctorNum());
+            doctorIntent.putExtra("cooldown", simulation_manager.getDoctorPostProcedureTime());
+            startActivityForResult(doctorIntent, element_Request);
+
         }
     }
 
@@ -612,7 +647,7 @@ public class SimulationActivity
         if (jsonString != "" && jsonString != null) {
             Gson gson = new Gson();
             simulation_manager = gson.fromJson(jsonString, Simulation_Manager.class);
-            if(!hideToast) {
+            if (!hideToast) {
                 Toast.makeText(getApplicationContext(), "Loaded Setup from " + fileName, Toast.LENGTH_LONG).show();
             }
             hideToast = false;
@@ -672,7 +707,7 @@ public class SimulationActivity
 
     public <T> void populateSection(LinearLayout theLinearLayout, String tagType, ArrayList<T> list) {
         theLinearLayout.removeAllViews();
-        for(int index = 0; index < list.size(); index++) {
+        for (int index = 0; index < list.size(); index++) {
             Object insert = list.get(index);
 
             ObjectView viewImage = new ObjectView(insert, getApplicationContext());
@@ -767,19 +802,43 @@ public class SimulationActivity
 
     @Override
     public void setStartEndTime(int start, int end) {
-        if(end <= start) {
+        if (end <= start) {
             Toast.makeText(getApplicationContext(), "Start time must be before end time!", Toast.LENGTH_LONG).show();
             return;
         }
         simulation_manager.setStartTime(start);
         simulation_manager.setCurrTime(start);
         simulation_manager.setEndTime(end);
-        simulation_manager.removeClientsOutsideRange();
+        if (simulation_manager.removeClientsOutsideRange() > 0) {
+            Toast.makeText(getApplicationContext(), "Patients outside of range have been deleted!", Toast.LENGTH_LONG).show();
+        }
         renderUIFromManager();
     }
 
     @Override
     public void cancelTime() {
 
+    }
+
+
+    public void updateActorUI() {
+        LinearLayout nurseLayout = findViewById(R.id.LinearLayoutNurses);
+        nurseLayout.removeAllViews();
+
+        ObjectView nurse = new ObjectView(new Nurse(), getApplicationContext());
+        nurse.changeOrientation(ObjectView.HORIZONTAL);
+        nurse.addLine("" + simulation_manager.getNurseNum());
+        Tag tagN =  new Tag(0, "Nurse");
+        nurse.setTag(tagN);
+        nurse.setOnClickListener(this);
+        nurseLayout.addView(nurse);
+
+        ObjectView doctor = new ObjectView(new Doctor(), getApplicationContext());
+        doctor.changeOrientation(ObjectView.HORIZONTAL);
+        doctor.addLine("" + simulation_manager.getDoctorNum());
+        Tag tagD =  new Tag(0, "Doctor");
+        doctor.setTag(tagD);
+        doctor.setOnClickListener(this);
+        nurseLayout.addView(doctor);
     }
 }

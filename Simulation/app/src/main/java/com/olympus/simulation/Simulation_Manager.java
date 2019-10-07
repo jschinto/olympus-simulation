@@ -17,7 +17,10 @@ public class Simulation_Manager {
     private  Scope_Manager scopeManager;
     private ScopeType_Manager scopeTypeManager;
     private TowerType_Manager towerTypeManager;
-    private Nurse_Manager nurse_manager;
+    private Nurse_Manager nursemanager;
+    private Doctor_Manager doctormanager;
+    private LeakTesterType_Manager leakTesterTypeManager;
+    private ManualCleaningStation_Manager manualCleaningStationManager;
 
     //the time the simulated hospital should open and close
     //Represented as a integer from 0 - some value
@@ -66,7 +69,10 @@ public class Simulation_Manager {
         scopeManager = new Scope_Manager();
         scopeTypeManager = new ScopeType_Manager();
         towerTypeManager = new TowerType_Manager();
-        nurse_manager = new Nurse_Manager();
+        leakTesterTypeManager = new LeakTesterType_Manager();
+        nursemanager = new Nurse_Manager();
+        doctormanager = new Doctor_Manager();
+        manualCleaningStationManager = new ManualCleaningStation_Manager();
         this.startTime = startTime;
         this.endTime = endTime;
         this.waitTime = waitTime;
@@ -85,6 +91,8 @@ public class Simulation_Manager {
         clientManager.runTick(Time.convertToString(currTime));
         scopeManager.runTick(Time.convertToString(currTime));
         procedureRoomManager.runTick();
+        nursemanager.runTick();
+        doctormanager.runTick();
 
         int patientOffset = 0;
         int roomOffset = 0;
@@ -95,8 +103,16 @@ public class Simulation_Manager {
             if (nextClient == null) {
                 break;
             }
-            System.out.println(nextClient.getId());
-            System.out.println(openRoom.getId());
+
+            Nurse freeNurse = nursemanager.getNurse();
+            if(freeNurse == null){
+                break;
+            }
+
+            Doctor freeDoctor = doctormanager.getDoctor();
+            if(freeDoctor == null){
+                break;
+            }
 
             if(!openRoom.checkCanProcess(nextClient)){
                 System.out.println("CANT CHECK");
@@ -134,7 +150,7 @@ public class Simulation_Manager {
                 roomOffset = 0;
                 clientManager.addToOperating(nextClient);
                 nextClient.setProcedureRoom(openRoom);
-                openRoom.claimScope(scopeList);
+                openRoom.claimElements(scopeList, freeDoctor, freeNurse);
                 for(Scope s : scopeList) {
                     String proc = "";
                     for(Procedure p : nextClient.getProcedureList()) {
@@ -351,6 +367,39 @@ public class Simulation_Manager {
         towerTypeManager.removeTowerType(name);
     }
 
+    public String[] getLeakTesterTypeNames(){
+        return leakTesterTypeManager.getLeakTesterTypeNames();
+    }
+
+    public void addLeakTester(LeakTester_Type type){
+        leakTesterTypeManager.addLeakTesterType(type);
+    }
+
+    public int getLeakTesterTypeNum(){
+        return leakTesterTypeManager.getLeakTesterTypeNames().length;
+    }
+
+    public LeakTester_Type getLeakTesterByName(String name){
+        return leakTesterTypeManager.getLeakTesterTypeByName(name);
+    }
+
+    public void removeLeakTesterType(LeakTester_Type type){
+        leakTesterTypeManager.removeLeakTesterType(type);
+    }
+
+    public ArrayList<ManualCleaningStation> getManualCleaningStations(){
+        return manualCleaningStationManager.getManualCleaningStations();
+    }
+
+    public ManualCleaningStation getManualCleaningStationByIndex(int index){
+        return manualCleaningStationManager.getManualCleaningStationByIndex(index);
+    }
+
+    public int getManualCleaningStationNum(){
+        return manualCleaningStationManager.getManualCleaningStationNum();
+    }
+
+    //TODO: maybe show toast for patients deleted
     public int removeClientsOutsideRange() {
         return clientManager.removeClientsOutsideRange(startTime, endTime);
     }
@@ -409,5 +458,31 @@ public class Simulation_Manager {
     public interface CSVable {
         String getCSV();
         String getCSVHeader();
+    }
+
+    public int getNurseNum() {
+        return nursemanager.getNurseNum();
+    }
+    public int getNursePostProcedureTime() {
+        return nursemanager.getPostProcedureTime();
+    }
+    public void setNurseNum(int num) {
+        nursemanager.setNurseNum(num);
+    }
+    public void setNursePostProcedureTime(int time) {
+        nursemanager.setPostProcedureTime(time);
+    }
+
+    public int getDoctorNum() {
+        return doctormanager.getDoctorNum();
+    }
+    public int getDoctorPostProcedureTime() {
+        return doctormanager.getPostProcedureTime();
+    }
+    public void setDoctorNum(int num) {
+        doctormanager.setDoctorNum(num);
+    }
+    public void setDoctorPostProcedureTime(int time) {
+        doctormanager.setPostProcedureTime(time);
     }
 }

@@ -2,15 +2,15 @@ package com.olympus.simulation;
 
 import java.io.Serializable;
 
-public class Nurse extends Element implements Serializable {
+public class Doctor extends Element implements Serializable {
 
     private State state;
 
     private int timeLeft;
 
 
-    public Nurse() {
-        this.element = ELEMENT_NURSE;
+    public Doctor() {
+        this.element = ELEMENT_DOCTOR;
         setState(State.STATE_WAIT);
         timeLeft = 0;
     }
