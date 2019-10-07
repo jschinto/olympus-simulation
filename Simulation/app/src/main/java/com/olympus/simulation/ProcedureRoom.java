@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class ProcedureRoom extends Element implements Serializable{
+public class ProcedureRoom extends Element implements Serializable, StationCSV.Station {
     //TODO: IMPLEMENT DIFFERENT TRAVEL TIMES FOR SCOPES AND PATIENTS
 
     //whether the room is currently being used or not
@@ -57,10 +57,10 @@ public class ProcedureRoom extends Element implements Serializable{
         this.client = client;
     }
 
-    public void removeScope() {
+    public void removeScope(String currTime) {
         setReady(false);
         for(Scope s : this.scope){
-            s.freeScope();
+            s.freeScope(currTime);
         }
         this.scope.clear();
     }
@@ -182,5 +182,10 @@ public class ProcedureRoom extends Element implements Serializable{
         }
 
         return false;
+    }
+
+    @Override
+    public StationCSV getStationCSV() {
+        return new StationCSV("Room", "Procedure Room " + this.id);
     }
 }

@@ -646,6 +646,8 @@ public class SimulationActivity
         simulation_manager.createLog(getApplicationContext(), "equipment", new EquipmentCSV().getCSVHeader(), simulation_manager.getEquipmentCSVList());
         //Station Log:
         simulation_manager.createLog(getApplicationContext(), "station", new StationCSV().getCSVHeader(), simulation_manager.getStationCSVList());
+        //Scope Log:
+        simulation_manager.createLog(getApplicationContext(), "scope", new ScopeLogCSV().getCSVHeader(), simulation_manager.getScopeLogCSVList());
     }
 
     public void renderUIFromManager() {
@@ -696,6 +698,7 @@ public class SimulationActivity
     public void startSimulation(final MenuItem item) {
         startItem = item;
         simulationStarted = true;
+        simulation_manager.initLogs();
         if (ranAlready) {
             hideToast = true;
             loadLoadout("LastRun");

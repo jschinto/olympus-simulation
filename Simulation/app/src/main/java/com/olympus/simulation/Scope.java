@@ -57,7 +57,7 @@ public class Scope implements Comparable<Scope>, Serializable, EquipmentCSV.Equi
         this.tempGrab = false;
     }
 
-    public void tick() {
+    public int tick() {
         this.timeLeft--;
         if (timeLeft < 0) {
             timeLeft = 0;
@@ -66,20 +66,24 @@ public class Scope implements Comparable<Scope>, Serializable, EquipmentCSV.Equi
             //Scope has finished being cleaned
             if (this.state == State_Scope.STATE_DIRTY) {
                 setState(State_Scope.STATE_FREE);
+                return State_Scope.STATE_FREE;
             }
             //Scope has arrived at its destination
-            if (this.state == State_Scope.STATE_TRAVEL) {
+            else if (this.state == State_Scope.STATE_TRAVEL) {
                 setState(State_Scope.STATE_USE);
+                return State_Scope.STATE_USE;
             }
 
         }
+        return this.state;
     }
 
     //TEMPORARY CODE UNTIL WE WORK ON CLEANING
-    public void freeScope() {
+    public void freeScope(String currTime) {
         this.room = null;
         setState(State_Scope.STATE_DIRTY);
         this.timeLeft = this.type.getCleaningTime();
+        Scope_Manager.addDirtyScopeLog(this, currTime);
     }
 
     public int getTimeLeft() {

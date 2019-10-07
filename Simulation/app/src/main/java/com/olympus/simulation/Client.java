@@ -51,7 +51,7 @@ public class Client implements Comparable<Client>, Serializable {
     }
 
     //alters appropriate variables based on passage of time(tick)
-    public void tick() {
+    public void tick(String currTime) {
         timeLeft--;
         if(timeLeft < 0){
             timeLeft = 0;
@@ -60,7 +60,7 @@ public class Client implements Comparable<Client>, Serializable {
         if (timeLeft <= 0 && state.equals(State.STATE_OPERATION)) {
             setState(State.STATE_DONE);
             procedureRoom.removeClient();
-            procedureRoom.removeScope();
+            procedureRoom.removeScope(currTime);
             this.procedureRoom = null;
         }
         //client is done traveling to operation room

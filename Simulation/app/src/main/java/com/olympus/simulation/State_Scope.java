@@ -10,6 +10,8 @@ public class State_Scope implements Serializable {
 
     public int state;
 
+    public static final String[] stateNames = {"Clean", "Dirty", "In Use", "Traveling"};
+
     public static final int STATE_FREE = 0;
     public static final int STATE_TRAVEL = 3;
     public static final int STATE_USE = 2;

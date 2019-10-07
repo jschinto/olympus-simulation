@@ -17,14 +17,14 @@ public class Client_Manager {
       Any client that is marked as done is removed from the operating list entirely
       Clients not completed are themselves ticked, which reduces their timeLeft for the current activity.
      */
-    public void runTick() {
+    public void runTick(String currTime) {
         for (int i=0; i < operating.size(); i++) {
             if (operating.get(i).getState() == State.STATE_DONE) {
                 operating.remove(i);
                 i--;
             }
             else if (operating.get(i).getProcedureRoom() != null) {
-                operating.get(i).tick();
+                operating.get(i).tick(currTime);
             }
         }
     }

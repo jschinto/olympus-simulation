@@ -82,8 +82,8 @@ public class Simulation_Manager {
         //Grabs an open procedure room and attempts to assign a client to it. Continues to match
         //Clients to procedure rooms until a pair cannot be made.
 
-        clientManager.runTick();
-        scopeManager.runTick();
+        clientManager.runTick(Time.convertToString(currTime));
+        scopeManager.runTick(Time.convertToString(currTime));
         procedureRoomManager.runTick();
 
         int patientOffset = 0;
@@ -135,6 +135,17 @@ public class Simulation_Manager {
                 clientManager.addToOperating(nextClient);
                 nextClient.setProcedureRoom(openRoom);
                 openRoom.claimScope(scopeList);
+                for(Scope s : scopeList) {
+                    String proc = "";
+                    for(Procedure p : nextClient.getProcedureList()) {
+                        if(s.checkProcedure(p)) {
+                            proc = p.getName();
+                        }
+                    }
+                    String station = "Hallway";
+                    ScopeLogCSV logItem = new ScopeLogCSV(s.getType().getName(), s.getId() + "", "Scope " + s.getId(), Time.convertToString(currTime), Time.convertToString(currTime), proc, station, State_Scope.stateNames[s.getState()]);
+                    scopeManager.addScopeLogCSV(logItem);//scope is traveling
+                }
                 openRoom = procedureRoomManager.getProcedureRoom(roomOffset);
                 clientManager.sortQueue();
             }
@@ -340,7 +351,6 @@ public class Simulation_Manager {
         towerTypeManager.removeTowerType(name);
     }
 
-    //TODO: maybe show toast for patients deleted
     public int removeClientsOutsideRange() {
         return clientManager.removeClientsOutsideRange(startTime, endTime);
     }
@@ -359,15 +369,31 @@ public class Simulation_Manager {
     }
 
     public ArrayList<CSVable> getStationCSVList() {
-        StationCSV waitingRoom = new StationCSV("Waiting Room", "Waiting Room");
+        StationCSV waitingRoom = new StationCSV("Room", "Waiting Room");
+        StationCSV hallway = new StationCSV("Room", "Hallway");
         ArrayList<StationCSV.Station> stations = new ArrayList<>();
+        stations.addAll(procedureRoomManager.getProcedureRooms());
 
         ArrayList<CSVable> toReturn = new ArrayList<>();
         toReturn.add(waitingRoom);
+        toReturn.add(hallway);
         for(StationCSV.Station s : stations) {
             toReturn.add(s.getStationCSV());
         }
         return toReturn;
+    }
+
+    public ArrayList<CSVable> getScopeLogCSVList() {
+        scopeManager.finalizeCSVList(Time.convertToString(endTime));
+        ArrayList<CSVable> toReturn = new ArrayList<>();
+        for(ScopeLogCSV sl : scopeManager.getCsvList()) {
+            toReturn.add(sl);
+        }
+        return toReturn;
+    }
+
+    public void initLogs() {
+        scopeManager.initCSVList(Time.convertToString(startTime), Time.convertToString(endTime));
     }
 
     public void createLog(Context mcoContext, String filename, String CSVHeader, ArrayList<CSVable> logItems) {
