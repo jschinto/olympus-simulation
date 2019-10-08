@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -700,7 +701,12 @@ public class SimulationActivity
         }
         fileName += ".json";
         FileHelper theFileHelper = new FileHelper(fileName);
-        Gson gson = new Gson();
+        GsonBuilder gsonBuilder  = new GsonBuilder();
+        // Allowing the serialization of static fields
+
+        gsonBuilder.excludeFieldsWithModifiers(java.lang.reflect.Modifier.TRANSIENT);
+        Gson gson = gsonBuilder.create();
+        //Gson gson = new Gson();
         String jsonString;
         if (!ranAlready) {
             jsonString = gson.toJson(simulation_manager);
@@ -721,7 +727,12 @@ public class SimulationActivity
         FileHelper theFileHelper = new FileHelper(fileName);
         String jsonString = theFileHelper.ReadFile(getApplicationContext());
         if (jsonString != "" && jsonString != null) {
-            Gson gson = new Gson();
+            GsonBuilder gsonBuilder  = new GsonBuilder();
+            // Allowing the serialization of static fields
+
+            gsonBuilder.excludeFieldsWithModifiers(java.lang.reflect.Modifier.TRANSIENT);
+            Gson gson = gsonBuilder.create();
+            //Gson gson = new Gson();
             simulation_manager = gson.fromJson(jsonString, Simulation_Manager.class);
             if (!hideToast) {
                 Toast.makeText(getApplicationContext(), "Loaded Setup from " + fileName, Toast.LENGTH_LONG).show();

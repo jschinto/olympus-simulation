@@ -53,6 +53,7 @@ public class Scope_Manager {
     }
 
     public void initCSVList(String startTime, String endTime) {
+        csvList.clear();
         for(Scope s : list) {
             ScopeLogCSV logItem = new ScopeLogCSV(s.getType().getName(), s.getId() + "", "Scope " + s.getId(), startTime, endTime, "", "Cabinet", State_Scope.stateNames[0]);
             csvList.add(logItem);
