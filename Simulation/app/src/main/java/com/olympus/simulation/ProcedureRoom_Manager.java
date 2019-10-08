@@ -31,9 +31,9 @@ public class ProcedureRoom_Manager {
                     if(roomList.get(i).getCurrentNurse() != null && roomList.get(i).getCurrentNurse().getState() == State.STATE_OPERATION){
                         if(roomList.get(i).getCurrentDoctor() != null && roomList.get(i).getCurrentDoctor().getState() == State.STATE_OPERATION){
                             roomList.get(i).setReady(true);
-                        }
-                    }
-                }
+                        } else { System.out.println("Failed Doctor"); }
+                    } else { System.out.println("Failed Nurse"); }
+                } else { System.out.println("Failed Scope"); }
             }
         }
     }

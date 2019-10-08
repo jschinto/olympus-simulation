@@ -52,19 +52,21 @@ public class Client implements Comparable<Client>, Serializable {
 
     //alters appropriate variables based on passage of time(tick)
     public void tick(String currTime) {
-        timeLeft--;
-        if(timeLeft < 0){
-            timeLeft = 0;
+        this.timeLeft--;
+        if(this.timeLeft < 0){
+            this.timeLeft = 0;
         }
+
+        System.out.println("Client " + this.timeLeft + " " + this.state + " " + this.procedureRoom.isReady());
         //client is done with operation
-        if (timeLeft <= 0 && state.equals(State.STATE_OPERATION)) {
+        if (this.timeLeft <= 0 && this.state.equals(State.STATE_OPERATION)) {
             setState(State.STATE_DONE);
-            procedureRoom.removeClient();
-            procedureRoom.removeElements(currTime);
+            this.procedureRoom.removeClient();
+            this.procedureRoom.removeElements(currTime);
             this.procedureRoom = null;
         }
         //client is done traveling to operation room
-        if (timeLeft <= 0 && state.equals(State.STATE_TRAVEL) && this.procedureRoom.isReady()) {
+        if (this.timeLeft <= 0 && this.state.equals(State.STATE_TRAVEL) && this.procedureRoom.isReady()) {
             setState(State.STATE_OPERATION);
             beginProcedure();
         }
@@ -74,11 +76,10 @@ public class Client implements Comparable<Client>, Serializable {
     //set appropriate state and time left to client
     public void beginProcedure() {
         //check procedure constraints
-        timeLeft = 0;
+        this.timeLeft = 0;
         for (int i = 0; i < this.procedures.size(); i++) {
-            timeLeft += procedures.get(i).getTime();
+            this.timeLeft += this.procedures.get(i).getTime();
         }
-        setState(State.STATE_OPERATION);
     }
 
     public ArrayList<Procedure> getProcedureList() {

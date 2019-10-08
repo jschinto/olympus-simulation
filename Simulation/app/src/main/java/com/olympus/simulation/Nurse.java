@@ -25,6 +25,10 @@ public class Nurse extends Element implements Serializable {
 
     public void tick() {
         timeLeft--;
+        if(timeLeft < 0){
+            timeLeft = 0;
+        }
+        System.out.println("Nurse " + timeLeft + " " + state);
         if (timeLeft <= 0) {
             if (state.equals(State.STATE_TRAVEL)) {
                 setState(State.STATE_OPERATION);

@@ -90,14 +90,13 @@ public class Simulation_Manager {
 
         clientManager.runTick(Time.convertToString(currTime));
         scopeManager.runTick(Time.convertToString(currTime));
-        procedureRoomManager.runTick();
         nursemanager.runTick();
         doctormanager.runTick();
+        procedureRoomManager.runTick();
 
         int patientOffset = 0;
         int roomOffset = 0;
         ProcedureRoom openRoom = procedureRoomManager.getProcedureRoom(roomOffset);
-        System.out.println("RUNNING");
         while (openRoom != null) {
             Client nextClient = clientManager.getNextClient(currTime, patientOffset);
             if (nextClient == null) {
@@ -115,11 +114,9 @@ public class Simulation_Manager {
             }
 
             if(!openRoom.checkCanProcess(nextClient)){
-                System.out.println("CANT CHECK");
                 roomOffset++;
                 openRoom = procedureRoomManager.getProcedureRoom(roomOffset);
                 if(openRoom == null && clientManager.getNextClient(currTime, patientOffset + 1) == null){
-                    System.out.println("ERROR: Breaking");
                     break;
                 }
                 else if(clientManager.getNextClient(currTime, patientOffset + 1) == null){
