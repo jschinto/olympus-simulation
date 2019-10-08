@@ -65,6 +65,8 @@ public class Scope implements Comparable<Scope>, Serializable, EquipmentCSV.Equi
         }
         if (this.timeLeft == 0) {
             //Scope has finished being cleaned
+            System.out.println(this.state);
+            System.out.println(this.timeLeft);
             if (this.state == State_Scope.STATE_CLEANING) {
                 this.station.setCurrentScope(null);
                 this.station = null;

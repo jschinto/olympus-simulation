@@ -48,7 +48,7 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
         this.currentDoctor = doctor;
         this.currentDoctor.startTravel(this.travelTime);
         this.currentNurse = nurse;
-        this.currentDoctor.startTravel(this.travelTime);
+        this.currentNurse.startTravel(this.travelTime);
     }
 
     //cooldown time decreases with each tick of time

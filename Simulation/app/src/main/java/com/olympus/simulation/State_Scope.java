@@ -10,13 +10,13 @@ public class State_Scope implements Serializable {
 
     public int state;
 
-    public static final String[] stateNames = {"Clean", "Dirty", "In Use", "Traveling"};
+    public static final String[] stateNames = {"Clean", "Cleaning", "In Use", "Traveling", "Dirty"};
 
     public static final int STATE_FREE = 0;
     public static final int STATE_TRAVEL = 3;
     public static final int STATE_USE = 2;
-    public static final int STATE_DIRTY = 1;
-    public static final int STATE_CLEANING= 4;
+    public static final int STATE_DIRTY = 4;
+    public static final int STATE_CLEANING = 1;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({
