@@ -6,28 +6,28 @@ public class ManualCleaningStation_Manager {
     static ArrayList<ManualCleaningStation> stations;
 
     public ManualCleaningStation_Manager(){
-        this.stations = new ArrayList<>();
+        stations = new ArrayList<>();
     }
 
     public ArrayList<ManualCleaningStation> getManualCleaningStations(){
-        return this.stations;
+        return stations;
     }
 
     public ManualCleaningStation getManualCleaningStationByIndex(int index){
-        return this.stations.get(index);
+        return stations.get(index);
     }
 
     public int getManualCleaningStationNum(){
-        return this.stations.size();
+        return stations.size();
     }
 
     public void addManualCleaningStation (ManualCleaningStation station) {
-        this.stations.add(station);
+        stations.add(station);
         sort();
     }
 
     public void removeManualCleaningStation(ManualCleaningStation station) {
-        this.stations.remove(station);
+        stations.remove(station);
         sort();
     }
     public void removeManualCleaningStationByLeakTester(String leakTesterName) {
@@ -51,12 +51,12 @@ public class ManualCleaningStation_Manager {
 
     //TODO: Make this not garbage bubble sort
     public void sort(){
-        for(int i = 0; i < this.stations.size(); i++){
-            for(int j = i; j < this.stations.size(); j++){
-                if(this.stations.get(i).getCurrentLeakTester().getTimeToComplete() > this.stations.get(j).getCurrentLeakTester().getTimeToComplete()){
-                    ManualCleaningStation temp = this.stations.get(i);
-                    this.stations.set(i, this.stations.get(j));
-                    this.stations.set(j, temp);
+        for(int i = 0; i < stations.size(); i++){
+            for(int j = i; j < stations.size(); j++){
+                if(stations.get(i).getCurrentLeakTester().getTimeToComplete() > stations.get(j).getCurrentLeakTester().getTimeToComplete()){
+                    ManualCleaningStation temp = stations.get(i);
+                    stations.set(i, stations.get(j));
+                    stations.set(j, temp);
                 }
             }
         }

@@ -72,15 +72,15 @@ public class ObjectView extends LinearLayout {
             LayoutParams params = new LayoutParams(125, 100);
             imageView.setLayoutParams(params);
         } else if (type.equals("Nurse")) {
-            imageView.setImageResource(R.drawable.client_color);
+            imageView.setImageResource(R.drawable.nurse);
             LayoutParams params = new LayoutParams(70, 100);
             imageView.setLayoutParams(params);
         } else if (type.equals("Doctor")) {
-            imageView.setImageResource(R.drawable.client_color);
+            imageView.setImageResource(R.drawable.doctor);
             LayoutParams params = new LayoutParams(70, 100);
             imageView.setLayoutParams(params);
         } else if (type.equals("Sink")) {
-            imageView.setImageResource(R.drawable.procedure_room_color);
+            imageView.setImageResource(R.drawable.sink);
             LayoutParams params = new LayoutParams(125, 100);
             imageView.setLayoutParams(params);
         }

@@ -48,7 +48,7 @@ public class TowerTypeActivity extends AppCompatActivity {
             boolean result = false;
             if(types != null) {
                 for (int j = 0; j < types.size(); j++) {
-                    if (types.get(j).getName() == scope_names[i]) {
+                    if (types.get(j).getName().equals(scope_names[i])) {
                         result = true;
                         break;
                     }

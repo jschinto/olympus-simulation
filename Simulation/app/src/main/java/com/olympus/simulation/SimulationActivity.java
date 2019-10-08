@@ -172,7 +172,26 @@ public class SimulationActivity
             popupMenu.show();
 
         } else if (view.getId() == R.id.buttonViewTowerTypes) {
+            PopupMenu popupMenu = new PopupMenu(getApplicationContext(), view);
+            String[] towerTypeNames = simulation_manager.getTowerTypeNames();
+            for (int i = 0; i < towerTypeNames.length; i++) {
+                popupMenu.getMenu().add(Menu.NONE, i, i, towerTypeNames[i]);
+            }
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    String name = item.getTitle().toString();
 
+                    Tower_Type tower_type = simulation_manager.getTowerTypeByName(name);
+                   // currentClicked = new Tag(-1, tower_type.getName());
+                    Intent towerTypeIntent = new Intent(getApplicationContext(), TowerTypeActivity.class);
+                    towerTypeIntent.putExtra("towerType", tower_type);
+                    towerTypeIntent.putExtra("scopeTypes", simulation_manager.getScopeTypeNames());
+                    startActivityForResult(towerTypeIntent, towerType_Request);
+                    return true;
+                }
+            });
+            popupMenu.show();
         }
     }
 
@@ -308,6 +327,7 @@ public class SimulationActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_CANCELED) {
+            renderUIFromManager();//TODO:::
             return;
         }
 
@@ -404,6 +424,7 @@ public class SimulationActivity
                     if (manualCleaningStation.validate()) {
                         LeakTester_Type leakTester_type = simulation_manager.getLeakTesterByName(list[0]);
                         manualCleaningStation.setCurrentLeakTester(leakTester_type);
+                        simulation_manager.addManualCleaningStation(manualCleaningStation);
                     }
                 }
 
