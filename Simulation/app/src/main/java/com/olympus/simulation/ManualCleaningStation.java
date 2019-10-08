@@ -7,6 +7,7 @@ public class ManualCleaningStation extends Element implements Serializable {
     LeakTester_Type currentLeakTester;
 
     public ManualCleaningStation(LeakTester_Type type){
+        this.element = ELEMENT_SINK;
         this.currentScope = null;
         this.currentLeakTester = type;
     }

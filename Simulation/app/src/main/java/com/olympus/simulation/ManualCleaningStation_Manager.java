@@ -30,6 +30,15 @@ public class ManualCleaningStation_Manager {
         this.stations.remove(station);
         sort();
     }
+    public void removeManualCleaningStationByLeakTester(String leakTesterName) {
+        for (int i=0; i < stations.size(); i++) {
+            if (stations.get(i).currentLeakTester.getName().equals(leakTesterName)) {
+                stations.remove(i);
+                sort();
+                return;
+            }
+        }
+    }
 
     public static ManualCleaningStation getFreeStation() {
         for(int i = 0; i < stations.size(); i++){

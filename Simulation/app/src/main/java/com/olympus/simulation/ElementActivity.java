@@ -5,10 +5,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -95,13 +98,17 @@ public class ElementActivity extends AppCompatActivity {
                 String[] checked = procedureRoom.getTowerTypeNames();
                 setChecked(ids[2], checked);
             }
-        } else if (element.equals(Element.ELEMENT_SCOPE)) {
-
-        } else if (element.equals(Element.ELEMENT_SCOPETYPE)) {
-
-        }
-        else if(element.equals(Element.ELEMENT_LEAKTESTERTYPE)){
-            setText(R.id.elementTextTitle, Element.ELEMENT_LEAKTESTERTYPE);
+        } else if (element.equals(Element.ELEMENT_SINK)) {
+            setText(R.id.elementTextTitle, "Manual Cleaning Station");
+            ids = new int[1];
+            String[] leakTesterTypes = fromIntent.getStringArrayExtra("leakTesterTypes");
+            ids[0] = addField("Leak Tester Type", "spinner", leakTesterTypes);
+            if (mode.equals("view")) {
+                ManualCleaningStation manualCleaningStation = (ManualCleaningStation) element;
+                setSpinner(ids[0], manualCleaningStation.getCurrentLeakTester().getName());
+            }
+        } else if(element.equals(Element.ELEMENT_LEAKTESTERTYPE)){
+            setText(R.id.elementTextTitle, "Leak Tester Type");
             ids = new int[4];
             ids[0] = addField("Leak Tester Type Name", "text");
             ids[1] = addField("Time to Complete", "number");
@@ -141,7 +148,18 @@ public class ElementActivity extends AppCompatActivity {
                     int requiredAttentionTime = getTextInt(ids[2]);
                     int price = getTextInt(ids[3]);
                     LeakTester_Type leakTesterType = new LeakTester_Type(name, timeToComplete, requiredAttentionTime, price);
+                    if (!leakTesterType.validate()) {
+                        makeToast("INVALID VALUES ENTERED");
+                        return;
+                    }
                     leaveActivity(RESULT_FIRST_USER, leakTesterType);
+                } else if (element.equals(Element.ELEMENT_SINK)) {
+                    String[] list = new String[1];
+                    String leakTesterType = getSpinner(ids[0]);
+                    list[0] = leakTesterType;
+                    ManualCleaningStation manualCleaningStation = new ManualCleaningStation(null);
+                    leaveActivity(RESULT_FIRST_USER, manualCleaningStation, list);
+
                 }
              //clicked the delete button
             } else if (mode.equals("view")) {
@@ -152,8 +170,8 @@ public class ElementActivity extends AppCompatActivity {
                     leaveActivity(RESULT_OK, new LeakTester_Type("", -1, -1, -1));
                 }
 
-                if (element.equals(Element.ELEMENT_PROCEDUREROOM)) {
-                    leaveActivity(RESULT_OK, new ProcedureRoom(-1, -1));
+                else if (element.equals(Element.ELEMENT_SINK)) {
+                    leaveActivity(RESULT_OK, new ManualCleaningStation(null));
                 }
             }
 
@@ -173,7 +191,25 @@ public class ElementActivity extends AppCompatActivity {
                     return;
                 }
 
-            } else if (mode.equals("actor")) {
+            } else if (element.equals(Element.ELEMENT_LEAKTESTERTYPE)) {
+                String name = getTextString(ids[0]);
+                int timeToComplete = getTextInt(ids[1]);
+                int requiredAttentionTime = getTextInt(ids[2]);
+                int price = getTextInt(ids[3]);
+                LeakTester_Type leakTesterType = new LeakTester_Type(name, timeToComplete, requiredAttentionTime, price);
+                if (!leakTesterType.validate()) {
+                    makeToast("INVALID VALUES ENTERED");
+                    return;
+                }
+                leaveActivity(RESULT_OK, leakTesterType);
+            } else if (element.equals(Element.ELEMENT_SINK)) {
+                String[] list = new String[1];
+                String leakTesterType = getSpinner(ids[0]);
+                list[0] = leakTesterType;
+                LeakTester_Type leakTester_type = new LeakTester_Type(leakTesterType, 1,1,1);
+                ManualCleaningStation manualCleaningStation = new ManualCleaningStation(leakTester_type);
+                leaveActivity(RESULT_OK, manualCleaningStation, list);
+            }else if (mode.equals("actor")) {
                 int num = getTextInt(ids[0]);
                 int cooldown = getTextInt(ids[1]);
                 if (num < 1 || cooldown < 1) {
@@ -258,6 +294,14 @@ public class ElementActivity extends AppCompatActivity {
             newLayout.addView(checkBoxes);
             return id;
 
+        } else if (type.equals("spinner")) {
+            Spinner spinner = new Spinner(getApplicationContext());
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, values);
+            spinner.setAdapter(adapter);
+            int id = View.generateViewId();
+            spinner.setId(id);
+            newLayout.addView(spinner);
+            return id;
         }
 
 
@@ -286,6 +330,23 @@ public class ElementActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    public void setSpinner(int id, String selected) {
+        Spinner spinner = findViewById(id);
+        SpinnerAdapter adapter = spinner.getAdapter();
+        int length = adapter.getCount();
+        for (int i=0; i < length; i++) {
+            if (adapter.getItem(i).equals(selected)) {
+                spinner.setSelection(i);
+                break;
+            }
+        }
+    }
+
+    public String getSpinner(int id) {
+        Spinner spinner = findViewById(id);
+        return spinner.getSelectedItem().toString();
     }
 
     public String getTextString(int id) {

@@ -148,6 +148,30 @@ public class SimulationActivity
                 SetTimePromptDialog setTimePromptDialog = new SetTimePromptDialog(simulation_manager.getStartTime(), simulation_manager.getEndTime());
                 setTimePromptDialog.show(getSupportFragmentManager(), "set time dialog");
             }
+        } else if (view.getId() == R.id.buttonViewLeakTesterTypes) {
+            PopupMenu popupMenu = new PopupMenu(getApplicationContext(), view);
+            String[] leakTesterNames = simulation_manager.getLeakTesterTypeNames();
+            for (int i = 0; i < leakTesterNames.length; i++) {
+                popupMenu.getMenu().add(Menu.NONE, i, i, leakTesterNames[i]);
+            }
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    String name = item.getTitle().toString();
+
+                    LeakTester_Type leakTesterType = simulation_manager.getLeakTesterByName(name);
+                    currentClicked = new Tag(-1, leakTesterType.getName());
+                    Intent scopeTypeIntent = new Intent(getApplicationContext(), ElementActivity.class);
+                    scopeTypeIntent.putExtra("element", leakTesterType);
+                    scopeTypeIntent.putExtra("mode", "view");
+                    startActivityForResult(scopeTypeIntent, element_Request);
+                    return true;
+                }
+            });
+            popupMenu.show();
+
+        } else if (view.getId() == R.id.buttonViewTowerTypes) {
+
         }
     }
 
@@ -172,7 +196,6 @@ public class SimulationActivity
             MenuItem addTowerType = menu.findItem(R.id.addTowerType);
             MenuItem addProcedureRoom = menu.findItem(R.id.addProcedureRoom);
             MenuItem addManualCleaningStation = menu.findItem(R.id.addManualCleaningStation);
-            //TODO:add leak tester as prereq to sink
 
             if (simulation_manager.getProcedureNum() > 0) {
                 addClient.setVisible(true);
@@ -193,6 +216,11 @@ public class SimulationActivity
                 addProcedureRoom.setVisible(true);
             } else {
                 addProcedureRoom.setVisible(false);
+            }
+            if (simulation_manager.getLeakTesterTypeNum() <= 0) {
+                addManualCleaningStation.setVisible(false);
+            } else  {
+                addManualCleaningStation.setVisible(true);
             }
         }
         else if (id == R.id.addProcedureType) {
@@ -241,6 +269,13 @@ public class SimulationActivity
             leakTesterTypeIntent.putExtra("element", leakTester);
             leakTesterTypeIntent.putExtra("mode", "add");
             startActivityForResult(leakTesterTypeIntent, element_Request);
+        } else if (id == R.id.addManualCleaningStation) {
+            Intent sinkIntent = new Intent(getApplicationContext(), ElementActivity.class);
+            ManualCleaningStation sink = new ManualCleaningStation(null);
+            sinkIntent.putExtra("element", sink);
+            sinkIntent.putExtra("mode", "add");
+            sinkIntent.putExtra("leakTesterTypes", simulation_manager.getLeakTesterTypeNames());
+            startActivityForResult(sinkIntent, element_Request);
         } else if (id == R.id.startSimulation) {
             ActionMenuItemView playImage = findViewById(R.id.playButton);
             if (item.getTitle().equals("Confirm Start")) {
@@ -275,22 +310,25 @@ public class SimulationActivity
             return;
         }
 
-        if (requestCode == element_Request) { //TODO::: fix since UI isnt updated like this anymore
+        if (requestCode == element_Request) {
             Element element = (Element) data.getSerializableExtra("element");
             String[] list = (String[]) data.getSerializableExtra("list");
 
             if (element.equals(Element.ELEMENT_PROCEDUREROOM)) {
                 ProcedureRoom procedureRoom = (ProcedureRoom) element;
-                for (int i = 0; i < list.length; i++) {
-                    Tower_Type type = simulation_manager.getTowerTypeByName(list[i]);
-                    procedureRoom.addTowerType(type);
+
+                if (list != null) {
+                    for (int i = 0; i < list.length; i++) {
+                        Tower_Type type = simulation_manager.getTowerTypeByName(list[i]);
+                        procedureRoom.addTowerType(type);
+                    }
                 }
 
                 //adding a new procedure room
                 if (resultCode == RESULT_FIRST_USER) {
                     simulation_manager.addProcedureRoom(procedureRoom);
 
-                    LinearLayout linearLayoutRooms = findViewById(R.id.LinearLayoutRooms);
+                    /*LinearLayout linearLayoutRooms = findViewById(R.id.LinearLayoutRooms);
                     ObjectView roomImage = new ObjectView(procedureRoom, getApplicationContext());
                     roomImage.changeOrientation(LinearLayout.HORIZONTAL);
                     roomImage.setOnClickListener(this);
@@ -300,7 +338,7 @@ public class SimulationActivity
 
                     roomImage.setTag(tag);
 
-                    linearLayoutRooms.addView(roomImage);
+                    linearLayoutRooms.addView(roomImage);*/
 
 
                 } else if (resultCode == RESULT_OK) {
@@ -314,22 +352,35 @@ public class SimulationActivity
                     } else {
                         simulation_manager.deleteProcedureRoom(index);
 
-                        LinearLayout linearLayoutRooms = findViewById(R.id.LinearLayoutRooms);
+                        /*LinearLayout linearLayoutRooms = findViewById(R.id.LinearLayoutRooms);
                         View room = linearLayoutRooms.getChildAt(simulation_manager.getProcedureRoomNum());
-                        linearLayoutRooms.removeView(room);
+                        linearLayoutRooms.removeView(room);*/
                     }
 
                 }
+                renderUIFromManager();
 
+            } else if (element.equals(Element.ELEMENT_LEAKTESTERTYPE)) {
+                LeakTester_Type leakTester_type = (LeakTester_Type) element;
+                if (resultCode == RESULT_FIRST_USER) {
+                    simulation_manager.addLeakTester(leakTester_type);
+                } else if (resultCode == RESULT_OK) {
+                    //remove for deleting or editing
+                    simulation_manager.removeLeakTesterTypeByName(currentClicked.type);
 
-            } else if (element.equals(Element.ELEMENT_NURSE)) {
+                    //if editing add new one back in
+                    if (leakTester_type.validate()) {
+                        simulation_manager.addLeakTester(leakTester_type);
+                    }
+                }
+                renderUIFromManager();
+            }else if (element.equals(Element.ELEMENT_NURSE)) {
                 if (resultCode == RESULT_OK) {
                     int number = data.getIntExtra("number", -1);
                     int cooldown = data.getIntExtra("cooldown", -1);
                     simulation_manager.setNurseNum(number);
                     simulation_manager.setNursePostProcedureTime(cooldown);
                     updateActorUI();
-
                 }
             } else if (element.equals(Element.ELEMENT_DOCTOR)) {
                 if (resultCode == RESULT_OK) {
@@ -339,6 +390,23 @@ public class SimulationActivity
                     simulation_manager.setDoctorPostProcedureTime(cooldown);
                     updateActorUI();
                 }
+            } else if (element.equals(Element.ELEMENT_SINK)) {
+                if (resultCode == RESULT_FIRST_USER) {
+                    LeakTester_Type leakTester_type = simulation_manager.getLeakTesterByName(list[0]);
+                    ManualCleaningStation manualCleaningStation = new ManualCleaningStation(leakTester_type);
+                    simulation_manager.addManualCleaningStation(manualCleaningStation);
+                } else if (resultCode == RESULT_OK) {
+                    ManualCleaningStation manualCleaningStation = (ManualCleaningStation)element;
+                    //remove old if edited or deleted
+                    simulation_manager.removeManualCleaningStationByLeakTester(currentClicked.type);
+
+                    if (manualCleaningStation.validate()) {
+                        LeakTester_Type leakTester_type = simulation_manager.getLeakTesterByName(list[0]);
+                        manualCleaningStation.setCurrentLeakTester(leakTester_type);
+                    }
+                }
+
+                renderUIFromManager();
             }
         }
 
@@ -609,6 +677,14 @@ public class SimulationActivity
             doctorIntent.putExtra("cooldown", simulation_manager.getDoctorPostProcedureTime());
             startActivityForResult(doctorIntent, element_Request);
 
+        } else if (type.equals("Sink")) {
+            Intent sinkIntent = new Intent(getApplicationContext(), ElementActivity.class);
+            ManualCleaningStation manualCleaningStation = simulation_manager.getManualCleaningStationByIndex(index);
+            sinkIntent.putExtra("element", manualCleaningStation);
+            sinkIntent.putExtra("mode", "view");
+            sinkIntent.putExtra("leakTesterTypes", simulation_manager.getLeakTesterTypeNames());
+            currentClicked.type = manualCleaningStation.getCurrentLeakTester().getName();
+            startActivityForResult(sinkIntent, element_Request);
         }
     }
 

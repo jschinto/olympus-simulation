@@ -17,6 +17,10 @@ public class LeakTesterType_Manager {
         this.types.remove(type);
     }
 
+    public void removeLeakTesterTypeByName(String name) {
+        removeLeakTesterType(getLeakTesterTypeByName(name));
+    }
+
     public ArrayList<LeakTester_Type> getLeakTesterTypes(){
         return this.types;
     }

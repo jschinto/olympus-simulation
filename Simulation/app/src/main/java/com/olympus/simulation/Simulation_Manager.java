@@ -387,6 +387,10 @@ public class Simulation_Manager {
         leakTesterTypeManager.removeLeakTesterType(type);
     }
 
+    public void removeLeakTesterTypeByName(String name) {
+        leakTesterTypeManager.removeLeakTesterTypeByName(name);
+    }
+
     public ArrayList<ManualCleaningStation> getManualCleaningStations(){
         return manualCleaningStationManager.getManualCleaningStations();
     }
@@ -397,6 +401,14 @@ public class Simulation_Manager {
 
     public int getManualCleaningStationNum(){
         return manualCleaningStationManager.getManualCleaningStationNum();
+    }
+
+    public void addManualCleaningStation(ManualCleaningStation station) {
+        manualCleaningStationManager.addManualCleaningStation(station);
+    }
+
+    public void removeManualCleaningStationByLeakTester(String leakTesterName) {
+        manualCleaningStationManager.removeManualCleaningStationByLeakTester(leakTesterName);
     }
 
     //TODO: maybe show toast for patients deleted

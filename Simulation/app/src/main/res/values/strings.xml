@@ -43,4 +43,6 @@
     <string name="startTime">Start Time:</string>
     <string name="endTime">End Time:</string>
     <string name="towerTypeScopeTypes">Valid Scope Types:</string>
+    <string name="buttonViewLeakTesterTypes">View Leak Tester Types</string>
+    <string name="ViewTowerTypes">View Tower Types</string>
 </resources>

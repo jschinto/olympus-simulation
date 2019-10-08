@@ -164,6 +164,7 @@ public class ObjectView extends LinearLayout {
         } else if (type.equals("Doctor")) {
             changeText("Number of Doctors: ");
         } else if (type.equals("Sink")) {
+            changeOrientation(HORIZONTAL);
             changeText("sink");
         }
         else {
