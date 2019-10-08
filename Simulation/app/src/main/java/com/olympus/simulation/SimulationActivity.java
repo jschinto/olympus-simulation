@@ -779,6 +779,10 @@ public class SimulationActivity
         ArrayList<Scope> scopes = simulation_manager.getFreeScopes();
         LinearLayout linearLayoutScope = findViewById(R.id.LinearLayoutScopes);
         populateSection(linearLayoutScope, "Scope", scopes);
+
+        ArrayList<ManualCleaningStation> manualCleaningStations = simulation_manager.getManualCleaningStations();
+        LinearLayout linearLayoutSinks = findViewById(R.id.LinearLayoutSinks);
+        populateSection(linearLayoutSinks, "Sink", manualCleaningStations);
     }
 
     public <T> void populateSection(LinearLayout theLinearLayout, String tagType, ArrayList<T> list) {
