@@ -170,6 +170,16 @@ public class Simulation_Manager {
         }
         scopeManager.sortList();
         clientManager.sortQueue();
+
+        for(int i = 0; i < this.scopeManager.getScopeNum(); i++){
+            if(this.scopeManager.getScopeByIndex(i).getState() == State_Scope.STATE_CLEANING && this.scopeManager.getScopeByIndex(i).getTimeLeft() == 0){
+                ManualCleaningStation station = manualCleaningStationManager.getFreeStation();
+                if(station == null){
+                    break;
+                }
+                this.scopeManager.getScopeByIndex(i).startClean(station);
+            }
+        }
         return false;
     }
 

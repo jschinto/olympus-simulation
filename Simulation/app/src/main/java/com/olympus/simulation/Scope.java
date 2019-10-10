@@ -78,15 +78,16 @@ public class Scope implements Comparable<Scope>, Serializable, EquipmentCSV.Equi
                 return State_Scope.STATE_USE;
             }
             if(this.state == State_Scope.STATE_DIRTY) {
-                this.station = ManualCleaningStation_Manager.getFreeStation();
-                if(this.station != null){
-                    this.station.setCurrentScope(this);
-                    setTimeLeft(this.getCleaningTime() + this.station.getCurrentLeakTester().getTimeToComplete());
-                    setState(State_Scope.STATE_CLEANING);
-                }
+                setState(State_Scope.STATE_CLEANING);
             }
         }
         return this.state;
+    }
+
+    public void startClean(ManualCleaningStation station){
+        this.station = station;
+        this.station.setCurrentScope(this);
+        setTimeLeft(this.getCleaningTime() + this.station.getCurrentLeakTester().getTimeToComplete());
     }
 
     public void freeScope(String currTime) {

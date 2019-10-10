@@ -3,7 +3,7 @@ package com.olympus.simulation;
 import java.util.ArrayList;
 
 public class ManualCleaningStation_Manager {
-    static ArrayList<ManualCleaningStation> stations;
+    private ArrayList<ManualCleaningStation> stations;
 
     public ManualCleaningStation_Manager(){
         stations = new ArrayList<>();
@@ -40,7 +40,7 @@ public class ManualCleaningStation_Manager {
         }
     }
 
-    public static ManualCleaningStation getFreeStation() {
+    public ManualCleaningStation getFreeStation() {
         for(int i = 0; i < stations.size(); i++){
             if(stations.get(i).getCurrentScope() == null){
                 return stations.get(i);

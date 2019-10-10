@@ -858,7 +858,6 @@ public class SimulationActivity
             @SuppressLint("RestrictedApi")
             @Override
             public void run() {
-                System.out.println("RUNNINGHERE");
                 if (!isRunning && !isPaused) {
                     isRunning = true;
                     simulation_manager.runTick();
