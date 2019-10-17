@@ -13,6 +13,7 @@ public class Scope implements Comparable<Scope>, Serializable, EquipmentCSV.Equi
     private ManualCleaningStation station;
     private int id;
     private EquipmentCSV equipmentCSV;
+    private Technician holding;
 
     private boolean tempGrab;
 
@@ -35,6 +36,7 @@ public class Scope implements Comparable<Scope>, Serializable, EquipmentCSV.Equi
         this.uiUpdated = false;
         this.room = null;
         this.tempGrab = false;
+        this.holding = null;
 
         String typeName = "";
         if(t != null) {
@@ -67,6 +69,7 @@ public class Scope implements Comparable<Scope>, Serializable, EquipmentCSV.Equi
         if (this.timeLeft == 0) {
             //Scope has finished being cleaned
             if (this.state == State_Scope.STATE_CLEANING) {
+                setHolding(null);
                 this.station.setCurrentScope(null);
                 this.station = null;
                 setState(State_Scope.STATE_FREE);
@@ -74,10 +77,12 @@ public class Scope implements Comparable<Scope>, Serializable, EquipmentCSV.Equi
             }
             //Scope has arrived at its destination
             else if (this.state == State_Scope.STATE_TRAVEL) {
+                setHolding(null);
                 setState(State_Scope.STATE_USE);
                 return State_Scope.STATE_USE;
             }
             if(this.state == State_Scope.STATE_DIRTY) {
+                setHolding(null);
                 setState(State_Scope.STATE_CLEANING);
             }
         }
@@ -160,5 +165,19 @@ public class Scope implements Comparable<Scope>, Serializable, EquipmentCSV.Equi
     @Override
     public EquipmentCSV getEquipmentCSV() {
         return equipmentCSV;
+    }
+
+    public Technician getHolding() {
+        return holding;
+    }
+
+    public void setHolding(Technician holding) {
+        if(this.holding != null){
+            this.holding.setState(new State(State.STATE_WAIT));
+        }
+        if(holding != null){
+            holding.setState(new State(State.STATE_TRAVEL));
+        }
+        this.holding = holding;
     }
 }

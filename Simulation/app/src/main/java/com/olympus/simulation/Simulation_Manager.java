@@ -21,6 +21,7 @@ public class Simulation_Manager {
     private Doctor_Manager doctormanager;
     private LeakTesterType_Manager leakTesterTypeManager;
     private ManualCleaningStation_Manager manualCleaningStationManager;
+    private Technician_Manager technicianManager;
 
     //the time the simulated hospital should open and close
     //Represented as a integer from 0 - some value
@@ -73,6 +74,7 @@ public class Simulation_Manager {
         nursemanager = new Nurse_Manager();
         doctormanager = new Doctor_Manager();
         manualCleaningStationManager = new ManualCleaningStation_Manager();
+        technicianManager = new Technician_Manager();
         this.startTime = startTime;
         this.endTime = endTime;
         this.waitTime = waitTime;
@@ -131,13 +133,16 @@ public class Simulation_Manager {
             ArrayList<Scope> scopeList = new ArrayList<Scope>();
             for(int i = 0; i < nextClient.getProcedureList().size(); i++) {
                 Scope freeScope = scopeManager.getAvaliableScope(nextClient.getProcedureList().get(i));
-                if (freeScope == null) {
+                Technician tech = Technician_Manager.getTechnician();
+                if (freeScope == null || tech == null) {
                     for(int j = 0; j < scopeList.size(); j++){
                         scopeList.get(i).setTempGrab(false);
+                        scopeList.get(i).setHolding(null);
                     }
                     break;
                 }
                 if(!scopeList.contains(freeScope)) {
+                    freeScope.setHolding(tech);
                     scopeList.add(freeScope);
                     freeScope.setTempGrab(true);
                 }
@@ -172,11 +177,13 @@ public class Simulation_Manager {
         clientManager.sortQueue();
 
         for(int i = 0; i < this.scopeManager.getScopeNum(); i++){
-            if(this.scopeManager.getScopeByIndex(i).getState() == State_Scope.STATE_CLEANING && this.scopeManager.getScopeByIndex(i).getTimeLeft() == 0){
+            Technician tech = Technician_Manager.getTechnician();
+            if(tech != null && this.scopeManager.getScopeByIndex(i).getState() == State_Scope.STATE_CLEANING && this.scopeManager.getScopeByIndex(i).getTimeLeft() == 0){
                 ManualCleaningStation station = manualCleaningStationManager.getFreeStation();
                 if(station == null){
                     break;
                 }
+                this.scopeManager.getScopeByIndex(i).setHolding(tech);
                 this.scopeManager.getScopeByIndex(i).startClean(station);
             }
         }
@@ -504,4 +511,8 @@ public class Simulation_Manager {
     public void setDoctorPostProcedureTime(int time) {
         doctormanager.setPostProcedureTime(time);
     }
+
+    public int getTechnicianNum(){return technicianManager.getTechnicianNum();}
+    public int getTechnicianFreeNum() {return technicianManager.getFreeTechnicianNum();}
+    public void setTechnicianNum(int num) {technicianManager.setTechnicianNum(num);}
 }

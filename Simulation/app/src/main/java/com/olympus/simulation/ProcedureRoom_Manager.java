@@ -71,7 +71,7 @@ public class ProcedureRoom_Manager {
     public ProcedureRoom getProcedureRoom(int offset) {
         int offsetCounter = 0;
         for (int i=0; i < roomList.size(); i++) {
-            if (roomList.get(i).isAvailable() && !roomList.get(i).isReady()) {
+            if (roomList.get(i).isAvailable() && !roomList.get(i).isReady() && roomList.get(i).isClear()) {
                 if(offsetCounter >= offset) {
                     return roomList.get(i);
                 }

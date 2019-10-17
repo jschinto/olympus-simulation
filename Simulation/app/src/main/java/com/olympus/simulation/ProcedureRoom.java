@@ -11,6 +11,8 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
     private boolean occupied;
     //whether the room is ready to serve the customer
     private boolean ready;
+    //whether the room has all of its elements cleared out of it.
+    private boolean clear;
     //how much time it takes to travel to this room from the client waiting room
     private int travelTime;
     //the time needed after an operation for the room to be available again
@@ -38,6 +40,7 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
         this.towerTypes = new ArrayList<>();
         this.currentNurse = null;
         this.currentDoctor = null;
+        this.clear = true;
     }
 
     public void claimElements(ArrayList<Scope> list, Doctor doctor, Nurse nurse) {
@@ -49,6 +52,8 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
         this.currentDoctor.startTravel(this.travelTime);
         this.currentNurse = nurse;
         this.currentNurse.startTravel(this.travelTime);
+
+        setClear(false);
     }
 
     //cooldown time decreases with each tick of time
@@ -67,14 +72,28 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
 
     public void removeElements(String currTime) {
         setReady(false);
-        for(Scope s : this.scope){
-            s.freeScope(currTime);
-        }
-        this.scope.clear();
         this.currentNurse.startPostProcedure(Nurse_Manager.getPostProcedureTime());
         this.currentNurse = null;
         this.currentDoctor.startPostProcedure(Doctor_Manager.getPostProcedureTime());
         this.currentDoctor = null;
+
+        boolean result = tryClear(currTime);
+        if(result){
+            this.scope.clear();
+            setClear(true);
+        }
+    }
+
+    public boolean tryClear(String currTime){
+        for(Scope s : this.scope){
+            Technician tech = Technician_Manager.getTechnician();
+            if(tech == null){
+                return false;
+            }
+            s.setHolding(tech);
+            s.freeScope(currTime);
+        }
+        return true;
     }
 
     public void removeClient() {
@@ -215,5 +234,13 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
 
     public void setCurrentDoctor(Doctor currentDoctor) {
         this.currentDoctor = currentDoctor;
+    }
+
+    public boolean isClear() {
+        return clear;
+    }
+
+    public void setClear(boolean clear) {
+        this.clear = clear;
     }
 }
