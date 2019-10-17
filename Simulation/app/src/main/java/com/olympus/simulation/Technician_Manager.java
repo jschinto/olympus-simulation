@@ -40,4 +40,8 @@ public class Technician_Manager {
         }
         return count;
     };
+
+    public Boolean isEverythingDone() {
+        return getTechnicianNum() == getFreeTechnicianNum();
+    }
 }

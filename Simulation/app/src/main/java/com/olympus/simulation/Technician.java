@@ -14,7 +14,7 @@ public class Technician extends Element implements Serializable {
     public void tick(){
         this.travel--;
         if(this.travel <= 0) {
-            if(this.state == State.STATE_TRAVEL){
+            if(this.state.state == State.STATE_TRAVEL){
                 setState(new State(State.STATE_OPERATION));
             }
         }

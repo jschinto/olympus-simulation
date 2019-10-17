@@ -51,4 +51,12 @@ public class Nurse_Manager {
             nurses.add(new Nurse());
         }
     }
+
+    public Boolean isEverythingDone() {
+        boolean done = true;
+        for(Nurse n:nurses) {
+            done &= n.getState() == State.STATE_WAIT;
+        }
+        return done;
+    }
 }

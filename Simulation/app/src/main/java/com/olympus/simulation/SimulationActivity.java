@@ -863,7 +863,7 @@ public class SimulationActivity
                     simulation_manager.runTick();
                     simulation_manager.incrementCurrTime();
 
-                    if (simulation_manager.getCurrTime() >= simulation_manager.getEndTime()) {
+                    if (simulation_manager.getCurrTime() >= simulation_manager.getEndTime() && simulation_manager.isEverythingDone()) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

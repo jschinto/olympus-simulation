@@ -515,4 +515,16 @@ public class Simulation_Manager {
     public int getTechnicianNum(){return technicianManager.getTechnicianNum();}
     public int getTechnicianFreeNum() {return technicianManager.getFreeTechnicianNum();}
     public void setTechnicianNum(int num) {technicianManager.setTechnicianNum(num);}
+
+    public Boolean isEverythingDone() {
+        boolean done = true;
+        done &= clientManager.isEverythingDone();
+        done &= scopeManager.isEverythingDone();
+        done &= procedureRoomManager.isEverythingDone();
+        done &= nursemanager.isEverythingDone();
+        done &= technicianManager.isEverythingDone();
+        done &= doctormanager.isEverythingDone();
+
+        return done;
+    }
 }

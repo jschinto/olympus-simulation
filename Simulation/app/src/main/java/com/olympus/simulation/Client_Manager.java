@@ -109,4 +109,13 @@ public class Client_Manager {
         setIDs();
         return count;
     }
+
+    public Boolean isEverythingDone() {
+        boolean done = true;
+        for(Client c:queue) {
+            done &= c.getState() == State.STATE_DONE;
+        }
+
+        return done;
+    }
 }

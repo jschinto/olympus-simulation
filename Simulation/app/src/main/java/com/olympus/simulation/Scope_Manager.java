@@ -131,4 +131,14 @@ public class Scope_Manager {
         ScopeLogCSV logItem = new ScopeLogCSV(s.getType().getName(), s.getId() + "", "Scope " + s.getId(), currTime, currTime, proc, station, state);
         addScopeLogCSV(logItem);
     }
+
+    public Boolean isEverythingDone() {
+        boolean done = true;
+
+        for(Scope s:list) {
+            done &= s.getState() == State_Scope.STATE_FREE;
+        }
+
+        return done;
+    }
 }

@@ -90,4 +90,14 @@ public class ProcedureRoom_Manager {
     public ArrayList<ProcedureRoom> getProcedureRooms() {
         return roomList;
     }
+
+    public Boolean isEverythingDone() {
+        boolean done = true;
+
+        for(ProcedureRoom pr:roomList) {
+            done &= pr.isAvailable();
+        }
+
+        return done;
+    }
 }

@@ -50,4 +50,12 @@ public class Doctor_Manager {
             doctors.add(new Doctor());
         }
     }
+
+    public Boolean isEverythingDone() {
+        boolean done = true;
+        for(Doctor d:doctors){
+            done &= d.getState() == State.STATE_WAIT;
+        }
+        return done;
+    }
 }
