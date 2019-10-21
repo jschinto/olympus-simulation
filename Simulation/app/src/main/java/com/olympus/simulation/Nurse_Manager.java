@@ -34,6 +34,10 @@ public class Nurse_Manager {
         return null;
     }
 
+    public ArrayList<Nurse> getNurseList() {
+        return nurses;
+    }
+
     public void operationComplete(Nurse nurse) {
         nurse.startPostProcedure(postProcedureTime);
     }

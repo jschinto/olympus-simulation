@@ -243,6 +243,16 @@ public class Simulation_Manager {
                 hallway.add(c);
             }
         }
+        for (Nurse n:nursemanager.getNurseList()) {
+            if (n.getState() == State.STATE_TRAVEL) {
+                hallway.add(n);
+            }
+        }
+        for (Technician t:technicianManager.getTechnicianList()) {
+            if (t.getState() == State.STATE_TRAVEL) {
+                hallway.add(t);
+            }
+        }
         for(Scope s:scopeManager.getScopes()) {
             if(s.getState() == State_Scope.STATE_TRAVEL) {
                 hallway.add(s);

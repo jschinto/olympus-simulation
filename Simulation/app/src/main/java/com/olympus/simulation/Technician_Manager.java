@@ -39,7 +39,11 @@ public class Technician_Manager {
             }
         }
         return count;
-    };
+    }
+
+    public ArrayList<Technician> getTechnicianList() {
+        return technicians;
+    }
 
     public Boolean isEverythingDone() {
         return getTechnicianNum() == getFreeTechnicianNum();
