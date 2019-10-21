@@ -498,6 +498,9 @@ public class Simulation_Manager {
     public void setNursePostProcedureTime(int time) {
         nursemanager.setPostProcedureTime(time);
     }
+    public int getFreeNurses() {
+        return nursemanager.getFreeNurses();
+    }
 
     public int getDoctorNum() {
         return doctormanager.getDoctorNum();

@@ -52,11 +52,21 @@ public class Nurse_Manager {
         }
     }
 
+
     public Boolean isEverythingDone() {
         boolean done = true;
-        for(Nurse n:nurses) {
+        for (Nurse n : nurses) {
             done &= n.getState() == State.STATE_WAIT;
         }
         return done;
+    }
+    public int getFreeNurses() {
+        int count = 0;
+        for (int i=0; i < nurses.size(); i++) {
+            if (nurses.get(i).getState() == State.STATE_WAIT) {
+                count++;
+            }
+        }
+        return count;
     }
 }

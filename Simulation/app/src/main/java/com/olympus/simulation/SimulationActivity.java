@@ -403,7 +403,7 @@ public class SimulationActivity
                     simulation_manager.setNursePostProcedureTime(cooldown);
                     updateActorUI();
                 }
-            } else if (element.equals(Element.ELEMENT_DOCTOR)) {
+            } else if (element.equals(Element.ELEMENT_DOCTOR)) {//TODO::: fix for doctor changes
                 if (resultCode == RESULT_OK) {
                     int number = data.getIntExtra("number", -1);
                     int cooldown = data.getIntExtra("cooldown", -1);
@@ -690,9 +690,16 @@ public class SimulationActivity
             nurseIntent.putExtra("number", simulation_manager.getNurseNum());
             nurseIntent.putExtra("cooldown", simulation_manager.getNursePostProcedureTime());
             startActivityForResult(nurseIntent, element_Request);
-        } else if (type.equals("Doctor")) {
+        } else if (type.equals("Technician")) {
+            Intent techIntent = new Intent(getApplicationContext(), ElementActivity.class);
+            Technician technician = new Technician();
+            techIntent.putExtra("element", technician);
+            techIntent.putExtra("mode", "actor");
+            techIntent.putExtra("number", simulation_manager.getTechnicianNum());
+            startActivityForResult(techIntent, element_Request);
+        }else if (type.equals("Doctor")) {//TODO:: fix for doctor
             Intent doctorIntent = new Intent(getApplicationContext(), ElementActivity.class);
-            Doctor doctor = new Doctor();
+            Doctor doctor = new Doctor(null);
             doctorIntent.putExtra("element", doctor);
             doctorIntent.putExtra("mode", "actor");
             doctorIntent.putExtra("number", simulation_manager.getDoctorNum());
@@ -794,6 +801,8 @@ public class SimulationActivity
     }
 
     public void renderUIFromManager() {
+        updateActorUI();
+
         TextView textTime = findViewById(R.id.textViewTime);
         textTime.setText(Time.convertToString(simulation_manager.getCurrTime()));
 
@@ -938,18 +947,19 @@ public class SimulationActivity
 
         ObjectView nurse = new ObjectView(new Nurse(), getApplicationContext());
         nurse.changeOrientation(ObjectView.HORIZONTAL);
-        nurse.addLine("" + simulation_manager.getNurseNum());
+        nurse.addLine("Nurses Available: " + simulation_manager.getFreeNurses() + "/" + simulation_manager.getNurseNum());
         Tag tagN =  new Tag(0, "Nurse");
         nurse.setTag(tagN);
         nurse.setOnClickListener(this);
         nurseLayout.addView(nurse);
 
-        ObjectView doctor = new ObjectView(new Doctor(), getApplicationContext());
-        doctor.changeOrientation(ObjectView.HORIZONTAL);
-        doctor.addLine("" + simulation_manager.getDoctorNum());
-        Tag tagD =  new Tag(0, "Doctor");
-        doctor.setTag(tagD);
-        doctor.setOnClickListener(this);
-        nurseLayout.addView(doctor);
+
+        ObjectView technician = new ObjectView(new Technician(), getApplicationContext());
+        technician.changeOrientation(ObjectView.HORIZONTAL);
+        technician.addLine("Technicians Available: " + simulation_manager.getTechnicianFreeNum() + "/" + simulation_manager.getTechnicianNum());
+        Tag tagT =  new Tag(0, "Technician");
+        technician.setTag(tagT);
+        technician.setOnClickListener(this);
+        nurseLayout.addView(technician);
     }
 }

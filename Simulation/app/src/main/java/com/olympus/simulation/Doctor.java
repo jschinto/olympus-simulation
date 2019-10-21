@@ -1,6 +1,8 @@
 package com.olympus.simulation;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class Doctor extends Element implements Serializable {
 
@@ -8,15 +10,25 @@ public class Doctor extends Element implements Serializable {
 
     private int timeLeft;
 
+    private ArrayList<Procedure> procedures;
 
-    public Doctor() {
+
+    public Doctor(ArrayList<Procedure> procedures) {
         this.element = ELEMENT_DOCTOR;
+        this.procedures = procedures;
         setState(State.STATE_WAIT);
         timeLeft = 0;
     }
 
     public int getState() {
         return state.state;
+    }
+
+    public ArrayList<Procedure> getProcedures() {
+        return procedures;
+    }
+    public void setProcedures(ArrayList<Procedure> procedures) {
+        this.procedures = procedures;
     }
 
     public void setState(@State.StateDef int state) {

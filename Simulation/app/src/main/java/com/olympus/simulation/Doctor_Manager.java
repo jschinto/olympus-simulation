@@ -11,7 +11,7 @@ public class Doctor_Manager {
         doctors = new ArrayList<Doctor>();
         postProcedureTime = 1;
 
-        doctors.add(new Doctor());
+        doctors.add(new Doctor(null));
     }
 
     public void runTick(){
@@ -22,6 +22,10 @@ public class Doctor_Manager {
 
     public int getDoctorNum() {
         return doctors.size();
+    }
+
+    public Doctor getDoctorByIndex(int i) {
+        return doctors.get(i);
     }
 
     public Doctor getDoctor() {
@@ -47,7 +51,7 @@ public class Doctor_Manager {
     public void setDoctorNum(int num) {
         doctors = new ArrayList<Doctor>();
         for (int i=0; i < num; i++) {
-            doctors.add(new Doctor());
+            doctors.add(new Doctor(null));
         }
     }
 
