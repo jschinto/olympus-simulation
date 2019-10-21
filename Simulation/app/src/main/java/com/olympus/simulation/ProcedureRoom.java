@@ -85,15 +85,23 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
     }
 
     public boolean tryClear(String currTime){
-        for(Scope s : this.scope){
-            Technician tech = Technician_Manager.getTechnician();
-            if(tech == null){
-                return false;
+        for(int i = 0; i < this.scope.size(); i++){
+            if(this.scope.get(i).getHolding() == null) {
+                Technician tech = Technician_Manager.getTechnician();
+                if (tech != null) {
+                    this.scope.get(i).setHolding(tech, this.travelTime);
+                }
             }
-            s.setHolding(tech);
-            s.freeScope(currTime);
+            if(this.scope.get(i).canTravel()) {
+                this.scope.get(i).freeScope(currTime);
+                this.scope.remove(i);
+                i--;
+            }
         }
-        return true;
+        if(this.scope.size() == 0) {
+            return true;
+        }
+        return false;
     }
 
     public void removeClient() {

@@ -69,7 +69,7 @@ public class Scope implements Comparable<Scope>, Serializable, EquipmentCSV.Equi
         if (this.timeLeft == 0) {
             //Scope has finished being cleaned
             if (this.state == State_Scope.STATE_CLEANING) {
-                setHolding(null);
+                setHolding(null, -1);
                 this.station.setCurrentScope(null);
                 this.station = null;
                 setState(State_Scope.STATE_FREE);
@@ -77,12 +77,12 @@ public class Scope implements Comparable<Scope>, Serializable, EquipmentCSV.Equi
             }
             //Scope has arrived at its destination
             else if (this.state == State_Scope.STATE_TRAVEL) {
-                setHolding(null);
+                setHolding(null, -1);
                 setState(State_Scope.STATE_USE);
                 return State_Scope.STATE_USE;
             }
             if(this.state == State_Scope.STATE_DIRTY) {
-                setHolding(null);
+                setHolding(null, -1);
                 setState(State_Scope.STATE_CLEANING);
             }
         }
@@ -171,13 +171,21 @@ public class Scope implements Comparable<Scope>, Serializable, EquipmentCSV.Equi
         return holding;
     }
 
-    public void setHolding(Technician holding) {
+    public void setHolding(Technician holding, int travelTime) {
         if(this.holding != null){
-            this.holding.setState(new State(State.STATE_WAIT));
+            this.holding.setTravel(-1);
         }
         if(holding != null){
-            holding.setState(new State(State.STATE_TRAVEL));
+            holding.setTravel(travelTime);
         }
         this.holding = holding;
+    }
+
+    public boolean canTravel(){
+        if(this.holding == null || this.holding.getState() != State.STATE_OPERATION){
+            return false;
+        }
+
+        return true;
     }
 }
