@@ -166,12 +166,27 @@ public class ObjectView extends LinearLayout {
                 addLine(scopes.get(i).getType().getName());
             }
         } else if (type.equals("Nurse")) {
+            Nurse nurse = (Nurse)object;
+            if (nurse.getState() == State.STATE_TRAVEL) {
+                changeText("Nurse");
+            }
         } else if (type.equals("Doctor")) {
-            changeText("Number of Doctors: ");
+            Doctor doctor = (Doctor)object;
+            if (doctor.getState() == State.STATE_TRAVEL) {
+                changeText("Doctor");
+            }
         } else if (type.equals("Sink")) {
             changeOrientation(HORIZONTAL);
             changeText("sink");
+            ManualCleaningStation sink = (ManualCleaningStation)object;
+            if (sink.getCurrentScope() != null) {
+                addLine(sink.getCurrentScope().getType().getName());
+            }
         } else if (type.equals("Technician")) {
+            Technician technician = (Technician)object;
+            if (technician.getState() == State.STATE_TRAVEL) {
+                changeText("Technician");
+            }
         }
         else {
             addLine("TYPE INVALID");
