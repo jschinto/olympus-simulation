@@ -1,5 +1,6 @@
 package com.olympus.simulation;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Doctor_Manager {
@@ -28,9 +29,10 @@ public class Doctor_Manager {
         return doctors.get(i);
     }
 
-    public Doctor getDoctor() {
+    public Doctor getDoctor(ArrayList<Procedure> procList) {
         for (int i=0; i < doctors.size(); i++) {
-            if (doctors.get(i).getState() == State.STATE_WAIT) {
+            ArrayList<Procedure> docList = doctors.get(i).getProcedures();
+            if (doctors.get(i).getState() == State.STATE_WAIT && docList.containsAll(procList)) {
                 Doctor doctor = doctors.get(i);
                 return doctor;
             }

@@ -28,6 +28,7 @@ public class Technician extends Element implements Serializable {
         this.state = state;
     }
 
+
     public void startTravel(int travelTime){
         if(travelTime == -1){
             this.travel = 0;
@@ -39,7 +40,13 @@ public class Technician extends Element implements Serializable {
             this.travel = travelTime;
             this.state = new State(State.STATE_TRAVEL);
         }
+
     }
+
+    public void setState(int state) {
+        this.state = new State(state);
+    }
+
     public int getTravel() {
         return travel;
     }

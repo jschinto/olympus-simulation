@@ -110,7 +110,7 @@ public class Simulation_Manager {
                 break;
             }
 
-            Doctor freeDoctor = doctormanager.getDoctor();
+            Doctor freeDoctor = doctormanager.getDoctor(nextClient.getProcedureList());
             if(freeDoctor == null){
                 break;
             }
@@ -183,7 +183,8 @@ public class Simulation_Manager {
                 if(station == null){
                     break;
                 }
-                this.scopeManager.getScopeByIndex(i).setHolding(tech, 5);
+                this.scopeManager.getScopeByIndex(i).setHolding(tech, 0);
+                this.scopeManager.getScopeByIndex(i).startClean(station);
             }
         }
         return false;
@@ -522,6 +523,10 @@ public class Simulation_Manager {
     }
     public void setDoctorPostProcedureTime(int time) {
         doctormanager.setPostProcedureTime(time);
+    }
+
+    public Doctor getDoctorByIndex(int i){
+        return doctormanager.getDoctorByIndex(i);
     }
 
     public int getTechnicianNum(){return technicianManager.getTechnicianNum();}

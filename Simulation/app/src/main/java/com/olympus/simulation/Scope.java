@@ -14,6 +14,7 @@ public class Scope implements Comparable<Scope>, Serializable, EquipmentCSV.Equi
     private int id;
     private EquipmentCSV equipmentCSV;
     private Technician holding;
+    private int timeFree;
 
     private boolean tempGrab;
 
@@ -65,13 +66,17 @@ public class Scope implements Comparable<Scope>, Serializable, EquipmentCSV.Equi
         if (timeLeft < 0) {
             timeLeft = 0;
         }
-        System.out.println("Scope " + timeLeft + " " + state);
+        if(this.state == State_Scope.STATE_CLEANING){
+            if(this.timeLeft == this.timeFree){
+                setHolding(null, -1);
+            }
+        }
         if (this.timeLeft == 0) {
             //Scope has finished being cleaned
             if (this.state == State_Scope.STATE_CLEANING) {
-                setHolding(null, -1);
                 this.station.setCurrentScope(null);
                 this.station = null;
+                this.timeFree = 0;
                 setState(State_Scope.STATE_FREE);
                 return State_Scope.STATE_FREE;
             }
@@ -93,6 +98,7 @@ public class Scope implements Comparable<Scope>, Serializable, EquipmentCSV.Equi
         this.station = station;
         this.station.setCurrentScope(this);
         setTimeLeft(this.getCleaningTime() + this.station.getCurrentLeakTester().getTimeToComplete());
+        this.timeFree = getTimeLeft() - station.getCurrentLeakTester().getRequiredAttentionTime();
     }
 
     public void freeScope(String currTime) {

@@ -28,6 +28,14 @@ public class Doctor extends Element implements Serializable {
         return procedures;
     }
 
+    public String[] getProceduresNames(){
+        String[] procs = new String[procedures.size()];
+        for(int i = 0; i < procedures.size(); i++){
+            procs[i] = procedures.get(i).getName();
+        }
+        return procs;
+    }
+
     public void setProcedures(ArrayList<Procedure> procedures) {
         this.procedures = procedures;
     }
