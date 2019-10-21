@@ -94,6 +94,7 @@ public class Simulation_Manager {
         scopeManager.runTick(Time.convertToString(currTime));
         nursemanager.runTick();
         doctormanager.runTick();
+        technicianManager.runTick();
         procedureRoomManager.runTick();
 
         int patientOffset = 0;

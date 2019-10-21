@@ -10,7 +10,7 @@ public class Technician_Manager {
         technicians.add(new Technician());
     }
 
-    public void tick(){
+    public void runTick(){
         for(int i = 0; i < technicians.size(); i++){
             technicians.get(i).tick();
         }
