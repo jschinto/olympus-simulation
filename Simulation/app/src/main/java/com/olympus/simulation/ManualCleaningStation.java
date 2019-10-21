@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class ManualCleaningStation extends Element implements Serializable {
     Scope currentScope;
     LeakTester_Type currentLeakTester;
+    int travelTime;
 
     public ManualCleaningStation(LeakTester_Type type){
         this.element = ELEMENT_SINK;
@@ -34,5 +35,13 @@ public class ManualCleaningStation extends Element implements Serializable {
         }
 
         return false;
+    }
+
+    public int getTravelTime() {
+        return travelTime;
+    }
+
+    public void setTravelTime(int travelTime) {
+        this.travelTime = travelTime;
     }
 }

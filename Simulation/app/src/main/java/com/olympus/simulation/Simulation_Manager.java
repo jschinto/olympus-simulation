@@ -183,8 +183,7 @@ public class Simulation_Manager {
                 if(station == null){
                     break;
                 }
-                this.scopeManager.getScopeByIndex(i).setHolding(tech, 10);
-                this.scopeManager.getScopeByIndex(i).startClean(station);
+                this.scopeManager.getScopeByIndex(i).setHolding(tech, 5);
             }
         }
         return false;

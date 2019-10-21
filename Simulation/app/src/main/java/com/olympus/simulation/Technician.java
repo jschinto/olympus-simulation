@@ -28,10 +28,6 @@ public class Technician extends Element implements Serializable {
         this.state = state;
     }
 
-    public void setState(int state) {
-        this.state = new State(state);
-    }
-
     public void startTravel(int travelTime){
         if(travelTime == -1){
             this.travel = 0;
