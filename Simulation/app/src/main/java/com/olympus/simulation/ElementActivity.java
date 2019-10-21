@@ -82,7 +82,13 @@ public class ElementActivity extends AppCompatActivity {
             int cooldown = fromIntent.getIntExtra("cooldown", -1);
             setText(ids[0], num);
             setText(ids[1], cooldown);
-        } else if (element.equals(Element.ELEMENT_PROCEDUREROOM)) {
+        } else if (element.equals(Element.ELEMENT_TECHNICIAN)) {
+            setText(R.id.elementTextTitle, "Technicians");
+            ids = new int[1];
+            ids[0] = addField("Number of Technicians", "number");
+            int num = fromIntent.getIntExtra("number", -1);
+            setText(ids[0], num);
+        }else if (element.equals(Element.ELEMENT_PROCEDUREROOM)) {
             setText(R.id.elementTextTitle, "Procedure Room");
             ids = new int[3];
             ids[0] = addField("Travel Time", "number");
@@ -209,9 +215,15 @@ public class ElementActivity extends AppCompatActivity {
                 LeakTester_Type leakTester_type = new LeakTester_Type(leakTesterType, 1,1,1);
                 ManualCleaningStation manualCleaningStation = new ManualCleaningStation(leakTester_type);
                 leaveActivity(RESULT_OK, manualCleaningStation, list);
+
             }else if (mode.equals("actor")) {
                 int num = getTextInt(ids[0]);
-                int cooldown = getTextInt(ids[1]);
+                int cooldown;
+                if (element.equals(Element.ELEMENT_NURSE)) {
+                    cooldown = getTextInt(ids[1]);
+                } else {
+                    cooldown = 1;
+                }
                 if (num < 1 || cooldown < 1) {
                     makeToast("INVALID VALUES ENTERED");
                     return;

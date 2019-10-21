@@ -403,13 +403,17 @@ public class SimulationActivity
                     simulation_manager.setNursePostProcedureTime(cooldown);
                     updateActorUI();
                 }
-            } else if (element.equals(Element.ELEMENT_DOCTOR)) {//TODO::: fix for doctor changes
+            } else if (element.equals(Element.ELEMENT_TECHNICIAN)) {
                 if (resultCode == RESULT_OK) {
                     int number = data.getIntExtra("number", -1);
-                    int cooldown = data.getIntExtra("cooldown", -1);
-                    simulation_manager.setDoctorNum(number);
-                    simulation_manager.setDoctorPostProcedureTime(cooldown);
+                    simulation_manager.setTechnicianNum(number);
                     updateActorUI();
+                }
+            } else if (element.equals(Element.ELEMENT_DOCTOR)) {//TODO::: fix for doctor changes
+                if (resultCode == RESULT_FIRST_USER) {
+
+                } else if (resultCode == RESULT_OK) {
+
                 }
             } else if (element.equals(Element.ELEMENT_SINK)) {
                 if (resultCode == RESULT_FIRST_USER) {
