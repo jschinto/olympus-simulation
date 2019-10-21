@@ -10,6 +10,12 @@ public class Technician_Manager {
         technicians.add(new Technician());
     }
 
+    public void tick(){
+        for(int i = 0; i < technicians.size(); i++){
+            technicians.get(i).tick();
+        }
+    }
+
     public int getTechnicianNum(){
         return technicians.size();
     }
