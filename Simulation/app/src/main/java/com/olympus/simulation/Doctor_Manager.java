@@ -49,6 +49,10 @@ public class Doctor_Manager {
         return null;
     }
 
+    public ArrayList<Doctor> getAllDoctors() {
+        return doctors;
+    }
+
     public void operationComplete(Doctor doctor) {
         doctor.startPostProcedure(postProcedureTime);
     }

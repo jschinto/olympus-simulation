@@ -250,6 +250,11 @@ public class Simulation_Manager {
                 hallway.add(n);
             }
         }
+        for (Doctor d:doctormanager.getAllDoctors()) {
+            if (d.getState() == State.STATE_TRAVEL) {
+                hallway.add(d);
+            }
+        }
         for (Technician t:technicianManager.getTechnicianList()) {
             if (t.getState() == State.STATE_TRAVEL) {
                 hallway.add(t);

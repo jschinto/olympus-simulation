@@ -179,7 +179,7 @@ public class ObjectView extends LinearLayout {
             changeOrientation(HORIZONTAL);
             changeText("sink");
             ManualCleaningStation sink = (ManualCleaningStation)object;
-            if (sink.getCurrentScope() != null) {
+            if (sink.getCurrentScope () != null) {
                 addLine(sink.getCurrentScope().getType().getName());
             }
         } else if (type.equals("Technician")) {
