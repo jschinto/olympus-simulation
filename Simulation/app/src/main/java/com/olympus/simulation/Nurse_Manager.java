@@ -54,7 +54,7 @@ public class Nurse_Manager {
         }
         String state = State.stateNames[n.getState()];
         ActorLogCSV temp = new ActorLogCSV();
-        temp.setId(nurses.indexOf(n) + "");
+        temp.setName("Nurse " + nurses.indexOf(n));
         String proc = csvList.get(getLastActorLogEntry(temp)).procedure;
         String station = "";
         ActorLogCSV logItem = new ActorLogCSV("Nurse", nurses.indexOf(n) + "", "Nurse " + nurses.indexOf(n), currTime, currTime, proc, station, state);
