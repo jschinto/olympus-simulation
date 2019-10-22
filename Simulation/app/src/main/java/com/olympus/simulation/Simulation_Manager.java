@@ -95,7 +95,7 @@ public class Simulation_Manager {
         nursemanager.runTick();
         doctormanager.runTick();
         technicianManager.runTick();
-        procedureRoomManager.runTick();
+        procedureRoomManager.runTick(Time.convertToString(currTime));
 
         int patientOffset = 0;
         int roomOffset = 0;
@@ -184,7 +184,7 @@ public class Simulation_Manager {
                 if(station == null){
                     break;
                 }
-                this.scopeManager.getScopeByIndex(i).setHolding(tech, 0);
+                this.scopeManager.getScopeByIndex(i).setHolding(tech, 5);
                 this.scopeManager.getScopeByIndex(i).startClean(station);
             }
         }

@@ -52,8 +52,6 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
         this.currentDoctor.startTravel(this.travelTime);
         this.currentNurse = nurse;
         this.currentNurse.startTravel(this.travelTime);
-
-        setClear(false);
     }
 
     //cooldown time decreases with each tick of time
@@ -72,19 +70,16 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
 
     public void removeElements(String currTime) {
         setReady(false);
+        setClear(false);
         this.currentNurse.startPostProcedure(Nurse_Manager.getPostProcedureTime());
         this.currentNurse = null;
         this.currentDoctor.startPostProcedure(Doctor_Manager.getPostProcedureTime());
         this.currentDoctor = null;
 
-        boolean result = tryClear(currTime);
-        if(result){
-            this.scope.clear();
-            setClear(true);
-        }
+        tryClear(currTime);
     }
 
-    public boolean tryClear(String currTime){
+    public void tryClear(String currTime){
         for(int i = 0; i < this.scope.size(); i++){
             if(this.scope.get(i).getHolding() == null) {
                 Technician tech = Technician_Manager.getTechnician();
@@ -99,9 +94,8 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
             }
         }
         if(this.scope.size() == 0) {
-            return true;
+            setClear(true);
         }
-        return false;
     }
 
     public void removeClient() {

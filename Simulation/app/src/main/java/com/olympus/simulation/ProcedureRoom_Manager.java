@@ -11,8 +11,12 @@ public class ProcedureRoom_Manager {
     }
 
     //run the operations for a tick of time
-    public void runTick() {
+    public void runTick(String currTime) {
         for (int i=0; i < roomList.size(); i++) {
+            //Case when the room is not finished being cleared
+            if(roomList.get(i).isClear() == false){
+                roomList.get(i).tryClear(currTime);
+            }
             if (roomList.get(i).getCooldownTimeLeft() > 0) {
                 roomList.get(i).tick();//call tick on each room
             }

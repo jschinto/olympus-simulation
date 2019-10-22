@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class LeakTester_Type extends Element implements Serializable {
 
+    //TODO: Ensure that requiredAttentionTime <= timeToComplete
+
     String name;
     int timeToComplete;
     int requiredAttentionTime;
