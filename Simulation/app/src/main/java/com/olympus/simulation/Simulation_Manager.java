@@ -239,7 +239,7 @@ public class Simulation_Manager {
 
     public ArrayList<Object> getHallway() {
         ArrayList<Object> hallway = new ArrayList<>();
-        //TODO::: add doctors to show in hallway
+
         for (Client c:clientManager.getQueue()) {
             if(c.getState() == State.STATE_TRAVEL) {
                 hallway.add(c);
@@ -261,7 +261,7 @@ public class Simulation_Manager {
             }
         }
         for(Scope s:scopeManager.getScopes()) {
-            if(s.getState() == State_Scope.STATE_TRAVEL) {
+            if(s.getState() == State_Scope.STATE_TRAVEL || s.getState() == State_Scope.STATE_DIRTY) {
                 hallway.add(s);
             }
         }
@@ -363,7 +363,7 @@ public class Simulation_Manager {
     public ArrayList<Scope> getFreeScopes() {
         ArrayList<Scope> scopes = new ArrayList<>();
         for(Scope s:scopeManager.getScopes()) {
-            if(s.getState() == State_Scope.STATE_FREE || s.getState() == State_Scope.STATE_DIRTY) {
+            if(s.getState() == State_Scope.STATE_FREE) {
                 scopes.add(s);
             }
         }

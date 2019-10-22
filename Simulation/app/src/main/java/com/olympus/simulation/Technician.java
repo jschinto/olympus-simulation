@@ -9,6 +9,7 @@ public class Technician extends Element implements Serializable {
     public Technician(){
         this.element = ELEMENT_TECHNICIAN;
         this.state = new State(State.STATE_WAIT);
+        setDestination(null);
     }
 
     public void tick(){

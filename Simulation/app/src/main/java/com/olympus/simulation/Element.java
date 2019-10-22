@@ -9,6 +9,8 @@ import java.lang.annotation.RetentionPolicy;
 public class Element implements Serializable {
     public int element;
 
+    public Element destination;
+
     public static final int ELEMENT_CLIENT = 0;
     public static final int ELEMENT_PROCEDURE = 1;
     public static final int ELEMENT_PROCEDUREROOM = 2;
@@ -49,4 +51,10 @@ public class Element implements Serializable {
         return this.element == element;
     }
 
+    public void setDestination(Element destination) {
+        this.destination = destination;
+    }
+    public Element getDestination() {
+        return destination;
+    }
 }

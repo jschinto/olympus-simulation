@@ -13,6 +13,7 @@ public class Nurse extends Element implements Serializable {
         this.element = ELEMENT_NURSE;
         setState(State.STATE_WAIT);
         timeLeft = 0;
+        setDestination(null);
     }
 
     public int getState() {

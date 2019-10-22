@@ -18,6 +18,7 @@ public class Doctor extends Element implements Serializable {
         this.procedures = procedures;
         setState(State.STATE_WAIT);
         timeLeft = 0;
+        setDestination(null);
     }
 
     public int getState() {
