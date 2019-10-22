@@ -486,8 +486,28 @@ public class Simulation_Manager {
         return toReturn;
     }
 
+    public ArrayList<CSVable> getActorLogCSVList() {
+        nursemanager.finalizeCSVList(Time.convertToString(endTime));
+        doctormanager.finalizeCSVList(Time.convertToString(endTime));
+        technicianManager.finalizeCSVList(Time.convertToString(endTime));
+        ArrayList<CSVable> toReturn = new ArrayList<>();
+        for(ActorLogCSV al : nursemanager.getCsvList()) {
+            toReturn.add(al);
+        }
+        for(ActorLogCSV al : doctormanager.getCsvList()) {
+            toReturn.add(al);
+        }
+        for(ActorLogCSV al : technicianManager.getCsvList()) {
+            toReturn.add(al);
+        }
+        return toReturn;
+    }
+
     public void initLogs() {
         scopeManager.initCSVList(Time.convertToString(startTime), Time.convertToString(endTime));
+        nursemanager.initCSVList(Time.convertToString(startTime), Time.convertToString(endTime));
+        doctormanager.initCSVList(Time.convertToString(startTime), Time.convertToString(endTime));
+        technicianManager.initCSVList(Time.convertToString(startTime), Time.convertToString(endTime));
     }
 
     public void createLog(Context mcoContext, String filename, String CSVHeader, ArrayList<CSVable> logItems) {
