@@ -169,11 +169,25 @@ public class ObjectView extends LinearLayout {
             Nurse nurse = (Nurse)object;
             if (nurse.getState() == State.STATE_TRAVEL) {
                 changeText("Nurse");
+                if (nurse.getDestination() != null) {
+                    Element element = nurse.getDestination();
+                    if (element instanceof ProcedureRoom) {
+                        ProcedureRoom procedureRoom = (ProcedureRoom)element;
+                        addLine("Procedure Room "+procedureRoom.getId());
+                    }
+                }
             }
         } else if (type.equals("Doctor")) {
             Doctor doctor = (Doctor)object;
             if (doctor.getState() == State.STATE_TRAVEL) {
                 changeText("Doctor");
+                if (doctor.getDestination() != null) {
+                    Element element = doctor.getDestination();
+                    if (element instanceof ProcedureRoom) {
+                        ProcedureRoom procedureRoom = (ProcedureRoom)element;
+                        addLine("Procedure Room "+procedureRoom.getId());
+                    }
+                }
             }
         } else if (type.equals("Sink")) {
             changeOrientation(HORIZONTAL);
@@ -186,6 +200,15 @@ public class ObjectView extends LinearLayout {
             Technician technician = (Technician)object;
             if (technician.getState() == State.STATE_TRAVEL) {
                 changeText("Technician");
+                if (technician.getDestination() != null) {
+                    Element element = technician.getDestination();
+                    if (element instanceof ProcedureRoom) {
+                        ProcedureRoom procedureRoom = (ProcedureRoom)element;
+                        addLine("Procedure Room "+procedureRoom.getId());
+                    } else if (element instanceof  ManualCleaningStation) {
+                        addLine("Manual Cleaning Stations");
+                    }
+                }
             }
         }
         else {
