@@ -141,6 +141,10 @@ public class ObjectView extends LinearLayout {
                 addLine("USE");
             } else if (scope.getState() == State_Scope.STATE_DIRTY) {
                 addLine("DIRTY");
+            } else if (scope.getState() == State_Scope.STATE_RETURNING) {
+                addLine("RETURNING");
+            } else if (scope.getState() == State_Scope.STATE_DONE) {
+                addLine("DONE CLEANING");
             }
             else {
                 addLine("ERROR");
@@ -173,7 +177,7 @@ public class ObjectView extends LinearLayout {
                     Element element = nurse.getDestination();
                     if (element instanceof ProcedureRoom) {
                         ProcedureRoom procedureRoom = (ProcedureRoom)element;
-                        addLine("Procedure Room "+procedureRoom.getId());
+                        addLine("Room "+procedureRoom.getId());
                     }
                 }
             }
@@ -185,7 +189,7 @@ public class ObjectView extends LinearLayout {
                     Element element = doctor.getDestination();
                     if (element instanceof ProcedureRoom) {
                         ProcedureRoom procedureRoom = (ProcedureRoom)element;
-                        addLine("Procedure Room "+procedureRoom.getId());
+                        addLine("Room "+procedureRoom.getId());
                     }
                 }
             }
@@ -204,9 +208,11 @@ public class ObjectView extends LinearLayout {
                     Element element = technician.getDestination();
                     if (element instanceof ProcedureRoom) {
                         ProcedureRoom procedureRoom = (ProcedureRoom)element;
-                        addLine("Procedure Room "+procedureRoom.getId());
+                        addLine("Room "+procedureRoom.getId());
                     } else if (element instanceof  ManualCleaningStation) {
-                        addLine("Manual Cleaning Stations");
+                        addLine("Sinks");
+                    } else if (element instanceof Scope) {
+                        addLine("Scope Storage");
                     }
                 }
             }
