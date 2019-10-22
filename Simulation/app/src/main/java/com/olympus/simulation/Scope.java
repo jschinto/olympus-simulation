@@ -83,6 +83,7 @@ public class Scope extends Element implements Comparable<Scope>, Serializable, E
                 this.station = null;
                 this.timeFree = 0;
                 setState(State_Scope.STATE_DONE);
+                return this.state;
             }
             //Scope has arrived at its destination
             if (this.state == State_Scope.STATE_TRAVEL) {
@@ -93,6 +94,7 @@ public class Scope extends Element implements Comparable<Scope>, Serializable, E
             if(this.state == State_Scope.STATE_DIRTY) {
                 setHolding(null, -1);
                 setState(State_Scope.STATE_CLEANING);
+                return this.state;
             }
             if(this.state == State_Scope.STATE_DONE){
                 if(this.holding == null) {
@@ -109,6 +111,7 @@ public class Scope extends Element implements Comparable<Scope>, Serializable, E
                     this.holding.startTravel(5);
                     setTimeLeft(5);
                     setState(State_Scope.STATE_RETURNING);
+                    return this.state;
                 }
             }
             if(this.state == State_Scope.STATE_RETURNING){
