@@ -62,7 +62,7 @@ public class Scope implements Comparable<Scope>, Serializable, EquipmentCSV.Equi
     }
 
     public int tick() {
-        if(this.state == State_Scope.STATE_CLEANING){
+        if(this.state == State_Scope.STATE_CLEANING && this.holding != null){
             if(this.holding.getState() != State.STATE_OPERATION){
                 return this.getState();
             }
