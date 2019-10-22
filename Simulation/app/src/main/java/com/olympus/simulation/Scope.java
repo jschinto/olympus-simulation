@@ -108,6 +108,7 @@ public class Scope implements Comparable<Scope>, Serializable, EquipmentCSV.Equi
     public void freeScope(String currTime) {
         this.timeLeft = this.room.getTravelTime();
         this.room = null;
+        this.holding.setDestination(new ManualCleaningStation(null));
         setState(State_Scope.STATE_DIRTY);
         Scope_Manager.addDirtyScopeLog(this, currTime);
     }

@@ -143,6 +143,7 @@ public class Simulation_Manager {
                     break;
                 }
                 if(!scopeList.contains(freeScope)) {
+                    tech.setDestination(openRoom);
                     freeScope.setHolding(tech, openRoom.getTravelTime());
                     scopeList.add(freeScope);
                     freeScope.setTempGrab(true);
@@ -184,6 +185,7 @@ public class Simulation_Manager {
                 if(station == null){
                     break;
                 }
+                tech.setDestination(station);
                 this.scopeManager.getScopeByIndex(i).setHolding(tech, 5);
                 this.scopeManager.getScopeByIndex(i).startClean(station);
             }

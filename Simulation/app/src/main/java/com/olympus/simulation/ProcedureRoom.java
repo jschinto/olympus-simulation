@@ -49,8 +49,10 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
             s.claim(this, this.travelTime);
         }
         this.currentDoctor = doctor;
+        this.currentDoctor.setDestination(this);
         this.currentDoctor.startTravel(this.travelTime);
         this.currentNurse = nurse;
+        this.currentNurse.setDestination(this);
         this.currentNurse.startTravel(this.travelTime);
     }
 
@@ -84,6 +86,7 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
             if(this.scope.get(i).getHolding() == null) {
                 Technician tech = Technician_Manager.getTechnician();
                 if (tech != null) {
+                    tech.setDestination(this);
                     this.scope.get(i).setHolding(tech, this.travelTime);
                 }
             }
