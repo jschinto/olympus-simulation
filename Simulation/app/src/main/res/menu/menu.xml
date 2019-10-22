@@ -56,6 +56,11 @@
                 android:id="@+id/addManualCleaningStation"
                 android:title="Add Manual Cleaning Station"/>
 
+            <item
+                android:id="@+id/addDoctor"
+                android:title="Add Doctor"/>
+
+
         </menu>
     </item>
 </menu>

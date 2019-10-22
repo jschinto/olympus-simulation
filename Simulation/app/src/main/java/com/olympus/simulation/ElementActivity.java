@@ -66,13 +66,13 @@ public class ElementActivity extends AppCompatActivity {
         if (element.equals(Element.ELEMENT_DOCTOR)) {
             setText(R.id.elementTextTitle, "Doctors");
             ids = new int[2];
-            ids[0] = addField("Number of Doctors", "number");
-            ids[1] = addField("Post Procedure Time", "number");
-            int num = fromIntent.getIntExtra("number", -1);
-            int cooldown = fromIntent.getIntExtra("cooldown", -1);
-            setText(ids[0], num);
-            setText(ids[1], cooldown);
-
+            String[] procedures = fromIntent.getStringArrayExtra("procedures");
+            ids[0] = addField("Procedures", "checkbox", procedures);
+            if (mode.equals("view")) {
+                Doctor doctor = (Doctor)element;
+                String[] checked = doctor.getProceduresNames();
+                setChecked(ids[0], checked);
+            }
         } else if (element.equals(Element.ELEMENT_NURSE)) {
             setText(R.id.elementTextTitle, "Nurses");
             ids = new int[2];
@@ -147,6 +147,14 @@ public class ElementActivity extends AppCompatActivity {
                         makeToast("INVALID VALUES ENTERED");
                         return;
                     }
+                } else if (element.equals(Element.ELEMENT_DOCTOR)) {
+                    String[] checked = getChecked(ids[0]);
+                    if (checked == null) {
+                        makeToast("INVALID VALUES ENTERED");
+                        return;
+                    }
+                    Doctor doctor = new Doctor(null);
+                    leaveActivity(RESULT_FIRST_USER, doctor, checked);
                 }
                 else if(element.equals(Element.ELEMENT_LEAKTESTERTYPE)){
                     String name = getTextString(ids[0]);
@@ -179,6 +187,9 @@ public class ElementActivity extends AppCompatActivity {
                 else if (element.equals(Element.ELEMENT_SINK)) {
                     leaveActivity(RESULT_OK, new ManualCleaningStation(null));
                 }
+                else if (element.equals(Element.ELEMENT_DOCTOR)) {
+                    leaveActivity(RESULT_OK, new Doctor(null), null);
+                }
             }
 
          //clicked the update button
@@ -197,7 +208,15 @@ public class ElementActivity extends AppCompatActivity {
                     return;
                 }
 
-            } else if (element.equals(Element.ELEMENT_LEAKTESTERTYPE)) {
+            } else if (element.equals(Element.ELEMENT_DOCTOR)) {
+                String[] checked = getChecked(ids[0]);
+                if (checked == null) {
+                    makeToast("INVALID VALUES ENTERED");
+                    return;
+                }
+                Doctor doctor = new Doctor(null);
+                leaveActivity(RESULT_OK, doctor, checked);
+            }else if (element.equals(Element.ELEMENT_LEAKTESTERTYPE)) {
                 String name = getTextString(ids[0]);
                 int timeToComplete = getTextInt(ids[1]);
                 int requiredAttentionTime = getTextInt(ids[2]);
@@ -387,6 +406,9 @@ public class ElementActivity extends AppCompatActivity {
             if (checkBox.isChecked()) {
                 valueList.add(checkBox.getText().toString());
             }
+        }
+        if (valueList.size() < 1) {
+            return null;
         }
         String[] values = new String[valueList.size()];
         values = valueList.toArray(values);

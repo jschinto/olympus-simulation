@@ -36,6 +36,13 @@ public class Doctor extends Element implements Serializable {
         return procs;
     }
 
+    public void addProcedure(Procedure procedure) {
+        if (procedures == null) {
+            procedures = new ArrayList<Procedure>();
+        }
+        procedures.add(procedure);
+    }
+
     public void setProcedures(ArrayList<Procedure> procedures) {
         this.procedures = procedures;
     }
@@ -67,5 +74,9 @@ public class Doctor extends Element implements Serializable {
     public void startPostProcedure(int postProcedureTime) {
         this.timeLeft = postProcedureTime;
         setState(State.STATE_DONE);
+    }
+
+    public boolean validate() {
+        return procedures!=null && procedures.size() > 0;
     }
 }

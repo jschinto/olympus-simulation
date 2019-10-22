@@ -296,7 +296,14 @@ public class SimulationActivity
             sinkIntent.putExtra("mode", "add");
             sinkIntent.putExtra("leakTesterTypes", simulation_manager.getLeakTesterTypeNames());
             startActivityForResult(sinkIntent, element_Request);
-        } else if (id == R.id.startSimulation) {
+        } else if (id == R.id.addDoctor) {
+            Intent doctorIntent = new Intent(getApplicationContext(), ElementActivity.class);
+            Doctor doctor = new Doctor(null);
+            doctorIntent.putExtra("element", doctor);
+            doctorIntent.putExtra("mode", "add");
+            doctorIntent.putExtra("procedures", simulation_manager.getProcedureNames());
+            startActivityForResult(doctorIntent, element_Request);
+        }else if (id == R.id.startSimulation) {
             ActionMenuItemView playImage = findViewById(R.id.playButton);
             if (item.getTitle().equals("Confirm Start")) {
                 startSimulation(item);
@@ -409,12 +416,27 @@ public class SimulationActivity
                     simulation_manager.setTechnicianNum(number);
                     updateActorUI();
                 }
-            } else if (element.equals(Element.ELEMENT_DOCTOR)) {//TODO::: fix for doctor changes
-                if (resultCode == RESULT_FIRST_USER) {
-
-                } else if (resultCode == RESULT_OK) {
-
+            } else if (element.equals(Element.ELEMENT_DOCTOR)) {
+                Doctor doctor = (Doctor)element;
+                if (list != null) {
+                    for (int i = 0; i < list.length; i++) {
+                        Procedure procedure = simulation_manager.getProcedureByName(list[i]);
+                        doctor.addProcedure(procedure);
+                    }
                 }
+                if (resultCode == RESULT_FIRST_USER) {
+                    simulation_manager.addDoctor(doctor);
+                } else if (resultCode == RESULT_OK) {
+                    int index = currentClicked.index;
+                    if (doctor.validate()) {//clicked update
+                        simulation_manager.removeDoctorByIndex(index);
+                        simulation_manager.addDoctor(doctor);
+                    } else { //clicked delete
+                        simulation_manager.removeDoctorByIndex(index);
+                    }
+                }
+
+                renderUIFromManager();
             } else if (element.equals(Element.ELEMENT_SINK)) {
                 if (resultCode == RESULT_FIRST_USER) {
                     LeakTester_Type leakTester_type = simulation_manager.getLeakTesterByName(list[0]);
@@ -701,15 +723,13 @@ public class SimulationActivity
             techIntent.putExtra("mode", "actor");
             techIntent.putExtra("number", simulation_manager.getTechnicianNum());
             startActivityForResult(techIntent, element_Request);
-        }else if (type.equals("Doctor")) {//TODO:: fix for doctor
+        }else if (type.equals("Doctor")) {
             Intent doctorIntent = new Intent(getApplicationContext(), ElementActivity.class);
-            Doctor doctor = new Doctor(null);
+            Doctor doctor = simulation_manager.getDoctorByIndex(index);
             doctorIntent.putExtra("element", doctor);
-            doctorIntent.putExtra("mode", "actor");
-            doctorIntent.putExtra("number", simulation_manager.getDoctorNum());
-            doctorIntent.putExtra("cooldown", simulation_manager.getDoctorPostProcedureTime());
+            doctorIntent.putExtra("mode", "view");
+            doctorIntent.putExtra("procedures", simulation_manager.getProcedureNames());
             startActivityForResult(doctorIntent, element_Request);
-
         } else if (type.equals("Sink")) {
             Intent sinkIntent = new Intent(getApplicationContext(), ElementActivity.class);
             ManualCleaningStation manualCleaningStation = simulation_manager.getManualCleaningStationByIndex(index);
@@ -828,6 +848,10 @@ public class SimulationActivity
         ArrayList<ManualCleaningStation> manualCleaningStations = simulation_manager.getManualCleaningStations();
         LinearLayout linearLayoutSinks = findViewById(R.id.LinearLayoutSinks);
         populateSection(linearLayoutSinks, "Sink", manualCleaningStations);
+
+        ArrayList<Doctor> doctors = simulation_manager.getFreeDoctors();
+        LinearLayout linearLayoutDoctors = findViewById(R.id.LinearLayoutDoctors);
+        populateSection(linearLayoutDoctors, "Doctor", doctors);
     }
 
     public <T> void populateSection(LinearLayout theLinearLayout, String tagType, ArrayList<T> list) {

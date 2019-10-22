@@ -239,6 +239,7 @@ public class Simulation_Manager {
 
     public ArrayList<Object> getHallway() {
         ArrayList<Object> hallway = new ArrayList<>();
+        //TODO::: add doctors to show in hallway
         for (Client c:clientManager.getQueue()) {
             if(c.getState() == State.STATE_TRAVEL) {
                 hallway.add(c);
@@ -519,15 +520,20 @@ public class Simulation_Manager {
     public int getDoctorPostProcedureTime() {
         return doctormanager.getPostProcedureTime();
     }
-    public void setDoctorNum(int num) {
-        doctormanager.setDoctorNum(num);
-    }
     public void setDoctorPostProcedureTime(int time) {
         doctormanager.setPostProcedureTime(time);
     }
-
+    public void addDoctor(Doctor doctor) {
+        doctormanager.addDoctor(doctor);
+    }
     public Doctor getDoctorByIndex(int i){
         return doctormanager.getDoctorByIndex(i);
+    }
+    public void removeDoctorByIndex(int i) {
+        doctormanager.removeDoctorByIndex(i);
+    }
+    public ArrayList<Doctor> getFreeDoctors() {
+        return doctormanager.getFreeDoctors();
     }
 
     public int getTechnicianNum(){return technicianManager.getTechnicianNum();}

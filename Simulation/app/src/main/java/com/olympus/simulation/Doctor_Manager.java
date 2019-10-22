@@ -11,14 +11,16 @@ public class Doctor_Manager {
     public Doctor_Manager() {
         doctors = new ArrayList<Doctor>();
         postProcedureTime = 1;
-
-        doctors.add(new Doctor(null));
     }
 
     public void runTick(){
         for(int i = 0; i < this.doctors.size(); i++){
             this.doctors.get(i).tick();
         }
+    }
+
+    public void addDoctor(Doctor doctor) {
+        doctors.add(doctor);
     }
 
     public int getDoctorNum() {
@@ -29,8 +31,15 @@ public class Doctor_Manager {
         return doctors.get(i);
     }
 
+    public void removeDoctorByIndex(int i) {
+        doctors.remove(i);
+    }
+
     public Doctor getDoctor(ArrayList<Procedure> procList) {
         for (int i=0; i < doctors.size(); i++) {
+            if (!doctors.get(i).validate()) {
+                continue;
+            }
             ArrayList<Procedure> docList = doctors.get(i).getProcedures();
             if (doctors.get(i).getState() == State.STATE_WAIT && docList.containsAll(procList)) {
                 Doctor doctor = doctors.get(i);
@@ -50,11 +59,15 @@ public class Doctor_Manager {
     public void setPostProcedureTime(int postProcedureTime) {
         this.postProcedureTime = postProcedureTime;
     }
-    public void setDoctorNum(int num) {
-        doctors = new ArrayList<Doctor>();
-        for (int i=0; i < num; i++) {
-            doctors.add(new Doctor(null));
+
+    public ArrayList<Doctor> getFreeDoctors() {
+        ArrayList<Doctor> freeDoctors = new ArrayList<Doctor>();
+        for (int i=0; i < doctors.size(); i++) {
+            if (doctors.get(i).getState() == State.STATE_WAIT) {
+                freeDoctors.add(doctors.get(i));
+            }
         }
+        return freeDoctors;
     }
 
     public Boolean isEverythingDone() {
