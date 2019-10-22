@@ -17,6 +17,7 @@ public class State_Scope implements Serializable {
     public static final int STATE_USE = 2;
     public static final int STATE_DIRTY = 4;
     public static final int STATE_CLEANING = 1;
+    public static final int STATE_RETURNING = 5;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({
@@ -24,7 +25,8 @@ public class State_Scope implements Serializable {
             STATE_TRAVEL,
             STATE_USE,
             STATE_DIRTY,
-            STATE_CLEANING
+            STATE_CLEANING,
+            STATE_RETURNING
     })
     public @interface StateDef {
     }

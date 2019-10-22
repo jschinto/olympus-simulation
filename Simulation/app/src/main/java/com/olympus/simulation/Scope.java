@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class Scope implements Comparable<Scope>, Serializable, EquipmentCSV.Equipment {
+public class Scope extends Element implements Comparable<Scope>, Serializable, EquipmentCSV.Equipment {
     private Scope_Type type;
     private int state;
     private int timeLeft;
@@ -31,6 +31,7 @@ public class Scope implements Comparable<Scope>, Serializable, EquipmentCSV.Equi
     }
 
     public Scope(Scope_Type t) {
+        this.element = ELEMENT_SCOPE;
         this.type = t;
         this.state = State_Scope.STATE_FREE;
         this.timeLeft = 0;
@@ -78,14 +79,30 @@ public class Scope implements Comparable<Scope>, Serializable, EquipmentCSV.Equi
         if (this.timeLeft == 0) {
             //Scope has finished being cleaned
             if (this.state == State_Scope.STATE_CLEANING && this.station != null) {
-                this.station.setCurrentScope(null);
+                if(this.station != null) {
+                    this.station.setCurrentScope(null);
+                }
                 this.station = null;
                 this.timeFree = 0;
-                setState(State_Scope.STATE_FREE);
-                return State_Scope.STATE_FREE;
+                if(this.holding == null) {
+                    Technician tech = Technician_Manager.getTechnician();
+                    if (tech == null) {
+                        return this.state;
+                    } else {
+                        tech.setDestination(this);
+                        tech.startTravel(5);
+                        this.holding = tech;
+                    }
+                }
+                if(this.holding.getState() == State.STATE_OPERATION) {
+                    setTimeLeft(5);
+                    this.holding.startTravel(5);
+                    setState(State_Scope.STATE_RETURNING);
+                    return State_Scope.STATE_RETURNING;
+                }
             }
             //Scope has arrived at its destination
-            else if (this.state == State_Scope.STATE_TRAVEL) {
+            if (this.state == State_Scope.STATE_TRAVEL) {
                 setHolding(null, -1);
                 setState(State_Scope.STATE_USE);
                 return State_Scope.STATE_USE;
@@ -93,6 +110,11 @@ public class Scope implements Comparable<Scope>, Serializable, EquipmentCSV.Equi
             if(this.state == State_Scope.STATE_DIRTY) {
                 setHolding(null, -1);
                 setState(State_Scope.STATE_CLEANING);
+            }
+            if(this.state == State_Scope.STATE_RETURNING){
+                setHolding(null, -1);
+                setState(State_Scope.STATE_FREE);
+                return State_Scope.STATE_FREE;
             }
         }
         return this.state;
