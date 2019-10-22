@@ -27,6 +27,7 @@ public class Technician extends Element implements Serializable {
 
     public void setState(State state) {
         this.state = state;
+        Technician_Manager.handleStateSwitch(this);
     }
 
 

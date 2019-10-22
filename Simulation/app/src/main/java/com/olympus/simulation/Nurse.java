@@ -22,6 +22,7 @@ public class Nurse extends Element implements Serializable {
 
     public void setState(@State.StateDef int state) {
         this.state = new State(state);
+        Nurse_Manager.handleStateSwitch(this);
     }
 
     public void tick() {

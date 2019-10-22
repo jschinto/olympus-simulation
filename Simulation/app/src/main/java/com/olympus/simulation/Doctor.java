@@ -50,6 +50,7 @@ public class Doctor extends Element implements Serializable {
 
     public void setState(@State.StateDef int state) {
         this.state = new State(state);
+        Doctor_Manager.handleStateSwitch(this);
     }
 
     public void tick() {
