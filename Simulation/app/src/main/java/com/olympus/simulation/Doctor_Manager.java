@@ -60,6 +60,9 @@ public class Doctor_Manager {
         String state = State.stateNames[n.getState()];
         ActorLogCSV temp = new ActorLogCSV();
         temp.setName("Doctor " + doctors.indexOf(n));
+        if(getLastActorLogEntry(temp) == -1) {
+            return;
+        }
         String proc = csvList.get(getLastActorLogEntry(temp)).procedure;
         String station = "";
         ActorLogCSV logItem = new ActorLogCSV("Doctor", doctors.indexOf(n) + "", "Doctor " + doctors.indexOf(n), currTime, currTime, proc, station, state);

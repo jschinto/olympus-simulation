@@ -51,6 +51,9 @@ public class Technician_Manager {
         String state = State.stateNames[n.getState()];
         ActorLogCSV temp = new ActorLogCSV();
         temp.setName("Technician " + technicians.indexOf(n));
+        if(getLastActorLogEntry(temp) == -1) {
+            return;
+        }
         String proc = csvList.get(getLastActorLogEntry(temp)).procedure;
         String station = "";
         ActorLogCSV logItem = new ActorLogCSV("Technician", technicians.indexOf(n) + "", "Technician " + technicians.indexOf(n), currTime, currTime, proc, station, state);
