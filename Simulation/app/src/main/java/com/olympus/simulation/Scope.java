@@ -79,27 +79,10 @@ public class Scope extends Element implements Comparable<Scope>, Serializable, E
         if (this.timeLeft == 0) {
             //Scope has finished being cleaned
             if (this.state == State_Scope.STATE_CLEANING && this.station != null) {
-                if(this.station != null) {
-                    this.station.setCurrentScope(null);
-                }
+                this.station.setCurrentScope(null);
                 this.station = null;
                 this.timeFree = 0;
-                if(this.holding == null) {
-                    Technician tech = Technician_Manager.getTechnician();
-                    if (tech == null) {
-                        return this.state;
-                    } else {
-                        tech.setDestination(this);
-                        tech.startTravel(5);
-                        this.holding = tech;
-                    }
-                }
-                if(this.holding.getState() == State.STATE_OPERATION) {
-                    setTimeLeft(5);
-                    this.holding.startTravel(5);
-                    setState(State_Scope.STATE_RETURNING);
-                    return State_Scope.STATE_RETURNING;
-                }
+                setState(State_Scope.STATE_DONE);
             }
             //Scope has arrived at its destination
             if (this.state == State_Scope.STATE_TRAVEL) {
@@ -110,6 +93,23 @@ public class Scope extends Element implements Comparable<Scope>, Serializable, E
             if(this.state == State_Scope.STATE_DIRTY) {
                 setHolding(null, -1);
                 setState(State_Scope.STATE_CLEANING);
+            }
+            if(this.state == State_Scope.STATE_DONE){
+                if(this.holding == null) {
+                    Technician tech = Technician_Manager.getTechnician();
+                    if (tech == null) {
+                        return this.state;
+                    } else {
+                        tech.setDestination(this);
+                        tech.startTravel(5);
+                        this.holding = tech;
+                    }
+                }
+                if(this.holding != null && this.holding.getState() == State.STATE_OPERATION){
+                    this.holding.startTravel(5);
+                    setTimeLeft(5);
+                    setState(State_Scope.STATE_RETURNING);
+                }
             }
             if(this.state == State_Scope.STATE_RETURNING){
                 setHolding(null, -1);
