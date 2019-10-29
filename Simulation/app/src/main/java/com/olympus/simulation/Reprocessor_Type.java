@@ -3,11 +3,13 @@ package com.olympus.simulation;
 public class Reprocessor_Type {
     private int numScopes;
     private int cycleTime;
+    private int waitTime;
     private int price;
 
-    public Reprocessor_Type(int numScopes, int cycleTime, int price){
+    public Reprocessor_Type(int numScopes, int cycleTime, int waitTime, int price){
         this.numScopes = numScopes;
         this.cycleTime = cycleTime;
+        this.waitTime = waitTime;
         this.price = price;
     }
 
@@ -33,5 +35,13 @@ public class Reprocessor_Type {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public int getWaitTime() {
+        return waitTime;
+    }
+
+    public void setWaitTime(int waitTime) {
+        this.waitTime = waitTime;
     }
 }

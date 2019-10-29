@@ -134,8 +134,6 @@ public class Scope extends Element implements Comparable<Scope>, Serializable, E
         this.holding.startTravel(this.room.getTravelTime());
         this.timeLeft = this.room.getTravelTime();
         this.room = null;
-        this.holding.setDestination(new ManualCleaningStation(null));
-
         setState(State_Scope.STATE_DIRTY);
         Scope_Manager.addDirtyScopeLog(this, currTime);
     }
