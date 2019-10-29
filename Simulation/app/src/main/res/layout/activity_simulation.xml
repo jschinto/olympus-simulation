@@ -289,6 +289,41 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/LinearLayoutReprocessorsBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/border"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textViewReprocessors"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/textReprocessors"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
+                    <HorizontalScrollView
+                        android:id="@+id/scrollViewReprocessors"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:id="@+id/LinearLayoutReprocessors"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:orientation="horizontal"></LinearLayout>
+                    </HorizontalScrollView>
+
+                </LinearLayout>
+
 
             </LinearLayout>
         </ScrollView>

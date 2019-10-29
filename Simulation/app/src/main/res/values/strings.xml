@@ -28,6 +28,7 @@
     <string name="textScopeTitle">Scope</string>
     <string name="textCleaningTime">Cleaning Time</string>
     <string name="textScopeType">Scope Type</string>
+    <string name="textReprocessors">Reprocessors</string>
     <string name="textDoctors">Doctors</string>
     <string name="scopeTypeTile">Scope Type</string>
     <string name="scopeTypeName">Scope Type Name:</string>

@@ -3,7 +3,7 @@ package com.olympus.simulation;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class Reprocessor {
+public class Reprocessor extends  Element{
 
     private Reprocessor_Type type;
     private ArrayList<Scope> holding;
@@ -12,6 +12,7 @@ public class Reprocessor {
 
     public Reprocessor(Reprocessor_Type type){
         this.type = type;
+        this.element = ELEMENT_REPROCESSOR;
         this.holding = new ArrayList<>();
         this.timeLeft = 0;
         this.state = State_Scope.STATE_FREE;
@@ -89,5 +90,9 @@ public class Reprocessor {
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    public boolean validate() {
+        return this.type != null;
     }
 }

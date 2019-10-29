@@ -127,6 +127,31 @@ public class ElementActivity extends AppCompatActivity {
                 setText(ids[2], leakTesterType.getRequiredAttentionTime());
                 setText(ids[3], leakTesterType.getPrice());
             }
+        } else if (element.equals(Element.ELEMENT_REPROCESSORTYPE)) {
+            setText(R.id.elementTextTitle, "Reprocessor Type");
+            ids = new int[5];
+            ids[0] = addField("Name", "text");
+            ids[1] = addField("Number of Scopes", "number");
+            ids[2] = addField("Cycle Time", "number");
+            ids[3] = addField("Wait Time", "number");
+            ids[4] = addField("Price", "number");
+            if (mode.equals("view")) {
+                Reprocessor_Type reprocessor_type = (Reprocessor_Type) element;
+                setText(ids[0], reprocessor_type.getName());
+                setText(ids[1], reprocessor_type.getNumScopes());
+                setText(ids[2], reprocessor_type.getCycleTime());
+                setText(ids[3], reprocessor_type.getWaitTime());
+                setText(ids[4], reprocessor_type.getPrice());
+            }
+        } else if (element.equals(Element.ELEMENT_REPROCESSOR)) {
+            setText(R.id.elementTextTitle, "Reprocessor");
+            ids = new int[1];
+            String[] reprocessorTypes = fromIntent.getStringArrayExtra("reprocessorTypes");
+            ids[0] = addField("Reprocessor Type", "spinner", reprocessorTypes );
+            if (mode.equals("view")) {
+                Reprocessor reprocessor = (Reprocessor) element;
+                setSpinner(ids[0], reprocessor.getType().getName());
+            }
         }
     }
 
@@ -174,6 +199,24 @@ public class ElementActivity extends AppCompatActivity {
                     ManualCleaningStation manualCleaningStation = new ManualCleaningStation(null);
                     leaveActivity(RESULT_FIRST_USER, manualCleaningStation, list);
 
+                } else if (element.equals(Element.ELEMENT_REPROCESSORTYPE)) {
+                    String name = getTextString(ids[0]);
+                    int numScopes = getTextInt(ids[1]);
+                    int cycleTime = getTextInt(ids[2]);
+                    int waitTime = getTextInt(ids[3]);
+                    int price = getTextInt(ids[4]);
+                    Reprocessor_Type reprocessor_type = new Reprocessor_Type(name, numScopes, cycleTime, waitTime, price);
+                    if (!reprocessor_type.validate()) {
+                        makeToast("INVALID VALUES ENTERED");
+                        return;
+                    }
+                    leaveActivity(RESULT_FIRST_USER, reprocessor_type);
+                } else if (element.equals(Element.ELEMENT_REPROCESSOR)) {
+                    String[] list = new String[1];
+                    String reprocessorType = getSpinner(ids[0]);
+                    list[0] = reprocessorType;
+                    Reprocessor reprocessor = new Reprocessor(null);
+                    leaveActivity(RESULT_FIRST_USER, reprocessor, list);
                 }
              //clicked the delete button
             } else if (mode.equals("view")) {
@@ -183,12 +226,17 @@ public class ElementActivity extends AppCompatActivity {
                 else if(element.equals(Element.ELEMENT_LEAKTESTERTYPE)) {
                     leaveActivity(RESULT_OK, new LeakTester_Type("", -1, -1, -1));
                 }
-
                 else if (element.equals(Element.ELEMENT_SINK)) {
                     leaveActivity(RESULT_OK, new ManualCleaningStation(null));
                 }
                 else if (element.equals(Element.ELEMENT_DOCTOR)) {
                     leaveActivity(RESULT_OK, new Doctor(null), null);
+                }
+                else if (element.equals(Element.ELEMENT_REPROCESSORTYPE)) {
+                    leaveActivity(RESULT_OK, new Reprocessor_Type(null, 0,0,0,0));
+                }
+                else if (element.equals(Element.ELEMENT_REPROCESSOR)) {
+                    leaveActivity(RESULT_OK, new Reprocessor(null));
                 }
             }
 
@@ -216,7 +264,7 @@ public class ElementActivity extends AppCompatActivity {
                 }
                 Doctor doctor = new Doctor(null);
                 leaveActivity(RESULT_OK, doctor, checked);
-            }else if (element.equals(Element.ELEMENT_LEAKTESTERTYPE)) {
+            } else if (element.equals(Element.ELEMENT_LEAKTESTERTYPE)) {
                 String name = getTextString(ids[0]);
                 int timeToComplete = getTextInt(ids[1]);
                 int requiredAttentionTime = getTextInt(ids[2]);
@@ -235,7 +283,26 @@ public class ElementActivity extends AppCompatActivity {
                 ManualCleaningStation manualCleaningStation = new ManualCleaningStation(leakTester_type);
                 leaveActivity(RESULT_OK, manualCleaningStation, list);
 
-            }else if (mode.equals("actor")) {
+            } else if (element.equals(Element.ELEMENT_REPROCESSORTYPE)) {
+                String name = getTextString(ids[0]);
+                int numScopes = getTextInt(ids[1]);
+                int cycleTime = getTextInt(ids[2]);
+                int waitTime = getTextInt(ids[3]);
+                int price = getTextInt(ids[4]);
+                Reprocessor_Type reprocessor_type = new Reprocessor_Type(name, numScopes, cycleTime, waitTime, price);
+                if (!reprocessor_type.validate()) {
+                    makeToast("INVALID VALUES ENTERED");
+                    return;
+                }
+                leaveActivity(RESULT_OK, reprocessor_type);
+            } else if (element.equals(Element.ELEMENT_REPROCESSOR)) {
+                String[] list = new String[1];
+                String reprocessorType = getSpinner(ids[0]);
+                list[0] = reprocessorType;
+                Reprocessor_Type reprocessor_type = new Reprocessor_Type(reprocessorType, 1,1,1,1);
+                Reprocessor reprocessor = new Reprocessor(reprocessor_type);
+                leaveActivity(RESULT_OK, reprocessor, list);
+            } else if (mode.equals("actor")) {
                 int num = getTextInt(ids[0]);
                 int cooldown;
                 if (element.equals(Element.ELEMENT_NURSE)) {
