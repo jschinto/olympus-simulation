@@ -1,16 +1,27 @@
 package com.olympus.simulation;
 
 public class Reprocessor_Type {
+
+    private String name;
     private int numScopes;
     private int cycleTime;
     private int waitTime;
     private int price;
 
-    public Reprocessor_Type(int numScopes, int cycleTime, int waitTime, int price){
+    public Reprocessor_Type(String name, int numScopes, int cycleTime, int waitTime, int price){
+        this.name = name;
         this.numScopes = numScopes;
         this.cycleTime = cycleTime;
         this.waitTime = waitTime;
         this.price = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getNumScopes() {
