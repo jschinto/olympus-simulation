@@ -70,7 +70,7 @@ public class Scope_Manager {
 
     public void runTick(String currTime) {
         for(int i = 0; i < list.size(); i++) {
-            if(list.get(i).getState() == State_Scope.STATE_TRAVEL || list.get(i).getState() == State_Scope.STATE_DIRTY || list.get(i).getState() == State_Scope.STATE_CLEANING || list.get(i).getState() == State_Scope.STATE_DONE || list.get(i).getState() == State_Scope.STATE_RETURNING) {
+            if(list.get(i).getState() == State_Scope.STATE_TRAVEL || list.get(i).getState() == State_Scope.STATE_DIRTY || list.get(i).getState() == State_Scope.STATE_CLEANING || list.get(i).getState() == State_Scope.STATE_DONE || list.get(i).getState() == State_Scope.STATE_RETURNING || list.get(i).getState() == State_Scope.STATE_DONEREPROCESSING || list.get(i).getState() == State_Scope.STATE_TOREPROCESS) {
                 if(list.get(i).getState() != list.get(i).tick()) {
                     Scope s = list.get(i);
                     String state = State_Scope.stateNames[s.getState()];

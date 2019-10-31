@@ -69,6 +69,9 @@ public class Reprocessor extends  Element{
     }
 
     public void empty(){
+        for(int i = 0; i < this.holding.size(); i++){
+            this.holding.get(i).finishReprocessing();
+        }
         this.holding.clear();
     }
 

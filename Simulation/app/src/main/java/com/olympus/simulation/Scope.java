@@ -15,6 +15,7 @@ public class Scope extends Element implements Comparable<Scope>, Serializable, E
     private EquipmentCSV equipmentCSV;
     private Technician holding;
     private int timeFree;
+    private boolean inReprocessor;
 
     private boolean tempGrab;
 
@@ -39,6 +40,7 @@ public class Scope extends Element implements Comparable<Scope>, Serializable, E
         this.room = null;
         this.tempGrab = false;
         this.holding = null;
+        this.inReprocessor = false;
 
         String typeName = "";
         if(t != null) {
@@ -110,9 +112,32 @@ public class Scope extends Element implements Comparable<Scope>, Serializable, E
                 if(this.holding != null && this.holding.getState() == State.STATE_OPERATION){
                     this.holding.startTravel(5);
                     setTimeLeft(5);
+                    setState(State_Scope.STATE_TOREPROCESS);
+                    return this.state;
+                }
+            }
+            if(this.state == State_Scope.STATE_DONEREPROCESSING){
+                if(this.holding == null) {
+                    Technician tech = Technician_Manager.getTechnician();
+                    if (tech == null) {
+                        return this.state;
+                    } else {
+                        tech.setDestination(this);
+                        tech.startTravel(5);
+                        this.holding = tech;
+                    }
+                }
+                if(this.holding != null && this.holding.getState() == State.STATE_OPERATION){
+                    this.holding.startTravel(5);
+                    setTimeLeft(5);
                     setState(State_Scope.STATE_RETURNING);
                     return this.state;
                 }
+            }
+            if(this.state == State_Scope.STATE_TOREPROCESS){
+                setState(State_Scope.STATE_REPROCESSING);
+                setHolding(null, -1);
+                return this.state;
             }
             if(this.state == State_Scope.STATE_RETURNING){
                 setHolding(null, -1);
@@ -136,6 +161,11 @@ public class Scope extends Element implements Comparable<Scope>, Serializable, E
         this.room = null;
         setState(State_Scope.STATE_DIRTY);
         Scope_Manager.addDirtyScopeLog(this, currTime);
+    }
+
+    public void finishReprocessing(){
+        this.setInReprocessor(false);
+        this.setState(State_Scope.STATE_DONEREPROCESSING);
     }
 
     public int getTimeLeft() {
@@ -223,5 +253,13 @@ public class Scope extends Element implements Comparable<Scope>, Serializable, E
         }
 
         return true;
+    }
+
+    public boolean isInReprocessor() {
+        return inReprocessor;
+    }
+
+    public void setInReprocessor(boolean inReprocessor) {
+        this.inReprocessor = inReprocessor;
     }
 }

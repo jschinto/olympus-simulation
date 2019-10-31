@@ -22,6 +22,8 @@ public class Simulation_Manager {
     private LeakTesterType_Manager leakTesterTypeManager;
     private ManualCleaningStation_Manager manualCleaningStationManager;
     private Technician_Manager technicianManager;
+    private ReprocessorType_Manager reprocessorTypeManageer;
+    private Reprocessor_Manager reprocessorManager;
 
     //the time the simulated hospital should open and close
     //Represented as a integer from 0 - some value
@@ -75,6 +77,8 @@ public class Simulation_Manager {
         doctormanager = new Doctor_Manager();
         manualCleaningStationManager = new ManualCleaningStation_Manager();
         technicianManager = new Technician_Manager();
+        reprocessorTypeManageer = new ReprocessorType_Manager();
+        reprocessorManager = new Reprocessor_Manager();
         this.startTime = startTime;
         this.endTime = endTime;
         this.waitTime = waitTime;
@@ -96,6 +100,7 @@ public class Simulation_Manager {
         doctormanager.runTick();
         technicianManager.runTick();
         procedureRoomManager.runTick(Time.convertToString(currTime));
+        reprocessorManager.runTick();
 
         int patientOffset = 0;
         int roomOffset = 0;
@@ -188,6 +193,17 @@ public class Simulation_Manager {
                 tech.setDestination(station);
                 this.scopeManager.getScopeByIndex(i).setHolding(tech, 5);
                 this.scopeManager.getScopeByIndex(i).startClean(station);
+            }
+        }
+
+        for(int i = 0; i < this.scopeManager.getScopeNum(); i++){
+            if(this.scopeManager.getScopeByIndex(i).getState() == State_Scope.STATE_REPROCESSING && !this.scopeManager.getScopeByIndex(i).isInReprocessor()){
+                Reprocessor reprocessor = reprocessorManager.getFreeReprocessor();
+                if(reprocessor == null){
+                    break;
+                }
+                reprocessor.addScope(this.scopeManager.getScopeByIndex(i));
+                this.scopeManager.getScopeByIndex(i).setInReprocessor(true);
             }
         }
         return false;

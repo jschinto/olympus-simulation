@@ -10,7 +10,7 @@ public class State_Scope implements Serializable {
 
     public int state;
 
-    public static final String[] stateNames = {"Clean", "Cleaning", "In Use", "Traveling", "Dirty", "Returning", "Done"};
+    public static final String[] stateNames = {"Clean", "Cleaning", "In Use", "Traveling", "Dirty", "Returning", "Done", "To Reprocess", "Reprocessing", "Done Reprocessing"};
 
     public static final int STATE_FREE = 0;
     public static final int STATE_TRAVEL = 3;
@@ -19,6 +19,9 @@ public class State_Scope implements Serializable {
     public static final int STATE_CLEANING = 1;
     public static final int STATE_DONE = 6;
     public static final int STATE_RETURNING = 5;
+    public static final int STATE_TOREPROCESS = 7;
+    public static final int STATE_REPROCESSING = 8;
+    public static final int STATE_DONEREPROCESSING = 9;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({
@@ -27,7 +30,10 @@ public class State_Scope implements Serializable {
             STATE_USE,
             STATE_DIRTY,
             STATE_CLEANING,
-            STATE_RETURNING
+            STATE_RETURNING,
+            STATE_TOREPROCESS,
+            STATE_REPROCESSING,
+            STATE_DONEREPROCESSING
     })
     public @interface StateDef {
     }
