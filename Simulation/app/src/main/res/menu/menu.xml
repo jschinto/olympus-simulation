@@ -60,6 +60,14 @@
                 android:id="@+id/addDoctor"
                 android:title="Add Doctor"/>
 
+            <item
+                android:id="@+id/addReprocessorType"
+                android:title="Add Reprocessor Type"/>
+
+            <item
+                android:id="@+id/addReprocessor"
+                android:title="Add Reprocessor"/>
+
 
         </menu>
     </item>

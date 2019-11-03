@@ -31,12 +31,25 @@ public class Reprocessor_Manager {
         this.reprocessors = reprocessors;
     }
 
+    public Reprocessor getReprocessorByIndex(int i) {
+        return reprocessors.get(i);
+    }
+
     public void addReprocessor(Reprocessor reprocessor){
         this.reprocessors.add(reprocessor);
     }
 
     public void removeReprocessor(Reprocessor reprocessor){
         this.reprocessors.remove(reprocessor);
+    }
+
+    public void removeReprocessorByType(String type) {
+        for (int i=0; i < reprocessors.size(); i++) {
+            if (reprocessors.get(i).getType().getName().equals(type)) {
+                reprocessors.remove(i);
+                return;
+            }
+        }
     }
 
     public int getNumReprocessors(){

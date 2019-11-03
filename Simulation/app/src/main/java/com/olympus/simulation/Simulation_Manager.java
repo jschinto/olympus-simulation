@@ -22,7 +22,7 @@ public class Simulation_Manager {
     private LeakTesterType_Manager leakTesterTypeManager;
     private ManualCleaningStation_Manager manualCleaningStationManager;
     private Technician_Manager technicianManager;
-    private ReprocessorType_Manager reprocessorTypeManageer;
+    private ReprocessorType_Manager reprocessorTypeManager;
     private Reprocessor_Manager reprocessorManager;
 
     //the time the simulated hospital should open and close
@@ -77,7 +77,7 @@ public class Simulation_Manager {
         doctormanager = new Doctor_Manager();
         manualCleaningStationManager = new ManualCleaningStation_Manager();
         technicianManager = new Technician_Manager();
-        reprocessorTypeManageer = new ReprocessorType_Manager();
+        reprocessorTypeManager = new ReprocessorType_Manager();
         reprocessorManager = new Reprocessor_Manager();
         this.startTime = startTime;
         this.endTime = endTime;
@@ -582,6 +582,33 @@ public class Simulation_Manager {
     public int getTechnicianNum(){return technicianManager.getTechnicianNum();}
     public int getTechnicianFreeNum() {return technicianManager.getFreeTechnicianNum();}
     public void setTechnicianNum(int num) {technicianManager.setTechnicianNum(num);}
+
+    public ArrayList<Reprocessor> getReprocessors() {
+        return reprocessorManager.getReprocessors();
+    }
+    public Reprocessor getReprocessorByIndex(int i) {
+        return reprocessorManager.getReprocessorByIndex(i);
+    }
+    public Reprocessor_Type getReprocessorTypeByName(String name) {
+        return reprocessorTypeManager.getTypeByName(name);
+    }
+    public void removeReprocessorTypeByName(String name) {
+        reprocessorTypeManager.removeTypeByName(name);
+    }
+    public void removeReprocessorByType(String type) {
+        reprocessorManager.removeReprocessorByType(type);
+    }
+    public void addReprocessor(Reprocessor reprocessor) {
+        reprocessorManager.addReprocessor(reprocessor);
+    }
+
+    public void addReprocessorType(Reprocessor_Type reprocessor_type) {
+        reprocessorTypeManager.addType(reprocessor_type);
+    }
+
+    public String[] getReprocessorTypeNames() {
+        return reprocessorTypeManager.getTypeNames();
+    }
 
     public Boolean isEverythingDone() {
         boolean done = true;

@@ -68,6 +68,14 @@
             android:layout_weight="1"
             android:onClick="buttonClick"
             android:text="@string/ViewTowerTypes" />
+
+        <Button
+            android:id="@+id/buttonViewReprocessorTypes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="buttonClick"
+            android:text="@string/buttonViewReprocessorTypes" />
     </LinearLayout>
 
     <LinearLayout

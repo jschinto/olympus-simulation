@@ -233,7 +233,7 @@ public class ElementActivity extends AppCompatActivity {
                     leaveActivity(RESULT_OK, new Doctor(null), null);
                 }
                 else if (element.equals(Element.ELEMENT_REPROCESSORTYPE)) {
-                    leaveActivity(RESULT_OK, new Reprocessor_Type(null, 0,0,0,0));
+                    leaveActivity(RESULT_OK, new Reprocessor_Type("", 0,0,0,0));
                 }
                 else if (element.equals(Element.ELEMENT_REPROCESSOR)) {
                     leaveActivity(RESULT_OK, new Reprocessor(null));

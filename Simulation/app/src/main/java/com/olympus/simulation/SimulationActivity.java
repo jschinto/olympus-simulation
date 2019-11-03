@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.menu.ActionMenuItemView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -183,7 +184,6 @@ public class SimulationActivity
                     String name = item.getTitle().toString();
 
                     Tower_Type tower_type = simulation_manager.getTowerTypeByName(name);
-                   // currentClicked = new Tag(-1, tower_type.getName());
                     Intent towerTypeIntent = new Intent(getApplicationContext(), TowerTypeActivity.class);
                     towerTypeIntent.putExtra("towerType", tower_type);
                     towerTypeIntent.putExtra("scopeTypes", simulation_manager.getScopeTypeNames());
@@ -192,6 +192,27 @@ public class SimulationActivity
                 }
             });
             popupMenu.show();
+        } else if (view.getId() == R.id.buttonViewReprocessorTypes) {
+            PopupMenu popupMenu = new PopupMenu(getApplicationContext(), view);
+            String[] reprocessorTypeNames = simulation_manager.getReprocessorTypeNames();
+            for (int i=0; i < reprocessorTypeNames.length; i++) {
+                popupMenu.getMenu().add(Menu.NONE, i, i, reprocessorTypeNames[i]);
+            }
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    String name = item.getTitle().toString();
+                    Reprocessor_Type reprocessor_type = simulation_manager.getReprocessorTypeByName(name);
+                    Intent reprocessorTypeIntent = new Intent(getApplicationContext(), ElementActivity.class);
+                    currentClicked = new Tag(-1, reprocessor_type.getName());
+                    reprocessorTypeIntent.putExtra("element", reprocessor_type);
+                    reprocessorTypeIntent.putExtra("mode", "view");
+                    startActivityForResult(reprocessorTypeIntent, element_Request);
+                    return true;
+                }
+            });
+            popupMenu.show();
+
         }
     }
 
@@ -303,7 +324,20 @@ public class SimulationActivity
             doctorIntent.putExtra("mode", "add");
             doctorIntent.putExtra("procedures", simulation_manager.getProcedureNames());
             startActivityForResult(doctorIntent, element_Request);
-        }else if (id == R.id.startSimulation) {
+        } else if (id == R.id.addReprocessorType) {
+            Intent reprocessorTypeIntent = new Intent(getApplicationContext(), ElementActivity.class);
+            Reprocessor_Type reprocessor_type = new Reprocessor_Type("", 0,0,0,0);
+            reprocessorTypeIntent.putExtra("element", reprocessor_type);
+            reprocessorTypeIntent.putExtra("mode", "add");
+            startActivityForResult(reprocessorTypeIntent, element_Request);
+        } else if (id == R.id.addReprocessor) {
+            Intent reprocessorIntent = new Intent(getApplicationContext(), ElementActivity.class);
+            Reprocessor reprocessor = new Reprocessor(null);
+            reprocessorIntent.putExtra("element", reprocessor);
+            reprocessorIntent.putExtra("mode", "add");
+            reprocessorIntent.putExtra("reprocessorTypes", simulation_manager.getReprocessorTypeNames());
+            startActivityForResult(reprocessorIntent, element_Request);
+        } else if (id == R.id.startSimulation) {
             ActionMenuItemView playImage = findViewById(R.id.playButton);
             if (item.getTitle().equals("Confirm Start")) {
                 startSimulation(item);
@@ -454,6 +488,36 @@ public class SimulationActivity
                     }
                 }
 
+                renderUIFromManager();
+            } else if (element.equals(Element.ELEMENT_REPROCESSORTYPE)) {
+                Reprocessor_Type reprocessor_type = (Reprocessor_Type) element;
+                if (resultCode == RESULT_FIRST_USER) {
+                    simulation_manager.addReprocessorType(reprocessor_type);
+                } else if (resultCode == RESULT_OK) {
+                    //remove for deleting or editing
+                    simulation_manager.removeReprocessorTypeByName(currentClicked.type);
+                    //if editing add new one back in
+                    if (reprocessor_type.validate()) {
+                        simulation_manager.addReprocessorType(reprocessor_type);
+                    }
+                }
+                renderUIFromManager();
+            } else if (element.equals(Element.ELEMENT_REPROCESSOR)) {
+                if (resultCode == RESULT_FIRST_USER) {
+                    Reprocessor_Type reprocessor_type = simulation_manager.getReprocessorTypeByName(list[0]);
+                    Reprocessor reprocessor = new Reprocessor(reprocessor_type);
+                    simulation_manager.addReprocessor(reprocessor);
+                } else if (resultCode == RESULT_OK) {
+                    Reprocessor reprocessor = (Reprocessor) element;
+                    //remove old if edited or deleted
+                    simulation_manager.removeReprocessorByType(currentClicked.type);
+
+                    if (reprocessor.validate()) {
+                        Reprocessor_Type reprocessor_type = simulation_manager.getReprocessorTypeByName(list[0]);
+                        reprocessor.setType(reprocessor_type);
+                        simulation_manager.addReprocessor(reprocessor);
+                    }
+                }
                 renderUIFromManager();
             }
         }
@@ -738,6 +802,14 @@ public class SimulationActivity
             sinkIntent.putExtra("leakTesterTypes", simulation_manager.getLeakTesterTypeNames());
             currentClicked.type = manualCleaningStation.getCurrentLeakTester().getName();
             startActivityForResult(sinkIntent, element_Request);
+        } else if (type.equals("Reprocessor")) {
+            Intent reprocessorIntent = new Intent(getApplicationContext(), ElementActivity.class);
+            Reprocessor reprocessor = simulation_manager.getReprocessorByIndex(index);
+            currentClicked.type = reprocessor.getType().getName();
+            reprocessorIntent.putExtra("element", reprocessor);
+            reprocessorIntent.putExtra("mode", "view");
+            reprocessorIntent.putExtra("reprocessorTypes", simulation_manager.getReprocessorTypeNames());
+            startActivityForResult(reprocessorIntent, element_Request);
         }
     }
 
@@ -854,6 +926,10 @@ public class SimulationActivity
         ArrayList<Doctor> doctors = simulation_manager.getFreeDoctors();
         LinearLayout linearLayoutDoctors = findViewById(R.id.LinearLayoutDoctors);
         populateSection(linearLayoutDoctors, "Doctor", doctors);
+
+        ArrayList<Reprocessor> reprocessors = simulation_manager.getReprocessors();
+        LinearLayout linearLayoutReprocessors = findViewById(R.id.LinearLayoutReprocessors);
+        populateSection(linearLayoutReprocessors, "Reprocessor", reprocessors);
     }
 
     public <T> void populateSection(LinearLayout theLinearLayout, String tagType, ArrayList<T> list) {

@@ -39,7 +39,7 @@ public class ReprocessorType_Manager {
 
     public Reprocessor_Type getTypeByName(String name){
         for(int i = 0; i < this.types.size(); i++){
-            if(this.types.get(i).getName() == name){
+            if(this.types.get(i).getName().equals(name)){
                 return this.types.get(i);
             }
         }
@@ -48,8 +48,9 @@ public class ReprocessorType_Manager {
 
     public void removeTypeByName(String name){
         for(int i = 0; i < this.types.size(); i++){
-            if(this.types.get(i).getName() == name){
+            if(this.types.get(i).getName().equals(name)){
                 this.types.remove(i);
+                return;
             }
         }
     }

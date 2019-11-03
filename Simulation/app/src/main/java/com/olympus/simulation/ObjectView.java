@@ -44,6 +44,8 @@ public class ObjectView extends LinearLayout {
             type = "Sink";
         } else if (object instanceof  Technician) {
             type = "Technician";
+        } else if (object instanceof Reprocessor) {
+            type = "Reprocessor";
         }
         else  {
             type = null;
@@ -86,8 +88,12 @@ public class ObjectView extends LinearLayout {
             LayoutParams params = new LayoutParams(125, 100);
             imageView.setLayoutParams(params);
         } else if (type.equals("Technician")) {
-            imageView.setImageResource(R.drawable.doctor);
+            imageView.setImageResource(R.drawable.technician);
             LayoutParams params = new LayoutParams(70, 100);
+            imageView.setLayoutParams(params);
+        } else if (type.equals("Reprocessor")) {
+            imageView.setImageResource(R.drawable.reprocessor);
+            LayoutParams params = new LayoutParams(125, 100);
             imageView.setLayoutParams(params);
         }
 
@@ -216,6 +222,9 @@ public class ObjectView extends LinearLayout {
                     }
                 }
             }
+        } else if (type.equals("Reprocessor")) {
+            Reprocessor reprocessor = (Reprocessor)object;
+            changeText(reprocessor.getType().getName());
         }
         else {
             addLine("TYPE INVALID");
