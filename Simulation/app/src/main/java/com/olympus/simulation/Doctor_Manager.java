@@ -33,14 +33,17 @@ public class Doctor_Manager {
     public void initCSVList(String startTime, String endTime) {
         currTime = startTime;
         csvList.clear();
+        int id = 1;
         for(Doctor d : doctors) {
             String procedure = "";
             for(String p : d.getProceduresNames()) {
                 procedure += p;
                 procedure += "/";
             }
+            d.setId(id);
+            id++;
             procedure = procedure.substring(0,procedure.length() - 1);
-            ActorLogCSV logItem = new ActorLogCSV("Doctor", doctors.indexOf(d) + "", "Doctor " + doctors.indexOf(d), startTime, endTime, procedure, "", State.stateNames[0]);
+            ActorLogCSV logItem = new ActorLogCSV("Doctor", d.getId() + "", "Doctor " + d.getId(), startTime, endTime, procedure, "", State.stateNames[0]);
             csvList.add(logItem);
         }
     }
@@ -48,7 +51,7 @@ public class Doctor_Manager {
     public void finalizeCSVList(String endTime) {
         for(Doctor d : doctors) {
             ActorLogCSV logItem = new ActorLogCSV();
-            logItem.setName("Doctor " + doctors.indexOf(d));
+            logItem.setName("Doctor " + d.getId());
             csvList.get(getLastActorLogEntry(logItem)).setTimeOut(endTime);
         }
     }
@@ -59,13 +62,13 @@ public class Doctor_Manager {
         }
         String state = State.stateNames[n.getState()];
         ActorLogCSV temp = new ActorLogCSV();
-        temp.setName("Doctor " + doctors.indexOf(n));
+        temp.setName("Doctor " + n.getId());
         if(getLastActorLogEntry(temp) == -1) {
             return;
         }
         String proc = csvList.get(getLastActorLogEntry(temp)).procedure;
         String station = "";
-        ActorLogCSV logItem = new ActorLogCSV("Doctor", doctors.indexOf(n) + "", "Doctor " + doctors.indexOf(n), currTime, currTime, proc, station, state);
+        ActorLogCSV logItem = new ActorLogCSV("Doctor", n.getId() + "", "Doctor " + n.getId(), currTime, currTime, proc, station, state);
         addActorLogCSV(logItem);
     }
 

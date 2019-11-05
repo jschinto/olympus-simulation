@@ -30,8 +30,11 @@ public class Technician_Manager {
     public void initCSVList(String startTime, String endTime) {
         currTime = startTime;
         csvList.clear();
+        int id = 1;
         for(Technician t : technicians) {
-            ActorLogCSV logItem = new ActorLogCSV("Technician", technicians.indexOf(t) + "", "Technician " + technicians.indexOf(t), startTime, endTime, "", "", State.stateNames[0]);
+            t.setId(id);
+            id++;
+            ActorLogCSV logItem = new ActorLogCSV("Technician", t.getId() + "", "Technician " + t.getId(), startTime, endTime, "", "", State.stateNames[0]);
             csvList.add(logItem);
         }
     }
@@ -39,7 +42,7 @@ public class Technician_Manager {
     public void finalizeCSVList(String endTime) {
         for(Technician t : technicians) {
             ActorLogCSV logItem = new ActorLogCSV();
-            logItem.setName("Technician " + technicians.indexOf(t));
+            logItem.setName("Technician " + t.getId());
             csvList.get(getLastActorLogEntry(logItem)).setTimeOut(endTime);
         }
     }
@@ -50,13 +53,13 @@ public class Technician_Manager {
         }
         String state = State.stateNames[n.getState()];
         ActorLogCSV temp = new ActorLogCSV();
-        temp.setName("Technician " + technicians.indexOf(n));
+        temp.setName("Technician " + n.getId());
         if(getLastActorLogEntry(temp) == -1) {
             return;
         }
         String proc = csvList.get(getLastActorLogEntry(temp)).procedure;
         String station = "";
-        ActorLogCSV logItem = new ActorLogCSV("Technician", technicians.indexOf(n) + "", "Technician " + technicians.indexOf(n), currTime, currTime, proc, station, state);
+        ActorLogCSV logItem = new ActorLogCSV("Technician", n.getId() + "", "Technician " + n.getId(), currTime, currTime, proc, station, state);
         addActorLogCSV(logItem);
     }
 

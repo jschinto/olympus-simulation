@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class Doctor extends Element implements Serializable {
 
     private State state;
+    private int id;
 
     private int timeLeft;
 
@@ -18,7 +19,16 @@ public class Doctor extends Element implements Serializable {
         this.procedures = procedures;
         setState(State.STATE_WAIT);
         timeLeft = 0;
+        id = 0;
         setDestination(null);
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public int getState() {

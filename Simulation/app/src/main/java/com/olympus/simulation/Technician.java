@@ -4,11 +4,13 @@ import java.io.Serializable;
 
 public class Technician extends Element implements Serializable {
     private State state;
+    private int id;
     private int travel;
 
     public Technician(){
         this.element = ELEMENT_TECHNICIAN;
         this.state = new State(State.STATE_WAIT);
+        this.id = 0;
         setDestination(null);
     }
 
@@ -19,6 +21,14 @@ public class Technician extends Element implements Serializable {
                 setState(new State(State.STATE_OPERATION));
             }
         }
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public int getState() {

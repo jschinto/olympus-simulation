@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Nurse extends Element implements Serializable {
 
     private State state;
+    private int id;
 
     private int timeLeft;
 
@@ -13,7 +14,16 @@ public class Nurse extends Element implements Serializable {
         this.element = ELEMENT_NURSE;
         setState(State.STATE_WAIT);
         timeLeft = 0;
+        id = 0;
         setDestination(null);
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public int getState() {
@@ -30,7 +40,7 @@ public class Nurse extends Element implements Serializable {
         if(timeLeft < 0){
             timeLeft = 0;
         }
-        System.out.println("Nurse " + timeLeft + " " + state);
+        //System.out.println("Nurse " + timeLeft + " " + state);
         if (timeLeft <= 0) {
             if (state.equals(State.STATE_TRAVEL)) {
                 setState(State.STATE_OPERATION);

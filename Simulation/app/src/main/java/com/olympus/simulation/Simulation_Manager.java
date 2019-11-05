@@ -142,8 +142,8 @@ public class Simulation_Manager {
                 Technician tech = Technician_Manager.getTechnician();
                 if (freeScope == null || tech == null) {
                     for(int j = 0; j < scopeList.size(); j++){
-                        scopeList.get(i).setTempGrab(false);
-                        scopeList.get(i).setHolding(null, -1);
+                        scopeList.get(j).setTempGrab(false);
+                        scopeList.get(j).setHolding(null, -1);
                     }
                     break;
                 }
