@@ -11,6 +11,7 @@ public class State_Scope implements Serializable {
     public int state;
 
     public static final String[] stateNames = {"Clean", "Cleaning", "In Use", "Traveling", "Dirty", "Returning", "Done", "To Reprocess", "Reprocessing", "Done Reprocessing"};
+    public static final String[] mappings = {"Cabinet", "Sink", "Room", "Hallway", "Sink", "Hallway", "Cabinet", "Hallway", "Reprocessor", "Reprocessor"};
 
     public static final int STATE_FREE = 0;
     public static final int STATE_TRAVEL = 3;

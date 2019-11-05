@@ -76,13 +76,16 @@ public class Scope_Manager {
                     String state = State_Scope.stateNames[s.getState()];
                     ScopeLogCSV temp = new ScopeLogCSV();
                     temp.setSerialNum(s.getId() + "");
-                    String proc = csvList.get(getLastScopeLogEntry(temp)).procedure;
+                    String proc = "";
                     String station = "";
-                    if(state.equals(State_Scope.stateNames[0])) {
-                        proc = "";
-                        station = "Cabinet";
+                    for(int ind = 0; ind < State_Scope.mappings.length;ind++) {
+                        if(state.equals(State_Scope.stateNames[ind])) {
+                            station = State_Scope.mappings[ind];
+                            break;
+                        }
                     }
                     if(s.getRoom() != null) {
+                        proc = csvList.get(getLastScopeLogEntry(temp)).procedure;
                         station = "Room " + s.getRoom().getId();
                     }
                     ScopeLogCSV logItem = new ScopeLogCSV(s.getType().getName(), s.getId() + "", "Scope " + s.getId(), currTime, currTime, proc, station, state);

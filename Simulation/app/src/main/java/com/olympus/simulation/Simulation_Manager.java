@@ -481,12 +481,16 @@ public class Simulation_Manager {
     public ArrayList<CSVable> getStationCSVList() {
         StationCSV waitingRoom = new StationCSV("Room", "Waiting Room");
         StationCSV hallway = new StationCSV("Room", "Hallway");
+        StationCSV sink = new StationCSV("Sink", "Sink");
+        StationCSV reprocessor = new StationCSV("Reprocessor", "Reprocessor");
         ArrayList<StationCSV.Station> stations = new ArrayList<>();
         stations.addAll(procedureRoomManager.getProcedureRooms());
 
         ArrayList<CSVable> toReturn = new ArrayList<>();
         toReturn.add(waitingRoom);
         toReturn.add(hallway);
+        toReturn.add(sink);
+        toReturn.add(reprocessor);
         for(StationCSV.Station s : stations) {
             toReturn.add(s.getStationCSV());
         }
