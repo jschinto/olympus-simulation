@@ -494,7 +494,7 @@ public class Simulation_Manager {
     }
 
     public ArrayList<CSVable> getScopeLogCSVList() {
-        scopeManager.finalizeCSVList(Time.convertToString(endTime));
+        scopeManager.finalizeCSVList(Time.convertToString(currTime));
         ArrayList<CSVable> toReturn = new ArrayList<>();
         for(ScopeLogCSV sl : scopeManager.getCsvList()) {
             toReturn.add(sl);
@@ -503,9 +503,9 @@ public class Simulation_Manager {
     }
 
     public ArrayList<CSVable> getActorLogCSVList() {
-        nursemanager.finalizeCSVList(Time.convertToString(endTime));
-        doctormanager.finalizeCSVList(Time.convertToString(endTime));
-        technicianManager.finalizeCSVList(Time.convertToString(endTime));
+        nursemanager.finalizeCSVList(Time.convertToString(currTime));
+        doctormanager.finalizeCSVList(Time.convertToString(currTime));
+        technicianManager.finalizeCSVList(Time.convertToString(currTime));
         ArrayList<CSVable> toReturn = new ArrayList<>();
         for(ActorLogCSV al : nursemanager.getCsvList()) {
             toReturn.add(al);
