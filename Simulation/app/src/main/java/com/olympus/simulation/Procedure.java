@@ -36,6 +36,14 @@ public class Procedure implements Serializable {
         return this.name;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof Procedure) {
+            return ((Procedure)o).getName().equals(this.getName()) && ((Procedure)o).getTime() == (this.getTime());
+        }
+        return super.equals(o);
+    }
+
 
 
 
