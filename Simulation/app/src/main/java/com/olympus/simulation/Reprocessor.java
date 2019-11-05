@@ -1,6 +1,5 @@
 package com.olympus.simulation;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Reprocessor extends  Element{
@@ -42,7 +41,7 @@ public class Reprocessor extends  Element{
             return true;
         }
         this.timeLeft--;
-        
+
         return false;
     }
 
