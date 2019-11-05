@@ -12,7 +12,7 @@ public class Reprocessor_Manager {
 
     public void runTick(){
         for(int i = 0; i < this.reprocessors.size(); i++){
-            if(this.reprocessors.get(i).getTimeLeft() != 0) {
+            if(this.reprocessors.get(i).getState() == State_Scope.STATE_CLEANING) {
                 this.reprocessors.get(i).tick();
             }
             else {
@@ -59,7 +59,7 @@ public class Reprocessor_Manager {
     public Reprocessor getFreeReprocessor(){
         this.sortReprocessors();
         for(int i = 0; i < this.reprocessors.size(); i++){
-            if(this.reprocessors.get(i).getNumScopes() < this.reprocessors.get(i).getType().getNumScopes()){
+            if(this.reprocessors.get(i).getState() == State_Scope.STATE_FREE && this.reprocessors.get(i).getNumScopes() < this.reprocessors.get(i).getType().getNumScopes()){
                 return this.reprocessors.get(i);
             }
         }

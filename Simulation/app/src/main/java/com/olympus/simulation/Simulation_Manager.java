@@ -279,7 +279,7 @@ public class Simulation_Manager {
             }
         }
         for(Scope s:scopeManager.getScopes()) {
-            if(s.getState() == State_Scope.STATE_TRAVEL || s.getState() == State_Scope.STATE_DIRTY || s.getState() == State_Scope.STATE_RETURNING) {
+            if(s.getState() == State_Scope.STATE_TRAVEL || s.getState() == State_Scope.STATE_DIRTY || s.getState() == State_Scope.STATE_RETURNING || s.getState() == State_Scope.STATE_TOREPROCESS) {
                 hallway.add(s);
             }
         }

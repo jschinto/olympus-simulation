@@ -38,9 +38,11 @@ public class Reprocessor extends  Element{
     }
 
     public boolean checkStart(){
-        if(this.holding.size() == this.type.getNumScopes()){
+        if(this.holding.size() == this.type.getNumScopes() || this.holding.size() > 0 && this.getTimeLeft() == 0){
             return true;
         }
+        this.timeLeft--;
+        
         return false;
     }
 
@@ -65,6 +67,7 @@ public class Reprocessor extends  Element{
             return false;
         }
         this.holding.add(scope);
+        this.setTimeLeft(this.type.getWaitTime());
         return true;
     }
 
