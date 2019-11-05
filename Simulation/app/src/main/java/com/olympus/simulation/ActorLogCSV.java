@@ -80,7 +80,7 @@ public class ActorLogCSV implements Simulation_Manager.CSVable, Serializable {
     @Override
     public boolean equals(@Nullable Object obj) {
         if(obj instanceof ActorLogCSV) {
-            System.out.println(((ActorLogCSV) obj).name + "==" + this.name);
+            //System.out.println(((ActorLogCSV) obj).name + "==" + this.name);
             return ((ActorLogCSV) obj).name.equals(this.name);
         }
         return super.equals(obj);

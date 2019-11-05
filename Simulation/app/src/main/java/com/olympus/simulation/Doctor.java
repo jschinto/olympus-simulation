@@ -68,7 +68,6 @@ public class Doctor extends Element implements Serializable {
         if(timeLeft < 0){
             timeLeft = 0;
         }
-        System.out.println("Doctor " + timeLeft + " " + state);
         if (timeLeft <= 0) {
             if (state.equals(State.STATE_TRAVEL)) {
                 setState(State.STATE_OPERATION);
@@ -85,7 +84,7 @@ public class Doctor extends Element implements Serializable {
 
     public void startPostProcedure(int postProcedureTime) {
         this.timeLeft = postProcedureTime;
-        setState(State.STATE_DONE);
+        this.state = new State(State.STATE_DONE);
     }
 
     public boolean validate() {

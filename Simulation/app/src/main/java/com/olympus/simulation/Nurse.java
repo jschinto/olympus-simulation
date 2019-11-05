@@ -57,7 +57,7 @@ public class Nurse extends Element implements Serializable {
 
     public void startPostProcedure(int postProcedureTime) {
         this.timeLeft = postProcedureTime;
-        setState(State.STATE_DONE);
+        this.state = new State(State.STATE_DONE);
     }
 
 
