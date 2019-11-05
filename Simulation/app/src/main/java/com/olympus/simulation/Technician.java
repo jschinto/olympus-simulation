@@ -44,13 +44,13 @@ public class Technician extends Element implements Serializable {
     public void startTravel(int travelTime){
         if(travelTime == -1){
             this.travel = 0;
-            this.state = new State(State.STATE_WAIT);
+            setState(new State(State.STATE_WAIT));
         } else if (travelTime == 0) {
             this.travel = 0;
-            this.state = new State(State.STATE_OPERATION);
+            setState(new State(State.STATE_OPERATION));
         } else {
             this.travel = travelTime;
-            this.state = new State(State.STATE_TRAVEL);
+            setState(new State(State.STATE_TRAVEL));
         }
 
     }
