@@ -24,6 +24,7 @@ public class ElementActivity extends AppCompatActivity {
     Element element;
     String mode; // "add" or "view" or "actor"
     int[] ids;
+    int numId;
 
     private final int labelLength = 75;
     private final int textLength = 100;
@@ -72,6 +73,8 @@ public class ElementActivity extends AppCompatActivity {
                 Doctor doctor = (Doctor)element;
                 String[] checked = doctor.getProceduresNames();
                 setChecked(ids[0], checked);
+            } else {
+                numId = addField("Number to Add", "number");
             }
         } else if (element.equals(Element.ELEMENT_NURSE)) {
             setText(R.id.elementTextTitle, "Nurses");
@@ -103,6 +106,8 @@ public class ElementActivity extends AppCompatActivity {
                 setText(ids[1], procedureRoom.getCooldownTime());
                 String[] checked = procedureRoom.getTowerTypeNames();
                 setChecked(ids[2], checked);
+            } else {
+                numId = addField("Number to Add", "number");
             }
         } else if (element.equals(Element.ELEMENT_SINK)) {
             setText(R.id.elementTextTitle, "Manual Cleaning Station");
@@ -112,6 +117,8 @@ public class ElementActivity extends AppCompatActivity {
             if (mode.equals("view")) {
                 ManualCleaningStation manualCleaningStation = (ManualCleaningStation) element;
                 setSpinner(ids[0], manualCleaningStation.getCurrentLeakTester().getName());
+            } else {
+                numId = addField("Number to Add", "number");
             }
         } else if(element.equals(Element.ELEMENT_LEAKTESTERTYPE)){
             setText(R.id.elementTextTitle, "Leak Tester Type");
@@ -151,6 +158,8 @@ public class ElementActivity extends AppCompatActivity {
             if (mode.equals("view")) {
                 Reprocessor reprocessor = (Reprocessor) element;
                 setSpinner(ids[0], reprocessor.getType().getName());
+            } else {
+                numId = addField("Number to Add", "number");
             }
         }
     }
@@ -496,6 +505,19 @@ public class ElementActivity extends AppCompatActivity {
             finish();
         }
         Intent returnIntent = new Intent();
+        if (mode.equals("add") && (
+                element.equals(Element.ELEMENT_SINK)
+                        || element.equals(Element.ELEMENT_REPROCESSOR)
+                        || element.equals(Element.ELEMENT_PROCEDUREROOM)
+                        || element.equals(Element.ELEMENT_DOCTOR)
+        )){
+            int num = getTextInt(numId);
+            if (num < 1) {
+                makeToast("Cant add less than 1!");
+                return;
+            }
+            returnIntent.putExtra("num", num);
+        }
         returnIntent.putExtra("element", newElement);
         setResult(code, returnIntent);
         finish();
@@ -507,6 +529,19 @@ public class ElementActivity extends AppCompatActivity {
             finish();
         }
         Intent returnIntent = new Intent();
+        if (mode.equals("add") && (
+                element.equals(Element.ELEMENT_SINK)
+                || element.equals(Element.ELEMENT_REPROCESSOR)
+                || element.equals(Element.ELEMENT_PROCEDUREROOM)
+                || element.equals(Element.ELEMENT_DOCTOR)
+        )){
+            int num = getTextInt(numId);
+            if (num < 1) {
+                makeToast("Cant add less than 1!");
+                return;
+            }
+            returnIntent.putExtra("num", num);
+        }
         returnIntent.putExtra("element", newElement);
         returnIntent.putExtra("list", list);
         setResult(code, returnIntent);
@@ -524,4 +559,5 @@ public class ElementActivity extends AppCompatActivity {
             setResult(code, returnIntent);
             finish();
     }
+
 }

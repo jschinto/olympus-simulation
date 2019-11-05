@@ -55,7 +55,11 @@ public class Doctor extends Element implements Serializable {
     }
 
     public void setProcedures(ArrayList<Procedure> procedures) {
-        this.procedures = procedures;
+        if (procedures != null) {
+            this.procedures = new ArrayList<>(procedures);
+        } else {
+            this.procedures = null;
+        }
     }
 
     public void setState(@State.StateDef int state) {

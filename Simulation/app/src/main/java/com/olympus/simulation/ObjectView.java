@@ -151,6 +151,8 @@ public class ObjectView extends LinearLayout {
                 addLine("RETURNING");
             } else if (scope.getState() == State_Scope.STATE_DONE) {
                 addLine("DONE CLEANING");
+            } else if (scope.getState() == State_Scope.STATE_TOREPROCESS) {
+                addLine("To Reprocessor");
             }
             else {
                 addLine("ERROR");
@@ -225,6 +227,12 @@ public class ObjectView extends LinearLayout {
         } else if (type.equals("Reprocessor")) {
             Reprocessor reprocessor = (Reprocessor)object;
             changeText(reprocessor.getType().getName());
+            addLine("Scope Count: " + reprocessor.getNumScopes());
+            if (reprocessor.getState() == State_Scope.STATE_CLEANING) {
+                addLine("CLEANING");
+            } else {
+                addLine("WAITING");
+            }
         }
         else {
             addLine("TYPE INVALID");

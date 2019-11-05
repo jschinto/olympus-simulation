@@ -388,7 +388,11 @@ public class SimulationActivity
 
                 //adding a new procedure room
                 if (resultCode == RESULT_FIRST_USER) {
+                    int num = data.getIntExtra("num", 1);
                     simulation_manager.addProcedureRoom(procedureRoom);
+                    for (int i=1; i < num; i++) {
+                        simulation_manager.addProcedureRoom(new ProcedureRoom(procedureRoom));
+                    }
 
                     /*LinearLayout linearLayoutRooms = findViewById(R.id.LinearLayoutRooms);
                     ObjectView roomImage = new ObjectView(procedureRoom, getApplicationContext());
@@ -459,7 +463,13 @@ public class SimulationActivity
                     }
                 }
                 if (resultCode == RESULT_FIRST_USER) {
+                    int num = data.getIntExtra("num", 1);
                     simulation_manager.addDoctor(doctor);
+                    for (int i=1; i < num; i++) {
+                        Doctor addDoctor = new Doctor(null);
+                        addDoctor.setProcedures(doctor.getProcedures());
+                        simulation_manager.addDoctor(addDoctor);
+                    }
                 } else if (resultCode == RESULT_OK) {
                     int index = currentClicked.index;
                     if (doctor.validate()) {//clicked update
@@ -473,9 +483,12 @@ public class SimulationActivity
                 renderUIFromManager();
             } else if (element.equals(Element.ELEMENT_SINK)) {
                 if (resultCode == RESULT_FIRST_USER) {
+                    int num = data.getIntExtra("num", 1);
                     LeakTester_Type leakTester_type = simulation_manager.getLeakTesterByName(list[0]);
-                    ManualCleaningStation manualCleaningStation = new ManualCleaningStation(leakTester_type);
-                    simulation_manager.addManualCleaningStation(manualCleaningStation);
+                    for (int i=0; i < num; i++) {
+                        ManualCleaningStation manualCleaningStation = new ManualCleaningStation(leakTester_type);
+                        simulation_manager.addManualCleaningStation(manualCleaningStation);
+                    }
                 } else if (resultCode == RESULT_OK) {
                     ManualCleaningStation manualCleaningStation = (ManualCleaningStation)element;
                     //remove old if edited or deleted
@@ -504,9 +517,12 @@ public class SimulationActivity
                 renderUIFromManager();
             } else if (element.equals(Element.ELEMENT_REPROCESSOR)) {
                 if (resultCode == RESULT_FIRST_USER) {
+                    int num = data.getIntExtra("num", 1);
                     Reprocessor_Type reprocessor_type = simulation_manager.getReprocessorTypeByName(list[0]);
-                    Reprocessor reprocessor = new Reprocessor(reprocessor_type);
-                    simulation_manager.addReprocessor(reprocessor);
+                    for (int i=0; i < num; i++) {
+                        Reprocessor reprocessor = new Reprocessor(reprocessor_type);
+                        simulation_manager.addReprocessor(reprocessor);
+                    }
                 } else if (resultCode == RESULT_OK) {
                     Reprocessor reprocessor = (Reprocessor) element;
                     //remove old if edited or deleted

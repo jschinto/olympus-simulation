@@ -42,6 +42,20 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
         this.currentDoctor = null;
         this.clear = true;
     }
+    public ProcedureRoom(ProcedureRoom procedureRoom) {
+        this.element = Element.ELEMENT_PROCEDUREROOM;
+        this.occupied = false;
+        this.ready = false;
+        this.travelTime = procedureRoom.getTravelTime();
+        this.cooldownTime = procedureRoom.getCooldownTime();
+        this.cooldownTimeLeft = 0;
+        this.client = null;
+        this.scope = new ArrayList<>();
+        this.towerTypes = new ArrayList<Tower_Type>(procedureRoom.getTowerTypes());
+        this.currentNurse = null;
+        this.currentDoctor = null;
+        this.clear = true;
+    }
 
     public void claimElements(ArrayList<Scope> list, Doctor doctor, Nurse nurse) {
         this.scope = list;
@@ -196,6 +210,10 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
             types[i] = this.towerTypes.get(i).getName();
         }
         return types;
+    }
+
+    public ArrayList<Tower_Type> getTowerTypes() {
+        return this.towerTypes;
     }
 
     //Returns true if the procedure room has the required tower types to process that patient, false
