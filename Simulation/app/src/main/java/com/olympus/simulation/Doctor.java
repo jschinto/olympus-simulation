@@ -74,7 +74,7 @@ public class Doctor extends Element implements Serializable {
         }
         if (timeLeft <= 0) {
             if (state.equals(State.STATE_TRAVEL)) {
-                setState(State.STATE_OPERATION);
+                setState(State.STATE_INROOM);
             } else if (state.equals(State.STATE_DONE)) {
                 setState(State.STATE_WAIT);
             }

@@ -41,8 +41,8 @@ public class Reprocessor extends  Element{
             if (getTech == null) {
                 return;
             } else {
-                tech.setDestination(this);
-                tech.startTravel(5);
+                getTech.setDestination(this);
+                getTech.startTravel(5);
                 this.tech = getTech;
             }
         }

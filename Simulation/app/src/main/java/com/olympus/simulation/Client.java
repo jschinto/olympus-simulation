@@ -77,6 +77,7 @@ public class Client implements Comparable<Client>, Serializable {
     public void beginProcedure() {
         //check procedure constraints
         this.timeLeft = 0;
+        this.procedureRoom.startOperating();
         for (int i = 0; i < this.procedures.size(); i++) {
             this.timeLeft += this.procedures.get(i).getTime();
         }

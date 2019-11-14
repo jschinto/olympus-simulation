@@ -14,19 +14,21 @@ public class State implements Serializable {
 
     public int state;
 
-    public static final String[] stateNames = {"Waiting", "Done", "Operating", "Traveling"};
+    public static final String[] stateNames = {"Waiting", "Done", "Operating", "Traveling", "In Room"};
 
     public static final int STATE_WAIT = 0;
     public static final int STATE_TRAVEL = 3;
     public static final int STATE_OPERATION = 2;
     public static final int STATE_DONE = 1;
+    public static final int STATE_INROOM = 4;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({
             STATE_WAIT,
             STATE_OPERATION,
             STATE_DONE,
-            STATE_TRAVEL
+            STATE_TRAVEL,
+            STATE_INROOM
     })
     public @interface StateDef {
     }
