@@ -7,6 +7,8 @@ public class ManualCleaningStation extends Element implements Serializable {
     LeakTester_Type currentLeakTester;
     int travelTime;
 
+    private int id;
+
     public ManualCleaningStation(LeakTester_Type type){
         this.element = ELEMENT_SINK;
         this.currentScope = null;
@@ -15,6 +17,13 @@ public class ManualCleaningStation extends Element implements Serializable {
 
     public Scope getCurrentScope() {
         return currentScope;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    public int getId() {
+        return this.id;
     }
 
     public void setCurrentScope(Scope currentScope) {

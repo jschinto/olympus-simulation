@@ -26,6 +26,18 @@
         </menu>
     </item>
     <item
+        android:icon="@drawable/fast"
+        android:id="@+id/playButtonFast"
+        app:showAsAction="always"
+        android:title="">
+        <menu>
+            <item
+                android:id="@+id/startSimulationFast"
+                android:title="Confirm Fast Start" />
+        </menu>
+    </item>
+
+    <item
         android:icon="@drawable/plus_button2"
         android:id="@+id/plus_button"
         app:showAsAction="always"

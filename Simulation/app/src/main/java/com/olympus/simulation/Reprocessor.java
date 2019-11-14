@@ -10,6 +10,7 @@ public class Reprocessor extends  Element{
     private int state;
     private Technician tech;
     private int startupDelay;
+    private int id;
 
     public Reprocessor(Reprocessor_Type type){
         this.type = type;
@@ -123,5 +124,12 @@ public class Reprocessor extends  Element{
 
     public boolean validate() {
         return this.type != null;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    public int getId() {
+        return this.id;
     }
 }
