@@ -75,6 +75,7 @@ public class ElementActivity extends AppCompatActivity {
                 setChecked(ids[0], checked);
             } else {
                 numId = addField("Number to Add", "number");
+                setText(numId, 1);
             }
         } else if (element.equals(Element.ELEMENT_NURSE)) {
             setText(R.id.elementTextTitle, "Nurses");
@@ -108,6 +109,7 @@ public class ElementActivity extends AppCompatActivity {
                 setChecked(ids[2], checked);
             } else {
                 numId = addField("Number to Add", "number");
+                setText(numId, 1);
             }
         } else if (element.equals(Element.ELEMENT_SINK)) {
             setText(R.id.elementTextTitle, "Manual Cleaning Station");
@@ -119,6 +121,7 @@ public class ElementActivity extends AppCompatActivity {
                 setSpinner(ids[0], manualCleaningStation.getCurrentLeakTester().getName());
             } else {
                 numId = addField("Number to Add", "number");
+                setText(numId, 1);
             }
         } else if(element.equals(Element.ELEMENT_LEAKTESTERTYPE)){
             setText(R.id.elementTextTitle, "Leak Tester Type");
@@ -160,6 +163,7 @@ public class ElementActivity extends AppCompatActivity {
                 setSpinner(ids[0], reprocessor.getType().getName());
             } else {
                 numId = addField("Number to Add", "number");
+                setText(numId, 1);
             }
         }
     }

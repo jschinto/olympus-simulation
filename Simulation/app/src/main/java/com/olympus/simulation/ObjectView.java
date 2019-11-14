@@ -203,10 +203,10 @@ public class ObjectView extends LinearLayout {
             }
         } else if (type.equals("Sink")) {
             changeOrientation(HORIZONTAL);
-            changeText("sink");
             ManualCleaningStation sink = (ManualCleaningStation)object;
+            changeText("Sink " + sink.getId());
             if (sink.getCurrentScope () != null) {
-                addLine(sink.getCurrentScope().getType().getName());
+                addLine("Scope " + sink.getCurrentScope().getId());
             }
         } else if (type.equals("Technician")) {
             Technician technician = (Technician)object;
@@ -226,7 +226,7 @@ public class ObjectView extends LinearLayout {
             }
         } else if (type.equals("Reprocessor")) {
             Reprocessor reprocessor = (Reprocessor)object;
-            changeText(reprocessor.getType().getName());
+            changeText("Reprocessor: " + reprocessor.getId());
             addLine("Scope Count: " + reprocessor.getNumScopes());
             if (reprocessor.getState() == State_Scope.STATE_CLEANING) {
                 addLine("CLEANING");

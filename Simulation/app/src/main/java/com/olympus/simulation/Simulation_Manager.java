@@ -450,6 +450,9 @@ public class Simulation_Manager {
     public ArrayList<ManualCleaningStation> getManualCleaningStations(){
         return manualCleaningStationManager.getManualCleaningStations();
     }
+    public void setManualCleaningStationIds() {
+        manualCleaningStationManager.setIds();
+    }
 
     public ManualCleaningStation getManualCleaningStationByIndex(int index){
         return manualCleaningStationManager.getManualCleaningStationByIndex(index);
@@ -616,7 +619,9 @@ public class Simulation_Manager {
     public void addReprocessorType(Reprocessor_Type reprocessor_type) {
         reprocessorTypeManager.addType(reprocessor_type);
     }
-
+    public void setReprocessorIds() {
+        reprocessorManager.setIds();
+    }
     public String[] getReprocessorTypeNames() {
         return reprocessorTypeManager.getTypeNames();
     }

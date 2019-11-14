@@ -500,7 +500,7 @@ public class SimulationActivity
                         simulation_manager.addManualCleaningStation(manualCleaningStation);
                     }
                 }
-
+                simulation_manager.setManualCleaningStationIds();
                 renderUIFromManager();
             } else if (element.equals(Element.ELEMENT_REPROCESSORTYPE)) {
                 Reprocessor_Type reprocessor_type = (Reprocessor_Type) element;
@@ -534,6 +534,7 @@ public class SimulationActivity
                         simulation_manager.addReprocessor(reprocessor);
                     }
                 }
+                simulation_manager.setReprocessorIds();
                 renderUIFromManager();
             }
         }
