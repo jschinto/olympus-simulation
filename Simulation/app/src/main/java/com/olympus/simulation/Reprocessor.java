@@ -8,6 +8,8 @@ public class Reprocessor extends  Element{
     private ArrayList<Scope> holding;
     private int timeLeft;
     private int state;
+    private Technician tech;
+    private int startupDelay;
 
     public Reprocessor(Reprocessor_Type type){
         this.type = type;
@@ -15,6 +17,7 @@ public class Reprocessor extends  Element{
         this.holding = new ArrayList<>();
         this.timeLeft = 0;
         this.state = State_Scope.STATE_FREE;
+        this.startupDelay = -1;
     }
 
     public void tick(){
@@ -32,8 +35,29 @@ public class Reprocessor extends  Element{
     }
 
     public void start(){
-        this.setState(State_Scope.STATE_CLEANING);
-        this.setTimeLeft(this.type.getCycleTime());
+        if(this.tech == null) {
+            Technician getTech = Technician_Manager.getTechnician();
+            if (getTech == null) {
+                return;
+            } else {
+                tech.setDestination(this);
+                tech.startTravel(5);
+                this.tech = getTech;
+            }
+        }
+        if(this.tech.getState() == State.STATE_OPERATION) {
+            if(this.startupDelay == 0) {
+                this.setState(State_Scope.STATE_CLEANING);
+                this.setTimeLeft(this.type.getCycleTime());
+                this.tech.startTravel(-1);
+                this.tech = null;
+                this.startupDelay = -1;
+            } else if (this.startupDelay < 0) {
+                this.startupDelay = this.type.getStartupDelay();
+            } else {
+                this.startupDelay--;
+            }
+        }
     }
 
     public boolean checkStart(){

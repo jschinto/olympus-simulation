@@ -27,6 +27,7 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
     private ArrayList<Tower_Type> towerTypes;
     private  Nurse currentNurse;
     private Doctor currentDoctor;
+    private Technician tech;
 
     public ProcedureRoom(int travelTime, int cooldownTime) {
         this.element = Element.ELEMENT_PROCEDUREROOM;
@@ -72,7 +73,24 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
 
     //cooldown time decreases with each tick of time
     public void tick() {
-        cooldownTimeLeft--;
+        if(this.tech == null) {
+            Technician getTech = Technician_Manager.getTechnician();
+            if (getTech == null) {
+                return;
+            } else {
+                tech.setDestination(this);
+                tech.startTravel(this.getTravelTime());
+                this.tech = getTech;
+            }
+        }
+        if(this.tech.getState() == State.STATE_OPERATION) {
+            cooldownTimeLeft--;
+            if(cooldownTimeLeft <= 0){
+                this.tech.startTravel(-1);
+                this.tech = null;
+            }
+        }
+        return;
     }
 
     public Client getClient() {

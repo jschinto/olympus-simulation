@@ -9,12 +9,14 @@ public class Scope_Type implements Serializable {
     private ArrayList<Procedure> procedureList;
     private int cleaningTime;
     private int price;
+    private int reprocessorLoadDelay;
 
     public Scope_Type (String n, int c, int p) {
         this.name = n;
         procedureList = new ArrayList<Procedure>();
         this.price = p;
         this.cleaningTime = c;
+        this.reprocessorLoadDelay = 3;
     }
 
     public String getName() {
@@ -70,5 +72,13 @@ public class Scope_Type implements Serializable {
 
     public void setCleaningTime(int cleaningTime) {
         this.cleaningTime = cleaningTime;
+    }
+
+    public int getReprocessorLoadDelay() {
+        return reprocessorLoadDelay;
+    }
+
+    public void setReprocessorLoadDelay(int reprocessorLoadDelay) {
+        this.reprocessorLoadDelay = reprocessorLoadDelay;
     }
 }

@@ -202,8 +202,15 @@ public class Simulation_Manager {
                 if(reprocessor == null){
                     break;
                 }
-                reprocessor.addScope(this.scopeManager.getScopeByIndex(i));
-                this.scopeManager.getScopeByIndex(i).setInReprocessor(true);
+                if(this.scopeManager.getScopeByIndex(i).getReprocessorLoadDelay() == 0) {
+                    reprocessor.addScope(this.scopeManager.getScopeByIndex(i));
+                    this.scopeManager.getScopeByIndex(i).setInReprocessor(true);
+                    this.scopeManager.getScopeByIndex(i).setReprocessorLoadDelay(-1);
+                } else if (this.scopeManager.getScopeByIndex(i).getReprocessorLoadDelay() == -1) {
+                    this.scopeManager.getScopeByIndex(i).startReprocessorLoadDelay();
+                } else {
+                    this.scopeManager.getScopeByIndex(i).decrementReprocessorLoadDelay();
+                }
             }
         }
         return false;

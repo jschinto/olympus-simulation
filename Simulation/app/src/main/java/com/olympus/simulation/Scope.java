@@ -16,6 +16,7 @@ public class Scope extends Element implements Comparable<Scope>, Serializable, E
     private Technician holding;
     private int timeFree;
     private boolean inReprocessor;
+    private int reprocessorLoadDelay;
 
     private boolean tempGrab;
 
@@ -41,6 +42,7 @@ public class Scope extends Element implements Comparable<Scope>, Serializable, E
         this.tempGrab = false;
         this.holding = null;
         this.inReprocessor = false;
+        this.reprocessorLoadDelay = -1;
 
         String typeName = "";
         if(t != null) {
@@ -262,4 +264,21 @@ public class Scope extends Element implements Comparable<Scope>, Serializable, E
     public void setInReprocessor(boolean inReprocessor) {
         this.inReprocessor = inReprocessor;
     }
+
+    public int getReprocessorLoadDelay() {
+        return reprocessorLoadDelay;
+    }
+
+    public void setReprocessorLoadDelay(int reprocessorLoadDelay) {
+        this.reprocessorLoadDelay = reprocessorLoadDelay;
+    }
+
+    public void decrementReprocessorLoadDelay() {
+        this.reprocessorLoadDelay--;
+    }
+
+    public void startReprocessorLoadDelay() {
+        this.reprocessorLoadDelay = this.type.getReprocessorLoadDelay();
+    }
+
 }
