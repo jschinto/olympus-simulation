@@ -168,7 +168,7 @@ public class Simulation_Manager {
                         }
                     }
                     String station = "Hallway";
-                    ScopeLogCSV logItem = new ScopeLogCSV(s.getType().getName(), s.getId() + "", "Scope " + s.getId(), Time.convertToString(currTime), Time.convertToString(currTime), proc, station, State_Scope.stateNames[s.getState()]);
+                    ScopeLogCSV logItem = new ScopeLogCSV(s.getType().getName(), s.getId() + "", "Scope " + s.getId(), currTime + "", currTime + "", proc, station, State_Scope.stateNames[s.getState()]);
                     scopeManager.addScopeLogCSV(logItem);//scope is traveling
                 }
                 openRoom = procedureRoomManager.getProcedureRoom(roomOffset);

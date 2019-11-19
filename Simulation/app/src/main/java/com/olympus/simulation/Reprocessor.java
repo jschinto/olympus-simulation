@@ -92,6 +92,7 @@ public class Reprocessor extends  Element{
         }
         this.holding.add(scope);
         this.setTimeLeft(this.type.getWaitTime());
+        scope.setRepro(this);
         return true;
     }
 

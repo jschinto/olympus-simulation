@@ -40,7 +40,7 @@ public class ScopeLogCSV implements Simulation_Manager.CSVable, Serializable {
     }
 
     private void setTimeDiff(String timeIn, String timeOut) {
-        this.timeDiff = Time.convertToString(Time.convertToInt(timeOut) - Time.convertToInt(timeIn));
+        this.timeDiff = Integer.parseInt(timeOut) - Integer.parseInt(timeIn) + "";
     }
 
     public void setModel(String model) {

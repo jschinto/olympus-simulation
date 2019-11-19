@@ -6,11 +6,12 @@ import java.util.ArrayList;
 
 public class Scope extends Element implements Comparable<Scope>, Serializable, EquipmentCSV.Equipment {
     private Scope_Type type;
-    private int state;
+    public int state;
     private int timeLeft;
     private boolean uiUpdated;
     private ProcedureRoom room;
     private ManualCleaningStation station;
+    private Reprocessor repro;
     private int id;
     private EquipmentCSV equipmentCSV;
     private Technician holding;
@@ -39,6 +40,7 @@ public class Scope extends Element implements Comparable<Scope>, Serializable, E
         this.timeLeft = 0;
         this.uiUpdated = false;
         this.room = null;
+        this.repro = null;
         this.tempGrab = false;
         this.holding = null;
         this.inReprocessor = false;
@@ -57,6 +59,12 @@ public class Scope extends Element implements Comparable<Scope>, Serializable, E
     public void setState(int state) {
         this.state = state;
         setuiUpdated(false);
+        Scope_Manager.onScopeStateChange(this);
+    }
+
+    public void setRepro(Reprocessor repro) {
+        this.repro = repro;
+        Scope_Manager.onScopeStateChange(this);
     }
 
     public void claim(ProcedureRoom room, int time) {
@@ -155,6 +163,7 @@ public class Scope extends Element implements Comparable<Scope>, Serializable, E
         this.station.setCurrentScope(this);
         setTimeLeft(this.getCleaningTime() + this.station.getCurrentLeakTester().getTimeToComplete());
         this.timeFree = getTimeLeft() - station.getCurrentLeakTester().getRequiredAttentionTime();
+        Scope_Manager.onScopeStateChange(this);
     }
 
     public void freeScope(String currTime) {
@@ -167,6 +176,7 @@ public class Scope extends Element implements Comparable<Scope>, Serializable, E
 
     public void finishReprocessing(){
         this.setInReprocessor(false);
+        this.setRepro(null);
         this.setState(State_Scope.STATE_DONEREPROCESSING);
     }
 
@@ -229,6 +239,13 @@ public class Scope extends Element implements Comparable<Scope>, Serializable, E
         return room;
     }
 
+    public ManualCleaningStation getStation() {
+        return station;
+    }
+
+    public Reprocessor getRepro() {
+        return repro;
+    }
 
     @Override
     public EquipmentCSV getEquipmentCSV() {

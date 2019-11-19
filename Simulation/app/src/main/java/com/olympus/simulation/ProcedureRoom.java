@@ -124,6 +124,9 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
 
     public void tryClear(String currTime){
         for(int i = 0; i < this.scope.size(); i++){
+            int temp = scope.get(i).getState();
+            scope.get(i).setState(State_Scope.STATE_DIRTY);
+            scope.get(i).state = temp;
             if(this.scope.get(i).getHolding() == null) {
                 Technician tech = Technician_Manager.getTechnician();
                 if (tech != null) {
