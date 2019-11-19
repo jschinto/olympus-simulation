@@ -108,7 +108,7 @@ public class Client implements Comparable<Client>, Serializable {
         this.procedureRoom = procedureRoom;
         procedureRoom.setClient(this);
         setState(State.STATE_TRAVEL);
-        this.setTimeLeft(procedureRoom.getTravelTime());
+        this.setTimeLeft(procedureRoom.getTravelTimeClient());
     }
 
     public int getState() {

@@ -158,8 +158,8 @@ public class Scope extends Element implements Comparable<Scope>, Serializable, E
     }
 
     public void freeScope(String currTime) {
-        this.holding.startTravel(this.room.getTravelTime());
-        this.timeLeft = this.room.getTravelTime();
+        this.holding.startTravel(this.room.getTravelTimeTechnician());
+        this.timeLeft = this.room.getTravelTimeTechnician();
         this.room = null;
         setState(State_Scope.STATE_DIRTY);
         Scope_Manager.addDirtyScopeLog(this, currTime);

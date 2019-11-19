@@ -281,7 +281,7 @@ public class SimulationActivity
             startActivityForResult(clientIntent, client_Request);
         } else if (id == R.id.addProcedureRoom) {
             Intent procedureRoomIntent = new Intent(getApplicationContext(), ElementActivity.class);
-            ProcedureRoom procedureRoom = new ProcedureRoom(-1, -1);
+            ProcedureRoom procedureRoom = new ProcedureRoom(-1, -1, -1, -1, -1);
             procedureRoomIntent.putExtra("element", procedureRoom);
             procedureRoomIntent.putExtra("mode", "add");
             procedureRoomIntent.putExtra("towerTypes", simulation_manager.getTowerTypeNames());

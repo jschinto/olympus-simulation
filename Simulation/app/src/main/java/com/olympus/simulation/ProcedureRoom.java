@@ -70,14 +70,14 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
     public void claimElements(ArrayList<Scope> list, Doctor doctor, Nurse nurse) {
         this.scope = list;
         for(Scope s : list) {
-            s.claim(this, this.travelTime);
+            s.claim(this, this.travelTimeTechnician);
         }
         this.currentDoctor = doctor;
         this.currentDoctor.setDestination(this);
-        this.currentDoctor.startTravel(this.travelTime);
+        this.currentDoctor.startTravel(this.travelTimeDoctor);
         this.currentNurse = nurse;
         this.currentNurse.setDestination(this);
-        this.currentNurse.startTravel(this.travelTime);
+        this.currentNurse.startTravel(this.travelTimeNurse);
     }
 
     //cooldown time decreases with each tick of time
@@ -88,7 +88,7 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
                 return;
             } else {
                 getTech.setDestination(this);
-                getTech.startTravel(this.getTravelTime());
+                getTech.startTravel(this.getTravelTimeTechnician());
                 this.tech = getTech;
             }
         }
@@ -128,7 +128,7 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
                 Technician tech = Technician_Manager.getTechnician();
                 if (tech != null) {
                     tech.setDestination(this);
-                    this.scope.get(i).setHolding(tech, this.travelTime);
+                    this.scope.get(i).setHolding(tech, this.travelTimeTechnician);
                 }
             }
             if(this.scope.get(i).canTravel()) {

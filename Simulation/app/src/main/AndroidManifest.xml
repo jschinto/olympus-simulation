@@ -17,7 +17,6 @@
         <activity android:name=".ScopeTypeActivity" />
         <activity android:name=".ProcedureActivity" />
         <activity android:name=".ClientActivity" />
-        <activity android:name=".ProcedureRoomActivity" />
         <activity android:name=".TowerTypeActivity" />
         <activity
             android:name=".SimulationActivity"

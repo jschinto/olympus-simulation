@@ -44,9 +44,9 @@ public class ProcedureRoom_Manager {
 
     //when adding a room, insert to sort by least travel time
     public void addProcedureRoom(ProcedureRoom room) {
-        int travelTime = room.getTravelTime();
+        int travelTime = room.getTravelTimeClient();
         for (int i=0; i < roomList.size(); i++) {
-            if (travelTime <= roomList.get(i).getTravelTime()) {
+            if (travelTime <= roomList.get(i).getTravelTimeClient()) {
                 roomList.add(i, room);
                 return;
             }
