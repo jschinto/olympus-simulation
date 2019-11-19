@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /*
 class to represent a Client in the simulation
  */
-public class Client implements Comparable<Client>, Serializable {
+public class Client extends Element implements Comparable<Client>, Serializable {
 
     //the procedures that a client is going to have done
     private ArrayList<Procedure> procedures;
@@ -25,6 +25,7 @@ public class Client implements Comparable<Client>, Serializable {
     private int id;
 
     public Client(ArrayList<Procedure> procedures, int arrivalTime) {
+        this.element = ELEMENT_CLIENT;
         this.procedures = procedures;
         setState(State.STATE_WAIT);
         procedureRoom = null;

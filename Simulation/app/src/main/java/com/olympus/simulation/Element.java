@@ -10,6 +10,7 @@ public class Element implements Serializable {
     public int element;
 
     public Element destination;
+    public int order;
 
     public static final int ELEMENT_CLIENT = 0;
     public static final int ELEMENT_PROCEDURE = 1;
@@ -60,5 +61,11 @@ public class Element implements Serializable {
     }
     public Element getDestination() {
         return destination;
+    }
+    public void setOrder(int order) {
+        this.order = order;
+    }
+    public int getOrder() {
+        return order;
     }
 }

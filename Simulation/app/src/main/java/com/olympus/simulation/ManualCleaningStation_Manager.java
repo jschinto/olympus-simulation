@@ -64,7 +64,7 @@ public class ManualCleaningStation_Manager {
 
     public void setIds() {
         for (int i=0; i < stations.size(); i++) {
-            stations.get(i).setId(i);
+            stations.get(i).setId(i+1);
         }
     }
 }

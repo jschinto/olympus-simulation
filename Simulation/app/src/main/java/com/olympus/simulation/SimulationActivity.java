@@ -1018,7 +1018,7 @@ public class SimulationActivity
                     //System.err.println("Loop " + (simulation_manager.getCurrTime() - 1));
                 }
             }
-        }, 0, 1);
+        }, 0, 1000);
     }
 
     @Override
