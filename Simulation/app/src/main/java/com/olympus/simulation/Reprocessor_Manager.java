@@ -80,7 +80,7 @@ public class Reprocessor_Manager {
 
     public void setIds() {
         for (int i=0; i < reprocessors.size(); i++) {
-            reprocessors.get(i).setId(i);
+            reprocessors.get(i).setId(i+1);
         }
     }
 }

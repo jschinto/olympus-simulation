@@ -2,6 +2,9 @@ package com.olympus.simulation;
 
 import android.content.Context;
 import android.widget.Toast;
+
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -24,6 +27,7 @@ public class Simulation_Manager {
     private Technician_Manager technicianManager;
     private ReprocessorType_Manager reprocessorTypeManager;
     private Reprocessor_Manager reprocessorManager;
+
 
     //the time the simulated hospital should open and close
     //Represented as a integer from 0 - some value
@@ -287,7 +291,34 @@ public class Simulation_Manager {
         }
         for(Scope s:scopeManager.getScopes()) {
             if(s.getState() == State_Scope.STATE_TRAVEL || s.getState() == State_Scope.STATE_DIRTY || s.getState() == State_Scope.STATE_RETURNING || s.getState() == State_Scope.STATE_TOREPROCESS) {
+                if (s.getHolding() != null) {
+                    hallway.remove(s.getHolding());
+                }
                 hallway.add(s);
+            }
+        }
+        for (int i=0; i < hallway.size(); i++) {
+            Object obj = hallway.get(i);
+            if (obj instanceof Element) {
+                if (((Element) obj).getOrder() == 0) {
+                    ((Element) obj).setOrder(1000+i);
+                }
+            }
+        }
+
+        Collections.sort(hallway, new Comparator<Object>() {
+            @Override
+            public int compare(Object o1, Object o2) {
+                if (o1 instanceof Element && o2 instanceof Element) {
+                    return ((Element) o1).getOrder() - ((Element) o2).getOrder();
+                }
+                return 0;
+            }
+        });
+        for (int i=0; i < hallway.size(); i++) {
+            Object obj = hallway.get(i);
+            if (obj instanceof Element) {
+                ((Element) obj).setOrder(i+1);
             }
         }
         return hallway;

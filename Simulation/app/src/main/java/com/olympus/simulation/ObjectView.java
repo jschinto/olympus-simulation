@@ -135,10 +135,19 @@ public class ObjectView extends LinearLayout {
                 addLine("ERROR");
             }
 
+            addLine(""+((Element) object).getOrder());
+
          //scope
         } else if (type.equals("scope")) {
             Scope scope = (Scope)object;
-            changeText("Scope "+scope.getId());
+            if (scope.getHolding() != null) {
+                this.changeImage(R.drawable.technician_scope);
+                changeText("Technician "+scope.getHolding().getId());
+            } else {
+                this.changeImage(R.drawable.scope_color);
+                changeText("");
+            }
+            addLine("Scope "+scope.getId());
             if (scope.getState() == State_Scope.STATE_TRAVEL) {
                 addLine("Room "+scope.getRoom().getId());
             } else if (scope.getState() == State_Scope.STATE_FREE) {
@@ -152,11 +161,13 @@ public class ObjectView extends LinearLayout {
             } else if (scope.getState() == State_Scope.STATE_DONE) {
                 addLine("DONE CLEANING");
             } else if (scope.getState() == State_Scope.STATE_TOREPROCESS) {
-                addLine("To Reprocessor");
+                addLine("TO REPROCESSOR");
             }
             else {
                 addLine("ERROR");
             }
+
+            addLine(""+((Element) object).getOrder());
 
         //procedure room
         } else if (type.equals("procedureRoom")) {
@@ -189,6 +200,7 @@ public class ObjectView extends LinearLayout {
                     }
                 }
             }
+            addLine(""+((Element) object).getOrder());
         } else if (type.equals("Doctor")) {
             Doctor doctor = (Doctor)object;
             if (doctor.getState() == State.STATE_TRAVEL) {
@@ -201,12 +213,16 @@ public class ObjectView extends LinearLayout {
                     }
                 }
             }
+            addLine(""+((Element) object).getOrder());
         } else if (type.equals("Sink")) {
             changeOrientation(HORIZONTAL);
             ManualCleaningStation sink = (ManualCleaningStation)object;
             changeText("Sink " + sink.getId());
             if (sink.getCurrentScope () != null) {
                 addLine("Scope " + sink.getCurrentScope().getId());
+                if (sink.getCurrentScope().getHolding() != null) {
+                    addLine("Technician "+sink.getCurrentScope().getHolding().getId());
+                }
             }
         } else if (type.equals("Technician")) {
             Technician technician = (Technician)object;
@@ -226,9 +242,10 @@ public class ObjectView extends LinearLayout {
                     }
                 }
             }
+            addLine(""+((Element) object).getOrder());
         } else if (type.equals("Reprocessor")) {
             Reprocessor reprocessor = (Reprocessor)object;
-            changeText("Reprocessor: " + reprocessor.getId());
+            changeText("Reprocessor " + reprocessor.getId());
             addLine("Scope Count: " + reprocessor.getNumScopes());
             if (reprocessor.getState() == State_Scope.STATE_CLEANING) {
                 addLine("CLEANING");
