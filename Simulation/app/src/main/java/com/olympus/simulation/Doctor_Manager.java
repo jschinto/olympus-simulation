@@ -67,7 +67,7 @@ public class Doctor_Manager {
             return;
         }
         String proc = csvList.get(getLastActorLogEntry(temp)).procedure;
-        String station = "";
+        String station = n.getDestinationName();
         ActorLogCSV logItem = new ActorLogCSV("Doctor", n.getId() + "", "Doctor " + n.getId(), currTime, currTime, proc, station, state);
         addActorLogCSV(logItem);
     }
