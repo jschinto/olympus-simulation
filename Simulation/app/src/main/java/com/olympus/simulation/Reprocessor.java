@@ -2,7 +2,7 @@ package com.olympus.simulation;
 
 import java.util.ArrayList;
 
-public class Reprocessor extends  Element{
+public class Reprocessor extends  Element implements StationCSV.Station {
 
     private Reprocessor_Type type;
     private ArrayList<Scope> holding;
@@ -132,5 +132,10 @@ public class Reprocessor extends  Element{
     }
     public int getId() {
         return this.id;
+    }
+
+    @Override
+    public StationCSV getStationCSV() {
+        return new StationCSV("Reprocessor", id + "");
     }
 }

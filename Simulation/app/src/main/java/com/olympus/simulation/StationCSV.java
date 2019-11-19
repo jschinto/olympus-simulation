@@ -31,7 +31,7 @@ public class StationCSV implements Serializable, Simulation_Manager.CSVable {
 
     @Override
     public String getCSVHeader() {
-        return "Type,Name";
+        return "Type,Serial Number";
     }
 
     public interface Station {

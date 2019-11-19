@@ -81,7 +81,7 @@ public class Scope_Manager {
                     /* Scope s = list.get(i);
                     String state = State_Scope.stateNames[s.getState()];
                     ScopeLogCSV temp = new ScopeLogCSV();
-                    temp.setSerialNum(s.getId() + "");
+                    temp.setId(s.getId() + "");
                     String proc = "";
                     String station = "";
                     for(int ind = 0; ind < State_Scope.mappings.length;ind++) {
@@ -163,7 +163,7 @@ public class Scope_Manager {
     public static void addDirtyScopeLog(Scope s, String currTime) {
         /*String state = State_Scope.stateNames[s.getState()];
         ScopeLogCSV temp = new ScopeLogCSV();
-        temp.setSerialNum(s.getId() + "");
+        temp.setId(s.getId() + "");
         String proc = csvList.get(getLastScopeLogEntry(temp)).procedure;
         String station = "Sink";
         ScopeLogCSV logItem = new ScopeLogCSV(s.getType().getName(), s.getId() + "", "Scope " + s.getId(), currTime, currTime, proc, station, state);

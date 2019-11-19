@@ -2,7 +2,7 @@ package com.olympus.simulation;
 
 import java.io.Serializable;
 
-public class Technician extends Element implements Serializable {
+public class Technician extends Element implements Serializable, ActorCSV.Actor {
     private State state;
     private int id;
     private int travel;
@@ -65,5 +65,10 @@ public class Technician extends Element implements Serializable {
 
     public void setTravel(int travel) {
         this.travel = travel;
+    }
+
+    @Override
+    public ActorCSV getActorCSV() {
+        return new ActorCSV("Technician", "", id + "");
     }
 }

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class Doctor extends Element implements Serializable {
+public class Doctor extends Element implements Serializable, ActorCSV.Actor {
 
     private State state;
     private int id;
@@ -93,5 +93,10 @@ public class Doctor extends Element implements Serializable {
 
     public boolean validate() {
         return procedures!=null && procedures.size() > 0;
+    }
+
+    @Override
+    public ActorCSV getActorCSV() {
+        return new ActorCSV("Doctor", procedures.toString().replace("[","\"").replace("]","\""), id + "");
     }
 }

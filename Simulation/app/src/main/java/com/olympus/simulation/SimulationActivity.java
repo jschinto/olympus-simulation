@@ -913,6 +913,8 @@ public class SimulationActivity
         simulation_manager.createLog(getApplicationContext(), "scope", new ScopeLogCSV().getCSVHeader(), simulation_manager.getScopeLogCSVList());
         //Actor Log:
         simulation_manager.createLog(getApplicationContext(), "actor", new ActorLogCSV().getCSVHeader(), simulation_manager.getActorLogCSVList());
+        //Actor List:
+        simulation_manager.createLog(getApplicationContext(), "actorList", new ActorCSV().getCSVHeader(), simulation_manager.getActorCSVList());
     }
 
     public void renderUIFromManager() {

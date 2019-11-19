@@ -2,7 +2,7 @@ package com.olympus.simulation;
 
 import java.io.Serializable;
 
-public class ManualCleaningStation extends Element implements Serializable {
+public class ManualCleaningStation extends Element implements Serializable, StationCSV.Station {
     Scope currentScope;
     LeakTester_Type currentLeakTester;
     int travelTime;
@@ -52,5 +52,10 @@ public class ManualCleaningStation extends Element implements Serializable {
 
     public void setTravelTime(int travelTime) {
         this.travelTime = travelTime;
+    }
+
+    @Override
+    public StationCSV getStationCSV() {
+        return new StationCSV("Sink", id + "");
     }
 }
