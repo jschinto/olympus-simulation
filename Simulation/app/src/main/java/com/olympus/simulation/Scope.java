@@ -146,7 +146,6 @@ public class Scope extends Element implements Comparable<Scope>, Serializable, E
             }
             if(this.state == State_Scope.STATE_TOREPROCESS){
                 setState(State_Scope.STATE_REPROCESSING);
-                setHolding(null, -1);
                 return this.state;
             }
             if(this.state == State_Scope.STATE_RETURNING){

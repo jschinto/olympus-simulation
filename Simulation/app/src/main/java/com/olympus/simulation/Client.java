@@ -67,7 +67,11 @@ public class Client extends Element implements Comparable<Client>, Serializable 
             this.procedureRoom = null;
         }
         //client is done traveling to operation room
-        if (this.timeLeft <= 0 && this.state.equals(State.STATE_TRAVEL) && this.procedureRoom.isReady()) {
+        if (this.timeLeft <= 0 && this.state.equals(State.STATE_TRAVEL)) {
+            setState(State.STATE_INROOM);
+        }
+
+        if(this.state.equals(State.STATE_INROOM) && this.procedureRoom.isReady()) {
             setState(State.STATE_OPERATION);
             beginProcedure();
         }

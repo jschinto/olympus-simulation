@@ -210,6 +210,7 @@ public class Simulation_Manager {
                     reprocessor.addScope(this.scopeManager.getScopeByIndex(i));
                     this.scopeManager.getScopeByIndex(i).setInReprocessor(true);
                     this.scopeManager.getScopeByIndex(i).setReprocessorLoadDelay(-1);
+                    this.scopeManager.getScopeByIndex(i).setHolding(null, -1);
                 } else if (this.scopeManager.getScopeByIndex(i).getReprocessorLoadDelay() == -1) {
                     this.scopeManager.getScopeByIndex(i).startReprocessorLoadDelay();
                 } else {
