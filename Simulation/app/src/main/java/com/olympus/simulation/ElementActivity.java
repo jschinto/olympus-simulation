@@ -94,19 +94,25 @@ public class ElementActivity extends AppCompatActivity {
             setText(ids[0], num);
         }else if (element.equals(Element.ELEMENT_PROCEDUREROOM)) {
             setText(R.id.elementTextTitle, "Procedure Room");
-            ids = new int[3];
-            ids[0] = addField("Travel Time", "number");
-            ids[1] = addField("Cooldown Time", "number");
+            ids = new int[6];
+            ids[0] = addField("Patient Travel Time", "number");
+            ids[1] = addField("Doctor Travel Time", "number");
+            ids[2] = addField("Nurse Travel Time", "number");
+            ids[3] = addField("Technician Travel Time", "number");
+            ids[4] = addField("Cooldown Time", "number");
 
             String[] towerTypes = fromIntent.getStringArrayExtra("towerTypes");
-            ids[2] = addField("Tower Types", "checkbox", towerTypes);
+            ids[5] = addField("Tower Types", "checkbox", towerTypes);
 
             if (mode.equals("view")) {
                 ProcedureRoom procedureRoom = (ProcedureRoom) element;
-                setText(ids[0], procedureRoom.getTravelTime());
-                setText(ids[1], procedureRoom.getCooldownTime());
+                setText(ids[0], procedureRoom.getTravelTimeClient());
+                setText(ids[1], procedureRoom.getTravelTimeDoctor());
+                setText(ids[2], procedureRoom.getTravelTimeNurse());
+                setText(ids[3], procedureRoom.getTravelTimeTechnician());
+                setText(ids[4], procedureRoom.getCooldownTime());
                 String[] checked = procedureRoom.getTowerTypeNames();
-                setChecked(ids[2], checked);
+                setChecked(ids[5], checked);
             } else {
                 numId = addField("Number to Add", "number");
                 setText(numId, 1);
@@ -175,10 +181,13 @@ public class ElementActivity extends AppCompatActivity {
             //clicked the add button
             if (mode.equals("add")) {
                 if (element.equals(Element.ELEMENT_PROCEDUREROOM)) {
-                    int travelTime = getTextInt(ids[0]);
-                    int cooldownTime = getTextInt(ids[1]);
-                    String [] checked = getChecked(ids[2]);
-                    ProcedureRoom procedureRoom = new ProcedureRoom(travelTime, cooldownTime);
+                    int travelTimeClient = getTextInt(ids[0]);
+                    int travelTimeDoctor = getTextInt(ids[1]);
+                    int travelTimeNurse = getTextInt(ids[2]);
+                    int travelTimeTechnician = getTextInt(ids[3]);
+                    int cooldownTime = getTextInt(ids[4]);
+                    String [] checked = getChecked(ids[5]);
+                    ProcedureRoom procedureRoom = new ProcedureRoom(travelTimeClient, travelTimeDoctor, travelTimeNurse, travelTimeTechnician, cooldownTime);
                     if (procedureRoom.validate()) {
                         leaveActivity(RESULT_FIRST_USER, procedureRoom, checked);
                     } else {
@@ -234,7 +243,7 @@ public class ElementActivity extends AppCompatActivity {
              //clicked the delete button
             } else if (mode.equals("view")) {
                 if(element.equals(Element.ELEMENT_PROCEDUREROOM)) {
-                    leaveActivity(RESULT_OK, new ProcedureRoom(-1, -1));
+                    leaveActivity(RESULT_OK, new ProcedureRoom(-1, -1,-1, -1, -1));
                 }
                 else if(element.equals(Element.ELEMENT_LEAKTESTERTYPE)) {
                     leaveActivity(RESULT_OK, new LeakTester_Type("", -1, -1, -1));
@@ -258,10 +267,13 @@ public class ElementActivity extends AppCompatActivity {
 
             if (element.equals(Element.ELEMENT_PROCEDUREROOM)) {
 
-                int travelTime = getTextInt(ids[0]);
-                int cooldownTime = getTextInt(ids[1]);
-                String [] checked = getChecked(ids[2]);
-                ProcedureRoom procedureRoom = new ProcedureRoom(travelTime, cooldownTime);
+                int travelTimeClient = getTextInt(ids[0]);
+                int travelTimeDoctor = getTextInt(ids[1]);
+                int travelTimeNurse = getTextInt(ids[2]);
+                int travelTimeTechnician = getTextInt(ids[3]);
+                int cooldownTime = getTextInt(ids[4]);
+                String [] checked = getChecked(ids[5]);
+                ProcedureRoom procedureRoom = new ProcedureRoom(travelTimeClient, travelTimeDoctor, travelTimeNurse, travelTimeTechnician, cooldownTime);
                 if (procedureRoom.validate()) {
                     leaveActivity(RESULT_OK, procedureRoom, checked);
                 } else {

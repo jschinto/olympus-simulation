@@ -14,7 +14,10 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
     //whether the room has all of its elements cleared out of it.
     private boolean clear;
     //how much time it takes to travel to this room from the client waiting room
-    private int travelTime;
+    private int travelTimeClient;
+    private int travelTimeDoctor;
+    private int travelTimeNurse;
+    private int travelTimeTechnician;
     //the time needed after an operation for the room to be available again
     private int cooldownTime;
     //time left in cooldown
@@ -29,11 +32,14 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
     private Doctor currentDoctor;
     private Technician tech;
 
-    public ProcedureRoom(int travelTime, int cooldownTime) {
+    public ProcedureRoom(int travelTimeClient, int travelTimeDoctor, int travelTimeNurse, int travelTimeTechnician, int cooldownTime) {
         this.element = Element.ELEMENT_PROCEDUREROOM;
         this.occupied = false;
         this.ready = false;
-        this.travelTime = travelTime;
+        this.travelTimeClient = travelTimeClient;
+        this.travelTimeDoctor = travelTimeDoctor;
+        this.travelTimeNurse = travelTimeNurse;
+        this.travelTimeTechnician = travelTimeTechnician;
         this.cooldownTime = cooldownTime;
         this.cooldownTimeLeft = 0;
         this.client = null;
@@ -47,7 +53,10 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
         this.element = Element.ELEMENT_PROCEDUREROOM;
         this.occupied = false;
         this.ready = false;
-        this.travelTime = procedureRoom.getTravelTime();
+        this.travelTimeClient = procedureRoom.getTravelTimeClient();
+        this.travelTimeDoctor = procedureRoom.getTravelTimeDoctor();
+        this.travelTimeNurse = procedureRoom.getTravelTimeNurse();
+        this.travelTimeTechnician = procedureRoom.getTravelTimeTechnician();
         this.cooldownTime = procedureRoom.getCooldownTime();
         this.cooldownTimeLeft = 0;
         this.client = null;
@@ -174,13 +183,43 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
     }
 
     //Returns the travel time from the waiting room to the procedure room
-    public int getTravelTime() {
-        return travelTime;
+    public int getTravelTimeClient() {
+        return travelTimeClient;
     }
 
     //Sets the travel time to the waiting room
-    public void setTravelTime(int travelTime) {
-        this.travelTime = travelTime;
+    public void setTravelTimeClient(int travelTime) {
+        this.travelTimeClient = travelTime;
+    }
+
+    //Returns the travel time from the waiting room to the procedure room
+    public int getTravelTimeDoctor() {
+        return travelTimeDoctor;
+    }
+
+    //Sets the travel time to the waiting room
+    public void setTravelTimeDoctor(int travelTime) {
+        this.travelTimeDoctor = travelTime;
+    }
+
+    //Returns the travel time from the waiting room to the procedure room
+    public int getTravelTimeNurse() {
+        return travelTimeNurse;
+    }
+
+    //Sets the travel time to the waiting room
+    public void setTravelTimeNurse(int travelTime) {
+        this.travelTimeNurse = travelTime;
+    }
+
+    //Returns the travel time from the waiting room to the procedure room
+    public int getTravelTimeTechnician() {
+        return travelTimeTechnician;
+    }
+
+    //Sets the travel time to the waiting room
+    public void setTravelTimeTechnician(int travelTime) {
+        this.travelTimeTechnician = travelTime;
     }
 
     //Returns the cooldown time that the room must go through every time it completes.
@@ -212,7 +251,7 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
 
 
     public boolean validate() {
-        return cooldownTime > 0 && travelTime > 0;
+        return cooldownTime > 0 && travelTimeClient > 0 && travelTimeDoctor > 0 && travelTimeNurse > 0 && travelTimeTechnician > 0;
     }
     public void addTowerType(Tower_Type type){
         this.towerTypes.add(type);
