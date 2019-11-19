@@ -204,7 +204,11 @@ public class Simulation_Manager {
             if(this.scopeManager.getScopeByIndex(i).getState() == State_Scope.STATE_REPROCESSING && !this.scopeManager.getScopeByIndex(i).isInReprocessor()){
                 Reprocessor reprocessor = reprocessorManager.getFreeReprocessor();
                 if(reprocessor == null){
-                    break;
+                    this.scopeManager.getScopeByIndex(i).setReprocessorLoadDelay(-1);
+                    if(this.scopeManager.getScopeByIndex(i).getHolding() != null) {
+                        this.scopeManager.getScopeByIndex(i).setHolding(null, -1);
+                    }
+                    continue;
                 }
                 if(this.scopeManager.getScopeByIndex(i).getReprocessorLoadDelay() == 0) {
                     reprocessor.addScope(this.scopeManager.getScopeByIndex(i));
@@ -214,7 +218,20 @@ public class Simulation_Manager {
                 } else if (this.scopeManager.getScopeByIndex(i).getReprocessorLoadDelay() == -1) {
                     this.scopeManager.getScopeByIndex(i).startReprocessorLoadDelay();
                 } else {
-                    this.scopeManager.getScopeByIndex(i).decrementReprocessorLoadDelay();
+                    if(this.scopeManager.getScopeByIndex(i).getHolding() == null) {
+                        Technician getTech = Technician_Manager.getTechnician();
+                        if (getTech == null) {
+                            continue;
+                        } else {
+                            getTech.setDestination(this.scopeManager.getScopeByIndex(i));
+                            getTech.startTravel(5);
+                            this.scopeManager.getScopeByIndex(i).setHolding(getTech, 5);
+                        }
+                    }
+                    if(this.scopeManager.getScopeByIndex(i).getHolding().getState() == State.STATE_OPERATION) {
+                        this.scopeManager.getScopeByIndex(i).decrementReprocessorLoadDelay();
+                    }
+
                 }
             }
         }
