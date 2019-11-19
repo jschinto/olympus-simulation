@@ -218,9 +218,11 @@ public class ObjectView extends LinearLayout {
                         ProcedureRoom procedureRoom = (ProcedureRoom)element;
                         addLine("Room "+procedureRoom.getId());
                     } else if (element instanceof  ManualCleaningStation) {
-                        addLine("Sinks");
+                        ManualCleaningStation manualCleaningStation = (ManualCleaningStation)element;
+                        addLine("Sink "+manualCleaningStation.getId());
                     } else if (element instanceof Scope) {
-                        addLine("Scope Storage");
+                        Scope scope = (Scope)element;
+                        addLine("Scope "+scope.getId());
                     }
                 }
             }
