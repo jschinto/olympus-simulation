@@ -59,6 +59,23 @@ public class Element implements Serializable {
     public void setDestination(Element destination) {
         this.destination = destination;
     }
+
+    public String getDestinationName() {
+        if(destination == null) {
+            return "Office";
+        }
+        if(destination instanceof ProcedureRoom) {
+            return "Room " + ((ProcedureRoom) destination).getId();
+        }
+        if(destination instanceof ManualCleaningStation) {
+            return "Sink " + ((ManualCleaningStation) destination).getId();
+        }
+        if(destination instanceof Reprocessor) {
+            return  "Reprocessor " + ((Reprocessor) destination).getId();
+        }
+        return "";
+    }
+
     public Element getDestination() {
         return destination;
     }

@@ -135,7 +135,7 @@ public class ObjectView extends LinearLayout {
                 addLine("ERROR");
             }
 
-            addLine(""+((Element) object).getOrder());
+
 
          //scope
         } else if (type.equals("scope")) {
@@ -167,7 +167,6 @@ public class ObjectView extends LinearLayout {
                 addLine("ERROR");
             }
 
-            addLine(""+((Element) object).getOrder());
 
         //procedure room
         } else if (type.equals("procedureRoom")) {
@@ -200,7 +199,6 @@ public class ObjectView extends LinearLayout {
                     }
                 }
             }
-            addLine(""+((Element) object).getOrder());
         } else if (type.equals("Doctor")) {
             Doctor doctor = (Doctor)object;
             if (doctor.getState() == State.STATE_TRAVEL) {
@@ -213,7 +211,6 @@ public class ObjectView extends LinearLayout {
                     }
                 }
             }
-            addLine(""+((Element) object).getOrder());
         } else if (type.equals("Sink")) {
             changeOrientation(HORIZONTAL);
             ManualCleaningStation sink = (ManualCleaningStation)object;
@@ -242,7 +239,6 @@ public class ObjectView extends LinearLayout {
                     }
                 }
             }
-            addLine(""+((Element) object).getOrder());
         } else if (type.equals("Reprocessor")) {
             Reprocessor reprocessor = (Reprocessor)object;
             changeText("Reprocessor " + reprocessor.getId());
