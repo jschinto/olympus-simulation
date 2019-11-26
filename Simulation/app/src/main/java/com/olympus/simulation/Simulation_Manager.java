@@ -112,26 +112,31 @@ public class Simulation_Manager {
         while (openRoom != null) {
             Client nextClient = clientManager.getNextClient(currTime, patientOffset);
             if (nextClient == null) {
+                System.out.println("No client");
                 break;
             }
 
             Nurse freeNurse = nursemanager.getNurse();
             if(freeNurse == null){
+                System.out.println("No nurse");
                 break;
             }
 
             Doctor freeDoctor = doctormanager.getDoctor(nextClient.getProcedureList());
             if(freeDoctor == null){
-                break;
+                System.out.println("No doctor");
+                patientOffset++;
+                continue;
             }
 
             if(!openRoom.checkCanProcess(nextClient)){
+                System.out.println("Room cannot check");
                 roomOffset++;
                 openRoom = procedureRoomManager.getProcedureRoom(roomOffset);
                 if(openRoom == null && clientManager.getNextClient(currTime, patientOffset + 1) == null){
                     break;
                 }
-                else if(clientManager.getNextClient(currTime, patientOffset + 1) == null){
+                else if(/*clientManager.getNextClient(currTime, patientOffset + 1) == null*/openRoom == null){
                     roomOffset = 0;
                     openRoom = procedureRoomManager.getProcedureRoom(roomOffset);
                     patientOffset++;
@@ -149,6 +154,7 @@ public class Simulation_Manager {
                         scopeList.get(j).setTempGrab(false);
                         scopeList.get(j).setHolding(null, -1);
                     }
+                    System.out.println("No scope/tech");
                     break;
                 }
                 if(!scopeList.contains(freeScope)) {
@@ -180,6 +186,7 @@ public class Simulation_Manager {
             }
             else
             {
+                System.out.println("No scope/tech");
                 roomOffset = 0;
                 patientOffset++;
             }
@@ -633,12 +640,6 @@ public class Simulation_Manager {
 
     public int getDoctorNum() {
         return doctormanager.getDoctorNum();
-    }
-    public int getDoctorPostProcedureTime() {
-        return doctormanager.getPostProcedureTime();
-    }
-    public void setDoctorPostProcedureTime(int time) {
-        doctormanager.setPostProcedureTime(time);
     }
     public void addDoctor(Doctor doctor) {
         doctormanager.addDoctor(doctor);

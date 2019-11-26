@@ -8,11 +8,12 @@ public class Procedure implements Serializable {
     private String name;
     //the minimum and maximum time the operation will last, to account for variance in completion time
     private int time;
-    //needs? TODO: need a way to store and check a procedure's needs
+    private int doctorPostProcedureTime;
 
     public Procedure(String name, int time) {
         this.name = name;
         this.time = time;
+        this.doctorPostProcedureTime = 5;
     }
 
     public String getName() {
@@ -44,8 +45,11 @@ public class Procedure implements Serializable {
         return super.equals(o);
     }
 
+    public int getDoctorPostProcedureTime() {
+        return doctorPostProcedureTime;
+    }
 
-
-
-
+    public void setDoctorPostProcedureTime(int doctorPostProcedureTime) {
+        this.doctorPostProcedureTime = doctorPostProcedureTime;
+    }
 }

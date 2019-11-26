@@ -116,7 +116,11 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
         setClear(false);
         this.currentNurse.startPostProcedure(Nurse_Manager.getPostProcedureTime());
         this.currentNurse = null;
-        this.currentDoctor.startPostProcedure(Doctor_Manager.getPostProcedureTime());
+        int cooldown = 0;
+        for(int i = 0; i < this.client.getProcedureList().size(); i++){
+            cooldown += this.client.getProcedureList().get(i).getDoctorPostProcedureTime();
+        }
+        this.currentDoctor.startPostProcedure(cooldown);
         this.currentDoctor = null;
 
         tryClear(currTime);

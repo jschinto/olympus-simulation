@@ -8,9 +8,7 @@ public class Doctor extends Element implements Serializable, ActorCSV.Actor {
 
     private State state;
     private int id;
-
     private int timeLeft;
-
     private ArrayList<Procedure> procedures;
 
 

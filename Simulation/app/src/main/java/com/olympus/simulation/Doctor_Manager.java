@@ -8,12 +8,10 @@ public class Doctor_Manager {
     private static ArrayList<ActorLogCSV> csvList;
     private static String currTime;
 
-    private static int postProcedureTime;
 
     public Doctor_Manager() {
         csvList = new ArrayList<>();
         doctors = new ArrayList<Doctor>();
-        postProcedureTime = 1;
     }
 
     private static int getLastActorLogEntry(ActorLogCSV logItem) {
@@ -101,9 +99,6 @@ public class Doctor_Manager {
 
     public Doctor getDoctor(ArrayList<Procedure> procList) {
         for (int i=0; i < doctors.size(); i++) {
-            if (!doctors.get(i).validate()) {
-                continue;
-            }
             ArrayList<Procedure> docList = doctors.get(i).getProcedures();
             if (doctors.get(i).getState() == State.STATE_WAIT && docList.containsAll(procList)) {
                 Doctor doctor = doctors.get(i);
@@ -115,17 +110,6 @@ public class Doctor_Manager {
 
     public ArrayList<Doctor> getAllDoctors() {
         return doctors;
-    }
-
-    public void operationComplete(Doctor doctor) {
-        doctor.startPostProcedure(postProcedureTime);
-    }
-
-    public static int getPostProcedureTime() {
-        return postProcedureTime;
-    }
-    public void setPostProcedureTime(int postProcedureTime) {
-        this.postProcedureTime = postProcedureTime;
     }
 
     public ArrayList<Doctor> getFreeDoctors() {

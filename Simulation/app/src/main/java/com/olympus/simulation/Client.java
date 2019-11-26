@@ -62,8 +62,8 @@ public class Client extends Element implements Comparable<Client>, Serializable 
         //client is done with operation
         if (this.timeLeft <= 0 && this.state.equals(State.STATE_OPERATION)) {
             setState(State.STATE_DONE);
-            this.procedureRoom.removeClient();
             this.procedureRoom.removeElements(currTime);
+            this.procedureRoom.removeClient();
             this.procedureRoom = null;
         }
         //client is done traveling to operation room
