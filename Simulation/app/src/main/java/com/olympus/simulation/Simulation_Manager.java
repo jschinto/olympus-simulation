@@ -110,6 +110,56 @@ public class Simulation_Manager {
         int roomOffset = 0;
         ProcedureRoom openRoom = procedureRoomManager.getProcedureRoom(roomOffset);
         while (openRoom != null) {
+            if(openRoom.getClient() == null){
+                Client nextClient = clientManager.getNextClient(currTime, patientOffset);
+                if (nextClient == null) {
+                    System.out.println("No client");
+                    break;
+                }
+
+                if(!openRoom.checkCanProcess(nextClient)){
+                    System.out.println("Room cannot check");
+                    roomOffset++;
+                    openRoom = procedureRoomManager.getProcedureRoom(roomOffset);
+                    if(openRoom == null && clientManager.getNextClient(currTime, patientOffset + 1) == null){
+                        break;
+                    }
+                    else if(openRoom == null){
+                        roomOffset = 0;
+                        openRoom = procedureRoomManager.getProcedureRoom(roomOffset);
+                        patientOffset++;
+                    }
+                    continue;
+                }
+
+                clientManager.addToOperating(nextClient);
+                nextClient.setProcedureRoom(openRoom);
+            }
+
+            if(openRoom.getScopeList().size() == 0){
+                ArrayList<Scope> scopeList = new ArrayList<Scope>();
+                for(int i = 0; i < openRoom.getClient().getProcedureList().size(); i++) {
+                    Scope freeScope = scopeManager.getAvaliableScope(openRoom.getClient().getProcedureList().get(i));
+                    Technician tech = Technician_Manager.getTechnician();
+                    if (freeScope == null || tech == null) {
+                        for(int j = 0; j < scopeList.size(); j++){
+                            scopeList.get(j).setTempGrab(false);
+                            scopeList.get(j).setHolding(null, -1);
+                        }
+                        System.out.println("No scope/tech");
+                        break;
+                    }
+                    if(!scopeList.contains(freeScope)) {
+                        tech.setDestination(openRoom);
+                        freeScope.setHolding(tech, openRoom.getTravelTimeTechnician());
+                        scopeList.add(freeScope);
+                        freeScope.setTempGrab(true);
+                    }
+                }
+            }
+
+
+            ================
             Client nextClient = clientManager.getNextClient(currTime, patientOffset);
             if (nextClient == null) {
                 System.out.println("No client");
@@ -167,8 +217,6 @@ public class Simulation_Manager {
 
             if(scopeList.size() == nextClient.getProcedureList().size()) {
                 roomOffset = 0;
-                clientManager.addToOperating(nextClient);
-                nextClient.setProcedureRoom(openRoom);
                 openRoom.claimElements(scopeList, freeDoctor, freeNurse);
                 for(Scope s : scopeList) {
                     String proc = "";
