@@ -155,7 +155,8 @@ public class Simulation_Manager {
                         scopeList.get(j).setHolding(null, -1);
                     }
                     System.out.println("No scope/tech");
-                    break;
+                    patientOffset++;
+                    continue;
                 }
                 if(!scopeList.contains(freeScope)) {
                     tech.setDestination(openRoom);
