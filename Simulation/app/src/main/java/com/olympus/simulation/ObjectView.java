@@ -201,14 +201,19 @@ public class ObjectView extends LinearLayout {
             }
         } else if (type.equals("Doctor")) {
             Doctor doctor = (Doctor)object;
+            changeText("Doctor " + doctor.getId());
             if (doctor.getState() == State.STATE_TRAVEL) {
-                changeText("Doctor");
                 if (doctor.getDestination() != null) {
                     Element element = doctor.getDestination();
                     if (element instanceof ProcedureRoom) {
                         ProcedureRoom procedureRoom = (ProcedureRoom)element;
                         addLine("Room "+procedureRoom.getId());
                     }
+                }
+            } else if (doctor.getState() == State.STATE_WAIT) {
+                ArrayList<Procedure> procedures = doctor.getProcedures();
+                for (int i=0; i < procedures.size(); i++) {
+                    addLine(procedures.get(i).getName());
                 }
             }
         } else if (type.equals("Sink")) {

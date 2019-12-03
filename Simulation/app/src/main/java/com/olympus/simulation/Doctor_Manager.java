@@ -14,6 +14,12 @@ public class Doctor_Manager {
         doctors = new ArrayList<Doctor>();
     }
 
+    public void setIds() {
+        for (int i=0; i < doctors.size(); i++) {
+            doctors.get(i).setId(i+1);
+        }
+    }
+
     private static int getLastActorLogEntry(ActorLogCSV logItem) {
         for(int i = csvList.size() - 1; i >= 0; i--) {
             if (csvList.get(i).equals(logItem)) {
@@ -31,15 +37,15 @@ public class Doctor_Manager {
     public void initCSVList(String startTime, String endTime) {
         currTime = startTime;
         csvList.clear();
-        int id = 1;
+       // int id = 1;
         for(Doctor d : doctors) {
             String procedure = "";
             for(String p : d.getProceduresNames()) {
                 procedure += p;
                 procedure += "/";
             }
-            d.setId(id);
-            id++;
+           // d.setId(id);
+           // id++;
             procedure = procedure.substring(0,procedure.length() - 1);
             ActorLogCSV logItem = new ActorLogCSV("Doctor", d.getId() + "", "Doctor " + d.getId(), startTime, endTime, procedure, "", State.stateNames[0]);
             csvList.add(logItem);

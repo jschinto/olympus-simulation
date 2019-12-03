@@ -654,6 +654,9 @@ public class Simulation_Manager {
     public ArrayList<Doctor> getFreeDoctors() {
         return doctormanager.getFreeDoctors();
     }
+    public void setDoctorIds() {
+        doctormanager.setIds();
+    }
 
     public int getTechnicianNum(){return technicianManager.getTechnicianNum();}
     public int getTechnicianFreeNum() {return technicianManager.getFreeTechnicianNum();}

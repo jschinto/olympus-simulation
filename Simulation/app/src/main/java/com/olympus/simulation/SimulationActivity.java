@@ -497,6 +497,7 @@ public class SimulationActivity
                     }
                 }
 
+                simulation_manager.setDoctorIds();
                 renderUIFromManager();
             } else if (element.equals(Element.ELEMENT_SINK)) {
                 if (resultCode == RESULT_FIRST_USER) {
