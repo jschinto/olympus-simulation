@@ -41,7 +41,7 @@ public class Doctor_Manager {
             d.setId(id);
             id++;
             procedure = procedure.substring(0,procedure.length() - 1);
-            ActorLogCSV logItem = new ActorLogCSV("Doctor", d.getId() + "", "Doctor " + d.getId(), startTime, endTime, procedure, "", State.stateNames[0]);
+            ActorLogCSV logItem = new ActorLogCSV("Doctor", d.getId() + "", "Doctor " + d.getId(), startTime, endTime, procedure, "Waiting Room", State.stateNames[0]);
             csvList.add(logItem);
         }
     }
@@ -66,6 +66,12 @@ public class Doctor_Manager {
         }
         String proc = csvList.get(getLastActorLogEntry(temp)).procedure;
         String station = n.getDestinationName();
+        if(state.equals("Traveling")) {
+            station = "Hallway";
+        }
+        if(station == null || station.equals("")) {
+            station = "Waiting Room";
+        }
         ActorLogCSV logItem = new ActorLogCSV("Doctor", n.getId() + "", "Doctor " + n.getId(), currTime, currTime, proc, station, state);
         addActorLogCSV(logItem);
     }

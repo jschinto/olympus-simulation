@@ -34,7 +34,7 @@ public class Technician_Manager {
         for(Technician t : technicians) {
             t.setId(id);
             id++;
-            ActorLogCSV logItem = new ActorLogCSV("Technician", t.getId() + "", "Technician " + t.getId(), startTime, endTime, "", "", State.stateNames[0]);
+            ActorLogCSV logItem = new ActorLogCSV("Technician", t.getId() + "", "Technician " + t.getId(), startTime, endTime, "", "Waiting Room", State.stateNames[0]);
             csvList.add(logItem);
         }
     }
@@ -59,6 +59,12 @@ public class Technician_Manager {
         }
         String proc = csvList.get(getLastActorLogEntry(temp)).procedure;
         String station = n.getDestinationName();
+        if(state.equals("Traveling")) {
+            station = "Hallway";
+        }
+        if(station == null || station.equals("")) {
+            station = "Waiting Room";
+        }
         ActorLogCSV logItem = new ActorLogCSV("Technician", n.getId() + "", "Technician " + n.getId(), currTime, currTime, proc, station, state);
         addActorLogCSV(logItem);
     }
