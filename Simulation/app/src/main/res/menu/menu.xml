@@ -33,43 +33,55 @@
         app:showAsAction="always"
         android:title="">
         <menu>
-            <item
-                android:id="@+id/addProcedureRoom"
-                android:title="Add Procedure Room" />
-            <item
-                android:id="@+id/addProcedureType"
-                android:title="Add Procedure Type" />
-            <item
-                android:id="@+id/addClient"
-                android:title="Add Patient" />
-            <item
-                android:id="@+id/addScopeType"
-                android:title="Add Scope Type" />
-            <item
-                android:id="@+id/addScope"
-                android:title="Add Scope" />
-            <item
-                android:id="@+id/addTowerType"
-                android:title="Add Tower Type" />
-            <item
-                android:id="@+id/addLeakTesterType"
-                android:title="Add Leak Tester Type"/>
-            <item
-                android:id="@+id/addManualCleaningStation"
-                android:title="Add Manual Cleaning Station"/>
+            <group
+                android:id="@+id/groupProcedure">
+                <item
+                    android:id="@+id/addProcedureType"
+                    android:title="Add Procedure Type" />
+                <item
+                    android:id="@+id/addClient"
+                    android:title="Add Patient" />
+                <item
+                    android:id="@+id/addDoctor"
+                    android:title="Add Doctor" />
+            </group>
+            <item android:title="" android:enabled="false"></item>
+            <group android:id="@+id/groupScope">
+                <item
+                    android:id="@+id/addScopeType"
+                    android:title="Add Scope Type" />
+                <item
+                    android:id="@+id/addScope"
+                    android:title="Add Scope" />
+            </group>
+            <item android:title="" android:enabled="false"></item>
+            <group android:id="@+id/groupRoom">
+                <item
+                    android:id="@+id/addTowerType"
+                    android:title="Add Tower Type" />
+                <item
+                    android:id="@+id/addProcedureRoom"
+                    android:title="Add Procedure Room" />
+            </group>
+            <item android:title="" android:enabled="false"></item>
+            <group android:id="@+id/groupSink">
+                <item
+                    android:id="@+id/addLeakTesterType"
+                    android:title="Add Leak Tester Type"/>
+                <item
+                    android:id="@+id/addManualCleaningStation"
+                    android:title="Add Manual Cleaning Station"/>
+            </group>
+            <item android:title="" android:enabled="false"></item>
+            <group android:id="@+id/groupReprocessor">
+                <item
+                    android:id="@+id/addReprocessorType"
+                    android:title="Add Reprocessor Type"/>
 
-            <item
-                android:id="@+id/addDoctor"
-                android:title="Add Doctor"/>
-
-            <item
-                android:id="@+id/addReprocessorType"
-                android:title="Add Reprocessor Type"/>
-
-            <item
-                android:id="@+id/addReprocessor"
-                android:title="Add Reprocessor"/>
-
+                <item
+                    android:id="@+id/addReprocessor"
+                    android:title="Add Reprocessor"/>
+            </group>
 
         </menu>
     </item>

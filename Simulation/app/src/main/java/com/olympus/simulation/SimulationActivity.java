@@ -231,19 +231,25 @@ public class SimulationActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.plus_button) {
+            //put in all conditional visibility
+            //to prevent adding before prereqs are added
+
             MenuItem addClient = menu.findItem(R.id.addClient);
             MenuItem addScope = menu.findItem(R.id.addScope);
             MenuItem addScopeType = menu.findItem(R.id.addScopeType);
             MenuItem addTowerType = menu.findItem(R.id.addTowerType);
             MenuItem addProcedureRoom = menu.findItem(R.id.addProcedureRoom);
             MenuItem addManualCleaningStation = menu.findItem(R.id.addManualCleaningStation);
+            MenuItem addDoctor = menu.findItem(R.id.addDoctor);
 
             if (simulation_manager.getProcedureNum() > 0) {
                 addClient.setVisible(true);
                 addScopeType.setVisible(true);
+                addDoctor.setVisible(true);
             } else {
                 addClient.setVisible(false);
                 addScopeType.setVisible(false);
+                addDoctor.setVisible(false);
             }
             String[] scopeTypes = simulation_manager.getScopeTypeNames();
             if (scopeTypes == null || scopeTypes.length <= 0) {
@@ -264,6 +270,7 @@ public class SimulationActivity
                 addManualCleaningStation.setVisible(true);
             }
         }
+
         else if (id == R.id.addProcedureType) {
             Intent procedureIntent = new Intent(getApplicationContext(), ProcedureActivity.class);
             Procedure procedure = new Procedure("", 0, 0);
@@ -378,6 +385,8 @@ public class SimulationActivity
             isPaused = true;
             LoadPromptDialog loadPromptDialog = new LoadPromptDialog();
             loadPromptDialog.show(getSupportFragmentManager(), "load dialog");
+        } else {
+            return true;//TODO:::
         }
         return super.onOptionsItemSelected(item);
     }
