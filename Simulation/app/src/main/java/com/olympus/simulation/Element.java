@@ -62,7 +62,7 @@ public class Element implements Serializable {
 
     public String getDestinationName() {
         if(destination == null) {
-            return "Office";
+            return "Waiting Room";
         }
         if(destination instanceof ProcedureRoom) {
             return "Room " + ((ProcedureRoom) destination).getId();

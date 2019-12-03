@@ -86,7 +86,7 @@ public class Doctor extends Element implements Serializable, ActorCSV.Actor {
 
     public void startPostProcedure(int postProcedureTime) {
         this.timeLeft = postProcedureTime;
-        this.state = new State(State.STATE_DONE);
+        setState(State.STATE_DONE);
     }
 
     public boolean validate() {

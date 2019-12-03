@@ -246,6 +246,9 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
     public void startOperating(){
         this.currentDoctor.setState(State.STATE_OPERATION);
         this.currentNurse.setState(State.STATE_OPERATION);
+        for (Scope s : this.scope) {
+            s.setState(State_Scope.STATE_USE);
+        }
     }
 
     public int getId() {

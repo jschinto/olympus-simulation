@@ -14,7 +14,7 @@ public class State implements Serializable {
 
     public int state;
 
-    public static final String[] stateNames = {"Waiting", "Done", "Operating", "Traveling", "In Room"};
+    public static final String[] stateNames = {"Waiting", "Post Procedure", "Operating", "Traveling", "In Room"};
 
     public static final int STATE_WAIT = 0;
     public static final int STATE_TRAVEL = 3;

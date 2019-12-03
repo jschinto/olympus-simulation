@@ -100,8 +100,8 @@ public class Scope extends Element implements Comparable<Scope>, Serializable, E
             //Scope has arrived at its destination
             if (this.state == State_Scope.STATE_TRAVEL) {
                 setHolding(null, -1);
-                setState(State_Scope.STATE_USE);
-                return State_Scope.STATE_USE;
+                setState(State_Scope.STATE_INROOM);
+                return State_Scope.STATE_INROOM;
             }
             if(this.state == State_Scope.STATE_DIRTY) {
                 setHolding(null, -1);
