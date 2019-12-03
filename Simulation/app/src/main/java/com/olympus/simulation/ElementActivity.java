@@ -99,7 +99,7 @@ public class ElementActivity extends AppCompatActivity {
             ids[1] = addField("Doctor Travel Time", "number");
             ids[2] = addField("Nurse Travel Time", "number");
             ids[3] = addField("Technician Travel Time", "number");
-            ids[4] = addField("Cooldown Time", "number");
+            ids[4] = addField("Cleaning Time", "number");
 
             String[] towerTypes = fromIntent.getStringArrayExtra("towerTypes");
             ids[5] = addField("Tower Types", "checkbox", towerTypes);

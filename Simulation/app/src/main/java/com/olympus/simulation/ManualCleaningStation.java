@@ -38,7 +38,7 @@ public class ManualCleaningStation extends Element implements Serializable, Stat
         this.currentLeakTester = currentLeakTester;
     }
 
-    public boolean validate(){
+    public boolean validate() {
         if(this.currentLeakTester != null){
             return true;
         }

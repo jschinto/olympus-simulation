@@ -52,7 +52,7 @@ public class LeakTester_Type extends Element implements Serializable {
     }
 
     public boolean validate(){
-        if(name != null && !this.name.equals("") && this.timeToComplete > 0 && this.requiredAttentionTime > 0 && this.price > 0 && this.timeToComplete >= this.requiredAttentionTime){
+        if(name != null && !this.name.equals("") && this.timeToComplete > 0 && this.requiredAttentionTime > 0 && this.price > 0 ){
             return true;
         }
         return false;
