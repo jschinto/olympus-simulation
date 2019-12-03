@@ -145,12 +145,13 @@ public class ElementActivity extends AppCompatActivity {
             }
         } else if (element.equals(Element.ELEMENT_REPROCESSORTYPE)) {
             setText(R.id.elementTextTitle, "Reprocessor Type");
-            ids = new int[5];
+            ids = new int[6];
             ids[0] = addField("Name", "text");
             ids[1] = addField("Number of Scopes", "number");
             ids[2] = addField("Cycle Time", "number");
             ids[3] = addField("Wait Time", "number");
             ids[4] = addField("Price", "number");
+            ids[5] = addField("Startup Delay", "number");
             if (mode.equals("view")) {
                 Reprocessor_Type reprocessor_type = (Reprocessor_Type) element;
                 setText(ids[0], reprocessor_type.getName());
@@ -158,6 +159,7 @@ public class ElementActivity extends AppCompatActivity {
                 setText(ids[2], reprocessor_type.getCycleTime());
                 setText(ids[3], reprocessor_type.getWaitTime());
                 setText(ids[4], reprocessor_type.getPrice());
+                setText(ids[5], reprocessor_type.getStartupDelay());
             }
         } else if (element.equals(Element.ELEMENT_REPROCESSOR)) {
             setText(R.id.elementTextTitle, "Reprocessor");
@@ -227,7 +229,8 @@ public class ElementActivity extends AppCompatActivity {
                     int cycleTime = getTextInt(ids[2]);
                     int waitTime = getTextInt(ids[3]);
                     int price = getTextInt(ids[4]);
-                    Reprocessor_Type reprocessor_type = new Reprocessor_Type(name, numScopes, cycleTime, waitTime, price);
+                    int startupDelay = getTextInt(ids[5]);
+                    Reprocessor_Type reprocessor_type = new Reprocessor_Type(name, numScopes, cycleTime, waitTime, price, startupDelay);
                     if (!reprocessor_type.validate()) {
                         makeToast("INVALID VALUES ENTERED");
                         return;
@@ -255,7 +258,7 @@ public class ElementActivity extends AppCompatActivity {
                     leaveActivity(RESULT_OK, new Doctor(null), null);
                 }
                 else if (element.equals(Element.ELEMENT_REPROCESSORTYPE)) {
-                    leaveActivity(RESULT_OK, new Reprocessor_Type("", 0,0,0,0));
+                    leaveActivity(RESULT_OK, new Reprocessor_Type("", 0,0,0,0, 0));
                 }
                 else if (element.equals(Element.ELEMENT_REPROCESSOR)) {
                     leaveActivity(RESULT_OK, new Reprocessor(null));
@@ -314,7 +317,8 @@ public class ElementActivity extends AppCompatActivity {
                 int cycleTime = getTextInt(ids[2]);
                 int waitTime = getTextInt(ids[3]);
                 int price = getTextInt(ids[4]);
-                Reprocessor_Type reprocessor_type = new Reprocessor_Type(name, numScopes, cycleTime, waitTime, price);
+                int startupDelay = getTextInt(ids[5]);
+                Reprocessor_Type reprocessor_type = new Reprocessor_Type(name, numScopes, cycleTime, waitTime, price, startupDelay);
                 if (!reprocessor_type.validate()) {
                     makeToast("INVALID VALUES ENTERED");
                     return;
@@ -324,7 +328,7 @@ public class ElementActivity extends AppCompatActivity {
                 String[] list = new String[1];
                 String reprocessorType = getSpinner(ids[0]);
                 list[0] = reprocessorType;
-                Reprocessor_Type reprocessor_type = new Reprocessor_Type(reprocessorType, 1,1,1,1);
+                Reprocessor_Type reprocessor_type = new Reprocessor_Type(reprocessorType, 1,1,1,1, 1);
                 Reprocessor reprocessor = new Reprocessor(reprocessor_type);
                 leaveActivity(RESULT_OK, reprocessor, list);
             } else if (mode.equals("actor")) {

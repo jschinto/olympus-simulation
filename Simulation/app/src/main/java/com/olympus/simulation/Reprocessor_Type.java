@@ -9,14 +9,14 @@ public class Reprocessor_Type extends Element {
     private String name;
     private int startupDelay;
 
-    public Reprocessor_Type(String name, int numScopes, int cycleTime, int waitTime, int price) {
+    public Reprocessor_Type(String name, int numScopes, int cycleTime, int waitTime, int price, int startupDelay) {
         this.element = ELEMENT_REPROCESSORTYPE;
         this.name = name;
         this.numScopes = numScopes;
         this.cycleTime = cycleTime;
         this.waitTime = waitTime;
         this.price = price;
-        this.startupDelay = 3;
+        this.startupDelay = startupDelay;
     }
     public String getName() {
         return name;
@@ -58,7 +58,7 @@ public class Reprocessor_Type extends Element {
     }
 
     public boolean validate() {
-        return name!=null && !name.equals("") && numScopes > 0 && cycleTime > 0 && waitTime > 0 && price > 0;
+        return name!=null && !name.equals("") && numScopes > 0 && cycleTime > 0 && waitTime > 0 && price > 0 && startupDelay > 0;
     }
 
     public int getStartupDelay() {

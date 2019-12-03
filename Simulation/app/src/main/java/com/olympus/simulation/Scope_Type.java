@@ -11,12 +11,12 @@ public class Scope_Type implements Serializable {
     private int price;
     private int reprocessorLoadDelay;
 
-    public Scope_Type (String n, int c, int p) {
+    public Scope_Type (String n, int c, int p, int reprocessorLoadDelay) {
         this.name = n;
         procedureList = new ArrayList<Procedure>();
         this.price = p;
         this.cleaningTime = c;
-        this.reprocessorLoadDelay = 3;
+        this.reprocessorLoadDelay = reprocessorLoadDelay;
     }
 
     public String getName() {

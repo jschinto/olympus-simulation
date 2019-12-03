@@ -13,6 +13,7 @@ public class ProcedureActivity extends AppCompatActivity {
 
     // 1 : name
     // 2 : expected time
+    // 3 : doctor post procedure time
 
     Procedure procedure;
     private boolean adding;
@@ -27,21 +28,24 @@ public class ProcedureActivity extends AppCompatActivity {
         Intent fromIntent = getIntent();
         procedure = (Procedure) fromIntent.getSerializableExtra("procedure");
         if (procedure != null) {
-            setValues(procedure.getName(), procedure.getTime());
+            setValues(procedure.getName(), procedure.getTime(), procedure.getDoctorPostProcedureTime());
         }
     }
 
-    private void setValues(String name, int time) {
+    private void setValues(String name, int time, int doctorPostProcedureTime) {
         EditText edit1 = findViewById(R.id.procedureEdit1);
         EditText edit2 = findViewById(R.id.procedureEdit2);
+        EditText edit3 = findViewById(R.id.procedureEdit3);
         if (time <= 0) {
             edit1.setText("");
             edit2.setText("");
+            edit3.setText("");
             addSetup();
             return;
         }
         edit1.setText(name);
         edit2.setText(String.valueOf(time));
+        edit3.setText(String.valueOf(doctorPostProcedureTime));
         viewSetup();
     }
 
@@ -66,11 +70,14 @@ public class ProcedureActivity extends AppCompatActivity {
             if (adding) {
                 String name = null;
                 int time = 0;
+                int doctorPostProcedureTime = 0;
                 try {
                     EditText editData1 = findViewById(R.id.procedureEdit1);
                     name = editData1.getText().toString();
                     EditText editData2 = findViewById(R.id.procedureEdit2);
                     time = Integer.parseInt(editData2.getText().toString());
+                    EditText editData3 = findViewById(R.id.procedureEdit3);
+                    doctorPostProcedureTime = Integer.parseInt(editData3.getText().toString());
                 } catch (NumberFormatException e) {
                     Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
                     return;
@@ -79,12 +86,12 @@ public class ProcedureActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Invalid Name!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (time <= 0) {
+                if (time <= 0 || doctorPostProcedureTime <= 0) {
                     Toast.makeText(getApplicationContext(), "Invalid Time Entered!", Toast.LENGTH_LONG).show();
                     return;
                 }
 
-                Procedure procedure = new Procedure(name, time);
+                Procedure procedure = new Procedure(name, time, doctorPostProcedureTime);
 
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("procedure", procedure);
@@ -102,11 +109,14 @@ public class ProcedureActivity extends AppCompatActivity {
         } else if (view.getId() == R.id.procedureButtonEdit) {
             String name = null;
             int time = 0;
+            int doctorPostProcedureTime = 0;
             try {
                 EditText editData1 = findViewById(R.id.procedureEdit1);
                 name = editData1.getText().toString();
                 EditText editData2 = findViewById(R.id.procedureEdit2);
                 time = Integer.parseInt(editData2.getText().toString());
+                EditText editData3 = findViewById(R.id.procedureEdit3);
+                doctorPostProcedureTime = Integer.parseInt(editData3.getText().toString());
             } catch (NumberFormatException e) {
                 Toast.makeText(getApplicationContext(), "Invalid Data Entered!", Toast.LENGTH_LONG).show();
                 return;
@@ -115,13 +125,14 @@ public class ProcedureActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Invalid Name!", Toast.LENGTH_LONG).show();
                 return;
             }
-            if (time <= 0) {
+            if (time <= 0 || doctorPostProcedureTime <= 0) {
                 Toast.makeText(getApplicationContext(), "Invalid Time Entered!", Toast.LENGTH_LONG).show();
                 return;
             }
             String oldName = procedure.getName();
             procedure.setName(name);
             procedure.setTime(time);
+            procedure.setDoctorPostProcedureTime(doctorPostProcedureTime);
             Intent returnIntent = new Intent();
             returnIntent.putExtra("procedure", procedure);
             returnIntent.putExtra("oldName", oldName);

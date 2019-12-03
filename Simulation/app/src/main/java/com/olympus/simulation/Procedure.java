@@ -10,10 +10,10 @@ public class Procedure implements Serializable {
     private int time;
     private int doctorPostProcedureTime;
 
-    public Procedure(String name, int time) {
+    public Procedure(String name, int time, int doctorPostProcedureTime) {
         this.name = name;
         this.time = time;
-        this.doctorPostProcedureTime = 5;
+        this.doctorPostProcedureTime = doctorPostProcedureTime;
     }
 
     public String getName() {

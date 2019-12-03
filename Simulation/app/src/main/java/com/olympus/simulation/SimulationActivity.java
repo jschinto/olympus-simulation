@@ -266,7 +266,7 @@ public class SimulationActivity
         }
         else if (id == R.id.addProcedureType) {
             Intent procedureIntent = new Intent(getApplicationContext(), ProcedureActivity.class);
-            Procedure procedure = new Procedure("", 0);
+            Procedure procedure = new Procedure("", 0, 0);
             procedureIntent.putExtra("procedure", procedure);
             startActivityForResult(procedureIntent, procedure_Request);
         } else if (id == R.id.addClient) {
@@ -294,7 +294,7 @@ public class SimulationActivity
             startActivityForResult(scopeIntent, scope_Request);
         } else if (id == R.id.addScopeType) {
             Intent scopeTypeIntent = new Intent(getApplicationContext(), ScopeTypeActivity.class);
-            Scope_Type scopeType = new Scope_Type("", -1, -1);
+            Scope_Type scopeType = new Scope_Type("", -1, -1, -1);
             scopeTypeIntent.putExtra("scopeType", scopeType);
             scopeTypeIntent.putExtra("procedureNames", simulation_manager.getProcedureNames());
             startActivityForResult(scopeTypeIntent, scopeType_Request);
@@ -326,7 +326,7 @@ public class SimulationActivity
             startActivityForResult(doctorIntent, element_Request);
         } else if (id == R.id.addReprocessorType) {
             Intent reprocessorTypeIntent = new Intent(getApplicationContext(), ElementActivity.class);
-            Reprocessor_Type reprocessor_type = new Reprocessor_Type("", 0,0,0,0);
+            Reprocessor_Type reprocessor_type = new Reprocessor_Type("", 0,0,0,0, 0);
             reprocessorTypeIntent.putExtra("element", reprocessor_type);
             reprocessorTypeIntent.putExtra("mode", "add");
             startActivityForResult(reprocessorTypeIntent, element_Request);
@@ -696,7 +696,8 @@ public class SimulationActivity
                 String name = data.getStringExtra("name");
                 int price = data.getIntExtra("price", 1);
                 int cleaningTime = data.getIntExtra("cleaningTime", 1);
-                Scope_Type scope_type = new Scope_Type(name, cleaningTime, price);
+                int loadDelay = data.getIntExtra("loadDelay", 1);
+                Scope_Type scope_type = new Scope_Type(name, cleaningTime, price, loadDelay);
                 String[] procedureList = data.getStringArrayExtra("procedures");
                 for (int i = 0; i < procedureList.length; i++) {
                     scope_type.addProcedure(simulation_manager.getProcedureByName(procedureList[i]));

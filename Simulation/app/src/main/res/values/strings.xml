@@ -48,4 +48,6 @@
     <string name="towerTypeScopeTypes">Valid Scope Types:</string>
     <string name="buttonViewLeakTesterTypes">View Leak Tester Types</string>
     <string name="ViewTowerTypes">View Tower Types</string>
+    <string name="doctorPostProcedure">Doctor Post Procedure Time</string>
+    <string name="textLoadDelay">Reprocessor Load Delay</string>
 </resources>
