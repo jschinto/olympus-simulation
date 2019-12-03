@@ -10,11 +10,13 @@ public class Doctor extends Element implements Serializable, ActorCSV.Actor {
     private int id;
     private int timeLeft;
     private ArrayList<Procedure> procedures;
+    private ArrayList<Procedure> currProcedure;
 
 
     public Doctor(ArrayList<Procedure> procedures) {
         this.element = ELEMENT_DOCTOR;
         this.procedures = procedures;
+        this.currProcedure = null;
         setState(State.STATE_WAIT);
         timeLeft = 0;
         id = 0;
@@ -74,6 +76,8 @@ public class Doctor extends Element implements Serializable, ActorCSV.Actor {
             if (state.equals(State.STATE_TRAVEL)) {
                 setState(State.STATE_INROOM);
             } else if (state.equals(State.STATE_DONE)) {
+                this.setDestination(null);
+                this.setCurrProcedure(null);
                 setState(State.STATE_WAIT);
             }
         }
@@ -95,6 +99,14 @@ public class Doctor extends Element implements Serializable, ActorCSV.Actor {
 
     @Override
     public ActorCSV getActorCSV() {
-        return new ActorCSV("Doctor", procedures.toString().replace("[","\"").replace("]","\""), id + "");
+        return new ActorCSV("Doctor", "\"" + procedures.toString().substring(1, procedures.toString().length() - 1) + "\"", id + "");
+    }
+
+    public ArrayList<Procedure> getCurrProcedure() {
+        return currProcedure;
+    }
+
+    public void setCurrProcedure(ArrayList<Procedure> currProcedure) {
+        this.currProcedure = currProcedure;
     }
 }

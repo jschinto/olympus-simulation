@@ -1,17 +1,20 @@
 package com.olympus.simulation;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Nurse extends Element implements Serializable, ActorCSV.Actor {
 
     private State state;
     private int id;
+    private ArrayList<Procedure> currProcedure;
 
     private int timeLeft;
 
 
     public Nurse() {
         this.element = ELEMENT_NURSE;
+        this.currProcedure = null;
         setState(State.STATE_WAIT);
         timeLeft = 0;
         id = 0;
@@ -45,6 +48,8 @@ public class Nurse extends Element implements Serializable, ActorCSV.Actor {
             if (state.equals(State.STATE_TRAVEL)) {
                 setState(State.STATE_INROOM);
             } else if (state.equals(State.STATE_DONE)) {
+                this.setCurrProcedure(null);
+                this.setDestination(null);
                 setState(State.STATE_WAIT);
             }
         }
@@ -64,5 +69,13 @@ public class Nurse extends Element implements Serializable, ActorCSV.Actor {
     @Override
     public ActorCSV getActorCSV() {
         return new ActorCSV("Nurse", "", id + "");
+    }
+
+    public ArrayList<Procedure> getCurrProcedure() {
+        return currProcedure;
+    }
+
+    public void setCurrProcedure(ArrayList<Procedure> currProcedure) {
+        this.currProcedure = currProcedure;
     }
 }

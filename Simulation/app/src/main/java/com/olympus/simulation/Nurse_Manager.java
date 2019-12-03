@@ -61,7 +61,10 @@ public class Nurse_Manager {
         if(getLastActorLogEntry(temp) == -1) {
             return;
         }
-        String proc = csvList.get(getLastActorLogEntry(temp)).procedure;
+        String proc = "";
+        if(n.getCurrProcedure() != null) {
+            proc = "\"" + n.getCurrProcedure().toString().substring(1, n.getCurrProcedure().toString().length() - 1) + "\"";
+        }
         String station = n.getDestinationName();
         if(state.equals("Traveling")) {
             station = "Hallway";
