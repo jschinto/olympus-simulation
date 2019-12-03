@@ -92,9 +92,11 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
                 this.tech = getTech;
             }
         }
-        if(this.tech.getState() == State.STATE_OPERATION) {
+        if(this.tech.getState() == State.STATE_OPERATION || this.tech.getState() == State.STATE_CLEANROOM) {
+            this.tech.setState(State.STATE_CLEANROOM);
             cooldownTimeLeft--;
             if(cooldownTimeLeft <= 0){
+                this.tech.setDestination(null);
                 this.tech.startTravel(-1);
                 this.tech = null;
             }

@@ -46,7 +46,8 @@ public class Reprocessor extends  Element implements StationCSV.Station {
                 this.tech = getTech;
             }
         }
-        if(this.tech.getState() == State.STATE_OPERATION) {
+        if(this.tech.getState() == State.STATE_OPERATION || this.tech.getState() == State.STATE_REPROC) {
+            this.tech.setState(State.STATE_REPROC);
             if(this.startupDelay == 0) {
                 this.setState(State_Scope.STATE_CLEANING);
                 this.setTimeLeft(this.type.getCycleTime());

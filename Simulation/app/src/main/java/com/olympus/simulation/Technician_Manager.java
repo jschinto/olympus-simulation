@@ -45,6 +45,13 @@ public class Technician_Manager {
             logItem.setName("Technician " + t.getId());
             csvList.get(getLastActorLogEntry(logItem)).setTimeOut(endTime);
         }
+        /*for (int i = 0; i < csvList.size(); i++) {
+            ActorLogCSV a = csvList.get(i);
+            if(a.state.equals(State.stateNames[State.STATE_WAIT]) && a.timeIn.equals(a.timeOut)) {
+                csvList.remove(i);
+                i--;
+            }
+        }*/
     }
 
     public static void handleStateSwitch(Technician n) {
@@ -52,6 +59,9 @@ public class Technician_Manager {
             return;
         }
         String state = State.stateNames[n.getState()];
+        if(n.getState() == State.STATE_OPERATION) {
+            state = State.stateNames[State.STATE_WAIT];
+        }
         ActorLogCSV temp = new ActorLogCSV();
         temp.setName("Technician " + n.getId());
         if(getLastActorLogEntry(temp) == -1) {
@@ -66,6 +76,10 @@ public class Technician_Manager {
             station = "Waiting Room";
         }
         ActorLogCSV logItem = new ActorLogCSV("Technician", n.getId() + "", "Technician " + n.getId(), currTime, currTime, proc, station, state);
+        ActorLogCSV lastlog = csvList.get(getLastActorLogEntry(logItem));
+        if(lastlog.name.equals(logItem.name) && lastlog.state.equals(logItem.state) && lastlog.station.equals(logItem.station)) {
+            return;
+        }
         addActorLogCSV(logItem);
     }
 

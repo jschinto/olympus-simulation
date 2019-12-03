@@ -76,11 +76,14 @@ public class Scope extends Element implements Comparable<Scope>, Serializable, E
 
     public int tick() {
         if(this.state == State_Scope.STATE_CLEANING && this.holding != null){
-            if(this.holding.getState() != State.STATE_OPERATION){
+            if(this.holding.getState() != State.STATE_OPERATION && this.holding.getState() != State.STATE_CLEANSCOPE){
                 return this.getState();
             }
             if(this.timeLeft == this.timeFree){
                 setHolding(null, -1);
+            }
+            else {
+                this.holding.setState(State.STATE_CLEANSCOPE);
             }
         }
         this.timeLeft--;
