@@ -309,7 +309,7 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
 
     @Override
     public StationCSV getStationCSV() {
-        return new StationCSV("Procedure Room", this.id + "");
+        return new StationCSV("Room", this.id + "", "Room " + this.id);
     }
 
     public Nurse getCurrentNurse() {

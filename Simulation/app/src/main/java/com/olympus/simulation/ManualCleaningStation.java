@@ -56,6 +56,6 @@ public class ManualCleaningStation extends Element implements Serializable, Stat
 
     @Override
     public StationCSV getStationCSV() {
-        return new StationCSV("Sink", id + "");
+        return new StationCSV("Sink", id + "", "Sink " + id);
     }
 }

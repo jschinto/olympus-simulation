@@ -136,6 +136,6 @@ public class Reprocessor extends  Element implements StationCSV.Station {
 
     @Override
     public StationCSV getStationCSV() {
-        return new StationCSV("Reprocessor", id + "");
+        return new StationCSV("Reprocessor", id + "", "Reprocessor " + id);
     }
 }

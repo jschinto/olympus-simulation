@@ -91,9 +91,9 @@ public class ActorLogCSV implements Simulation_Manager.CSVable, Serializable {
         return type + ","
                 + id + ","
                 + name + ","
-                + timeIn + ","
-                + timeOut + ","
-                + timeDiff + ","
+                + Time.convertToInt(timeIn) + ","
+                + Time.convertToInt(timeOut) + ","
+                + Time.convertToInt(timeDiff) + ","
                 + procedure + ","
                 + station + ","
                 + state;
