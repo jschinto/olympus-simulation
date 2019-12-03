@@ -12,6 +12,8 @@ import java.util.ArrayList;
 
 import static java.lang.Thread.sleep;
 
+//TODO: Have it so getProcedureRoom() grabs procedure rooms that are not fully loaded. Currently it does not.
+
 public class Simulation_Manager {
     //the ProcedureRoom and Client Managers needed to run the simulation
     private ProcedureRoom_Manager procedureRoomManager;
@@ -110,6 +112,7 @@ public class Simulation_Manager {
         int roomOffset = 0;
         ProcedureRoom openRoom = procedureRoomManager.getProcedureRoom(roomOffset);
         while (openRoom != null) {
+            System.out.println("HELLO");
             if(openRoom.getClient() == null){
                 Client nextClient = clientManager.getNextClient(currTime, patientOffset);
                 if (nextClient == null) {
@@ -147,6 +150,10 @@ public class Simulation_Manager {
                             scopeList.get(j).setHolding(null, -1);
                         }
                         System.out.println("No scope/tech");
+                        if(openRoom.getClient()!= null) {
+                            roomOffset++;
+                        }
+                        patientOffset++;
                         break;
                     }
                     if(!scopeList.contains(freeScope)) {
@@ -156,71 +163,10 @@ public class Simulation_Manager {
                         freeScope.setTempGrab(true);
                     }
                 }
-            }
-
-
-            ================
-            Client nextClient = clientManager.getNextClient(currTime, patientOffset);
-            if (nextClient == null) {
-                System.out.println("No client");
-                break;
-            }
-
-            Nurse freeNurse = nursemanager.getNurse();
-            if(freeNurse == null){
-                System.out.println("No nurse");
-                break;
-            }
-
-            Doctor freeDoctor = doctormanager.getDoctor(nextClient.getProcedureList());
-            if(freeDoctor == null){
-                System.out.println("No doctor");
-                patientOffset++;
-                continue;
-            }
-
-            if(!openRoom.checkCanProcess(nextClient)){
-                System.out.println("Room cannot check");
-                roomOffset++;
-                openRoom = procedureRoomManager.getProcedureRoom(roomOffset);
-                if(openRoom == null && clientManager.getNextClient(currTime, patientOffset + 1) == null){
-                    break;
-                }
-                else if(/*clientManager.getNextClient(currTime, patientOffset + 1) == null*/openRoom == null){
-                    roomOffset = 0;
-                    openRoom = procedureRoomManager.getProcedureRoom(roomOffset);
-                    patientOffset++;
-                }
-
-                continue;
-            }
-
-            ArrayList<Scope> scopeList = new ArrayList<Scope>();
-            for(int i = 0; i < nextClient.getProcedureList().size(); i++) {
-                Scope freeScope = scopeManager.getAvaliableScope(nextClient.getProcedureList().get(i));
-                Technician tech = Technician_Manager.getTechnician();
-                if (freeScope == null || tech == null) {
-                    for(int j = 0; j < scopeList.size(); j++){
-                        scopeList.get(j).setTempGrab(false);
-                        scopeList.get(j).setHolding(null, -1);
-                    }
-                    System.out.println("No scope/tech");
-                    break;
-                }
-                if(!scopeList.contains(freeScope)) {
-                    tech.setDestination(openRoom);
-                    freeScope.setHolding(tech, openRoom.getTravelTimeTechnician());
-                    scopeList.add(freeScope);
-                    freeScope.setTempGrab(true);
-                }
-            }
-
-            if(scopeList.size() == nextClient.getProcedureList().size()) {
-                roomOffset = 0;
-                openRoom.claimElements(scopeList, freeDoctor, freeNurse);
+                openRoom.claimElementScopes(scopeList);
                 for(Scope s : scopeList) {
                     String proc = "";
-                    for(Procedure p : nextClient.getProcedureList()) {
+                    for(Procedure p : openRoom.getClient().getProcedureList()) {
                         if(s.checkProcedure(p)) {
                             proc = p.getName();
                         }
@@ -229,15 +175,33 @@ public class Simulation_Manager {
                     ScopeLogCSV logItem = new ScopeLogCSV(s.getType().getName(), s.getId() + "", "Scope " + s.getId(), currTime + "", currTime + "", proc, station, State_Scope.stateNames[s.getState()]);
                     scopeManager.addScopeLogCSV(logItem);//scope is traveling
                 }
-                openRoom = procedureRoomManager.getProcedureRoom(roomOffset);
-                clientManager.sortQueue();
             }
-            else
-            {
-                System.out.println("No scope/tech");
-                roomOffset = 0;
-                patientOffset++;
+
+            if(openRoom.getCurrentDoctor() == null){
+                Doctor freeDoctor = doctormanager.getDoctor(openRoom.getClient().getProcedureList());
+                if(freeDoctor == null){
+                    System.out.println("No doctor");
+                    patientOffset++;
+                    if(openRoom.getClient()!= null) {
+                        roomOffset++;
+                    }
+                    continue;
+                }
+                openRoom.claimElementDoctor(freeDoctor);
             }
+
+            if(openRoom.getCurrentNurse() == null){
+                Nurse freeNurse = nursemanager.getNurse();
+                if(freeNurse == null){
+                    System.out.println("No nurse");
+                    break;
+                }
+                openRoom.claimElementNurse(freeNurse);
+            }
+
+            roomOffset++;
+            openRoom = procedureRoomManager.getProcedureRoom(roomOffset);
+            clientManager.sortQueue();
         }
         scopeManager.sortList();
         clientManager.sortQueue();

@@ -81,6 +81,9 @@ public class ProcedureRoom_Manager {
                 }
                 offsetCounter++;
             }
+            else{
+                System.out.println(roomList.get(i).isAvailable() + " " + !roomList.get(i).isReady() + " " + roomList.get(i).isClear());
+            }
         }
         return null;
     }

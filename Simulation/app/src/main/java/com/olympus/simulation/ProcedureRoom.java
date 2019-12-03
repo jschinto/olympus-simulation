@@ -67,14 +67,20 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
         this.clear = true;
     }
 
-    public void claimElements(ArrayList<Scope> list, Doctor doctor, Nurse nurse) {
+    public void claimElementScopes(ArrayList<Scope> list){
         this.scope = list;
         for(Scope s : list) {
             s.claim(this, this.travelTimeTechnician);
         }
+    }
+
+    public void claimElementDoctor(Doctor doctor){
         this.currentDoctor = doctor;
         this.currentDoctor.setDestination(this);
         this.currentDoctor.startTravel(this.travelTimeDoctor);
+    }
+
+    public void claimElementNurse(Nurse nurse){
         this.currentNurse = nurse;
         this.currentNurse.setDestination(this);
         this.currentNurse.startTravel(this.travelTimeNurse);
@@ -162,7 +168,7 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
 
     //Returns true of the room is available for a client
     public boolean isAvailable() {
-        return !isOccupied() && cooldownTimeLeft == 0;
+        return (!isOccupied() || this.currentNurse == null || this.currentDoctor == null || this.getScopeList().size() == 0) && cooldownTimeLeft == 0;
     }
 
     //Returns true of the room is occupied by another client
