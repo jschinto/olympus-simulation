@@ -26,7 +26,7 @@ public class ProcedureRoom_Manager {
                 }
                 int checker = 0;
                 for(Scope s : roomList.get(i).getScopeList()) {
-                    if(s.getState() == State_Scope.STATE_USE) {
+                    if(s.getState() == State_Scope.STATE_INROOM) {
                         checker++;
                     }
                 }

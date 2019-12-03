@@ -38,7 +38,7 @@ public class Nurse_Manager {
         for(Nurse n : nurses) {
             n.setId(id);
             id++;
-            ActorLogCSV logItem = new ActorLogCSV("Nurse", n.getId() + "", "Nurse " + n.getId(), startTime, endTime, "", "", State.stateNames[0]);
+            ActorLogCSV logItem = new ActorLogCSV("Nurse", n.getId() + "", "Nurse " + n.getId(), startTime, endTime, "", "Waiting Room", State.stateNames[0]);
             csvList.add(logItem);
         }
     }
@@ -61,8 +61,17 @@ public class Nurse_Manager {
         if(getLastActorLogEntry(temp) == -1) {
             return;
         }
-        String proc = csvList.get(getLastActorLogEntry(temp)).procedure;
+        String proc = "";
+        if(n.getCurrProcedure() != null) {
+            proc = "\"" + n.getCurrProcedure().toString().substring(1, n.getCurrProcedure().toString().length() - 1) + "\"";
+        }
         String station = n.getDestinationName();
+        if(state.equals("Traveling")) {
+            station = "Hallway";
+        }
+        if(station == null || station.equals("")) {
+            station = "Waiting Room";
+        }
         ActorLogCSV logItem = new ActorLogCSV("Nurse", n.getId() + "", "Nurse " + n.getId(), currTime, currTime, proc, station, state);
         addActorLogCSV(logItem);
     }

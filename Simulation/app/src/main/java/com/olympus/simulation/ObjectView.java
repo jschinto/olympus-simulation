@@ -139,19 +139,21 @@ public class ObjectView extends LinearLayout {
 
          //scope
         } else if (type.equals("scope")) {
-            Scope scope = (Scope)object;
+            Scope scope = (Scope) object;
             if (scope.getHolding() != null) {
                 this.changeImage(R.drawable.technician_scope);
-                changeText("Technician "+scope.getHolding().getId());
+                changeText("Technician " + scope.getHolding().getId());
             } else {
                 this.changeImage(R.drawable.scope_color);
                 changeText("");
             }
-            addLine("Scope "+scope.getId());
+            addLine("Scope " + scope.getId());
             if (scope.getState() == State_Scope.STATE_TRAVEL) {
-                addLine("Room "+scope.getRoom().getId());
+                addLine("Room " + scope.getRoom().getId());
             } else if (scope.getState() == State_Scope.STATE_FREE) {
                 addLine(scope.getType().getName());
+            } else if (scope.getState() == State_Scope.STATE_INROOM) {
+                addLine("WAITING");
             } else if (scope.getState() == State_Scope.STATE_USE) {
                 addLine("USE");
             } else if (scope.getState() == State_Scope.STATE_DIRTY) {

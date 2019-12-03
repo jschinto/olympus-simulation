@@ -92,9 +92,11 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
                 this.tech = getTech;
             }
         }
-        if(this.tech.getState() == State.STATE_OPERATION) {
+        if(this.tech.getState() == State.STATE_OPERATION || this.tech.getState() == State.STATE_CLEANROOM) {
+            this.tech.setState(State.STATE_CLEANROOM);
             cooldownTimeLeft--;
             if(cooldownTimeLeft <= 0){
+                this.tech.setDestination(null);
                 this.tech.startTravel(-1);
                 this.tech = null;
             }
@@ -244,8 +246,13 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
     }
 
     public void startOperating(){
+        this.currentDoctor.setCurrProcedure(this.client.getProcedureList());
+        this.currentNurse.setCurrProcedure(this.client.getProcedureList());
         this.currentDoctor.setState(State.STATE_OPERATION);
         this.currentNurse.setState(State.STATE_OPERATION);
+        for (Scope s : this.scope) {
+            s.setState(State_Scope.STATE_USE);
+        }
     }
 
     public int getId() {
@@ -309,7 +316,7 @@ public class ProcedureRoom extends Element implements Serializable, StationCSV.S
 
     @Override
     public StationCSV getStationCSV() {
-        return new StationCSV("Procedure Room", this.id + "");
+        return new StationCSV("Room", this.id + "", "Room " + this.id);
     }
 
     public Nurse getCurrentNurse() {

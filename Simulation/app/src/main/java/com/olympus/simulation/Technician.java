@@ -56,7 +56,7 @@ public class Technician extends Element implements Serializable, ActorCSV.Actor 
     }
 
     public void setState(int state) {
-        this.state = new State(state);
+        setState(new State(state));
     }
 
     public int getTravel() {
