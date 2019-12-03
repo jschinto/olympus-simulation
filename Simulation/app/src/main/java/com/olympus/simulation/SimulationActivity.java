@@ -338,21 +338,38 @@ public class SimulationActivity
             reprocessorIntent.putExtra("reprocessorTypes", simulation_manager.getReprocessorTypeNames());
             startActivityForResult(reprocessorIntent, element_Request);
         } else if (id == R.id.startSimulation) {
-            ActionMenuItemView playImage = findViewById(R.id.playButton);
-            if (item.getTitle().equals("Confirm Start")) {
-                startSimulation(item);
-                item.setTitle("Pause");
-                playImage.setIcon(getResources().getDrawable(R.drawable.pause_button));
-            } else if (item.getTitle().equals("Pause")) {
-                isPaused = true;
-                item.setTitle("Resume");
-                playImage.setIcon(getResources().getDrawable(R.drawable.play_button));
+           // ActionMenuItemView playImage = findViewById(R.id.playButton);
+            MenuItem fastPlay = menu.findItem(R.id.startSimulationFast);
+            if (!simulationStarted) {
+                period = 1000;
+                startSimulation();
+                item.setIcon(getResources().getDrawable(R.drawable.pause_button));
+                fastPlay.setVisible(false);
+            } else if (isPaused) {
+                period = 1000;
+                restartSimulation();
+                item.setIcon(getResources().getDrawable(R.drawable.pause_button));
+                fastPlay.setVisible(false);
             } else {
-                isPaused = false;
-                item.setTitle("Pause");
-                playImage.setIcon(getResources().getDrawable(R.drawable.pause_button));
+                isPaused = true;
+                item.setIcon(getResources().getDrawable(R.drawable.play_button));
+                fastPlay.setVisible(true);
                 //loadLoadout(true, "LastRun");
             }
+        } else if (id == R.id.startSimulationFast) {
+            MenuItem play = menu.findItem(R.id.startSimulation);
+            if (!simulationStarted) {
+                period = 1;
+                startSimulation();
+                play.setIcon(getResources().getDrawable(R.drawable.pause_button));
+                item.setVisible(false);
+            } else if (isPaused) {
+                period = 1;
+                restartSimulation();
+                play.setIcon(getResources().getDrawable(R.drawable.pause_button));
+                item.setVisible(false);
+            }
+
         } else if (id == R.id.saveLoadout) {
             isPaused = true;
             SavePromptDialog savePromptDialog = new SavePromptDialog();
@@ -884,14 +901,15 @@ public class SimulationActivity
             if (time != null) {
                 time.cancel();
             }
-            if (startItem != null) {
+            if (menu != null) {
                 runOnUiThread(new Runnable() {
                     @SuppressLint("RestrictedApi")
                     @Override
                     public void run() {
-                        startItem.setTitle("Confirm Start");
-                        ActionMenuItemView playImage = findViewById(R.id.playButton);
-                        playImage.setIcon(getResources().getDrawable(R.drawable.play_button));
+                       // startItem.setTitle("Confirm Start");
+                        //ActionMenuItemView playImage = findViewById(R.id.playButton);
+                        menu.findItem(R.id.startSimulation).setIcon(getResources().getDrawable(R.drawable.play_button));
+                        menu.findItem(R.id.startSimulationFast).setVisible(true);
                     }
                 });
             }
@@ -975,11 +993,12 @@ public class SimulationActivity
     static boolean hideToast = false;
     static boolean simulationStarted = false;
     Timer time = null;
-    MenuItem startItem = null;
+   // MenuItem startItem = null;
+    int period = 1000;
 
-    public void startSimulation(final MenuItem item) {
-        startItem = item;
-        simulationStarted = true;
+    public void startSimulation() {
+       // startItem = item;
+
         simulation_manager.initLogs();
         if (ranAlready) {
             hideToast = true;
@@ -987,6 +1006,9 @@ public class SimulationActivity
         }
         saveLoadout(null);
         ranAlready = true;
+        isPaused = false;
+        isRunning = false;
+        simulationStarted = true;
         simulation_manager.setCurrTime(simulation_manager.getStartTime());
         time = new Timer();
         time.scheduleAtFixedRate(new TimerTask() {
@@ -1003,9 +1025,10 @@ public class SimulationActivity
                             @Override
                             public void run() {
                                 simulationStarted = false;
-                                item.setTitle("Confirm Start");
-                                ActionMenuItemView playImage = findViewById(R.id.playButton);
-                                playImage.setIcon(getResources().getDrawable(R.drawable.play_button));
+                                //item.setTitle("Confirm Start");
+                               // ActionMenuItemView playImage = findViewById(R.id.playButton);
+                                menu.findItem(R.id.startSimulation).setIcon(getResources().getDrawable(R.drawable.play_button));
+                                menu.findItem(R.id.startSimulationFast).setVisible(true);
                             }
                         });
                         createLogs();
@@ -1021,7 +1044,50 @@ public class SimulationActivity
                     //System.err.println("Loop " + (simulation_manager.getCurrTime() - 1));
                 }
             }
-        }, 0, 1000);
+        }, 0, period);
+    }
+
+    public void restartSimulation() {
+        simulationStarted = true;
+        time.cancel();
+        time = new Timer();
+        ranAlready = true;
+        isPaused = false;
+        isRunning = false;
+        time.scheduleAtFixedRate(new TimerTask() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void run() {
+                if (!isRunning && !isPaused) {
+                    isRunning = true;
+                    simulation_manager.runTick();
+                    simulation_manager.incrementCurrTime();
+
+                    if (simulation_manager.isEverythingDone()) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                simulationStarted = false;
+                                //item.setTitle("Confirm Start");
+                                // ActionMenuItemView playImage = findViewById(R.id.playButton);
+                                menu.findItem(R.id.startSimulation).setIcon(getResources().getDrawable(R.drawable.play_button));
+                                menu.findItem(R.id.startSimulationFast).setVisible(true);
+                            }
+                        });
+                        createLogs();
+                        this.cancel();
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            renderUIFromManager();
+                            isRunning = false;
+                        }
+                    });
+                    //System.err.println("Loop " + (simulation_manager.getCurrTime() - 1));
+                }
+            }
+        }, 0, period);
     }
 
     @Override

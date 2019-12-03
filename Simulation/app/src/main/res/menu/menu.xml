@@ -16,25 +16,15 @@
     </item>
     <item
         android:icon="@drawable/play_button"
-        android:id="@+id/playButton"
+        android:id="@+id/startSimulation"
         app:showAsAction="always"
         android:title="">
-        <menu>
-            <item
-                android:id="@+id/startSimulation"
-                android:title="Confirm Start" />
-        </menu>
     </item>
     <item
         android:icon="@drawable/fast"
-        android:id="@+id/playButtonFast"
+        android:id="@+id/startSimulationFast"
         app:showAsAction="always"
         android:title="">
-        <menu>
-            <item
-                android:id="@+id/startSimulationFast"
-                android:title="Confirm Fast Start" />
-        </menu>
     </item>
 
     <item
