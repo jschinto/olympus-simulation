@@ -655,7 +655,7 @@ public class SimulationActivity
                     String oldName = data.getStringExtra("oldName");
                     simulation_manager.deleteProcedure(oldName);
                     simulation_manager.addProcedure(procedure);
-                    
+
 
                 }
                 //nothing to be done, represents just viewing or canceling an add to a procedure

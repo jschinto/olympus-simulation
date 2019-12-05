@@ -84,7 +84,7 @@ public class ObjectView extends LinearLayout {
             LayoutParams params = new LayoutParams(70, 100);
             imageView.setLayoutParams(params);
         } else if (type.equals("Sink")) {
-            imageView.setImageResource(R.drawable.sink);
+            imageView.setImageResource(R.drawable.sink_color);
             LayoutParams params = new LayoutParams(125, 100);
             imageView.setLayoutParams(params);
         } else if (type.equals("Technician")) {
