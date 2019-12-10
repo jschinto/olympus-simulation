@@ -58,7 +58,6 @@ public class Client extends Element implements Comparable<Client>, Serializable 
             this.timeLeft = 0;
         }
 
-        System.out.println("Client " + this.timeLeft + " " + this.state + " " + this.procedureRoom.isReady());
         //client is done with operation
         if (this.timeLeft <= 0 && this.state.equals(State.STATE_OPERATION)) {
             setState(State.STATE_DONE);

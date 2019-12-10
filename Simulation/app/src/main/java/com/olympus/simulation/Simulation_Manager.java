@@ -112,25 +112,21 @@ public class Simulation_Manager {
         while (openRoom != null) {
             Client nextClient = clientManager.getNextClient(currTime, patientOffset);
             if (nextClient == null) {
-                System.out.println("No client");
                 break;
             }
 
             Nurse freeNurse = nursemanager.getNurse();
             if(freeNurse == null){
-                System.out.println("No nurse");
                 break;
             }
 
             Doctor freeDoctor = doctormanager.getDoctor(nextClient.getProcedureList());
             if(freeDoctor == null){
-                System.out.println("No doctor");
                 patientOffset++;
                 continue;
             }
 
             if(!openRoom.checkCanProcess(nextClient)){
-                System.out.println("Room cannot check");
                 roomOffset++;
                 openRoom = procedureRoomManager.getProcedureRoom(roomOffset);
                 if(openRoom == null && clientManager.getNextClient(currTime, patientOffset + 1) == null){
@@ -154,7 +150,6 @@ public class Simulation_Manager {
                         scopeList.get(j).setTempGrab(false);
                         scopeList.get(j).setHolding(null, -1);
                     }
-                    System.out.println("No scope/tech");
                     patientOffset++;
                     continue;
                 }
@@ -187,7 +182,6 @@ public class Simulation_Manager {
             }
             else
             {
-                System.out.println("No scope/tech");
                 roomOffset = 0;
                 patientOffset++;
             }
@@ -716,10 +710,7 @@ public class Simulation_Manager {
         reprocessorTypeManager.addType(reprocessor_type);
         for(int i = 0; i < reprocessorManager.getNumReprocessors(); i++){
             if(reprocessorManager.getReprocessorByIndex(i).getType().getName().equals(reprocessor_type.getName())){
-                System.out.println("Reprocessor the same!");
                 reprocessorManager.getReprocessorByIndex(i).setType(reprocessor_type);
-            } else {
-                System.out.println("Reprocessor Not the Same!");
             }
         }
     }
