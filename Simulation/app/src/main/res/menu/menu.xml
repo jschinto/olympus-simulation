@@ -45,7 +45,7 @@
                     android:id="@+id/addDoctor"
                     android:title="Add Doctor" />
             </group>
-            <item android:title="" android:enabled="false"></item>
+            <item android:title="@string/divider" android:enabled="false"></item>
             <group android:id="@+id/groupScope">
                 <item
                     android:id="@+id/addScopeType"
@@ -54,7 +54,7 @@
                     android:id="@+id/addScope"
                     android:title="Add Scope" />
             </group>
-            <item android:title="" android:enabled="false"></item>
+            <item android:title="@string/divider" android:enabled="false"></item>
             <group android:id="@+id/groupRoom">
                 <item
                     android:id="@+id/addTowerType"
@@ -63,7 +63,7 @@
                     android:id="@+id/addProcedureRoom"
                     android:title="Add Procedure Room" />
             </group>
-            <item android:title="" android:enabled="false"></item>
+            <item android:title="@string/divider" android:enabled="false"></item>
             <group android:id="@+id/groupSink">
                 <item
                     android:id="@+id/addLeakTesterType"
@@ -72,7 +72,7 @@
                     android:id="@+id/addManualCleaningStation"
                     android:title="Add Manual Cleaning Station"/>
             </group>
-            <item android:title="" android:enabled="false"></item>
+            <item android:title="@string/divider" android:enabled="false"></item>
             <group android:id="@+id/groupReprocessor">
                 <item
                     android:id="@+id/addReprocessorType"

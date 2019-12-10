@@ -241,6 +241,7 @@ public class SimulationActivity
             MenuItem addProcedureRoom = menu.findItem(R.id.addProcedureRoom);
             MenuItem addManualCleaningStation = menu.findItem(R.id.addManualCleaningStation);
             MenuItem addDoctor = menu.findItem(R.id.addDoctor);
+            MenuItem addReprocessor = menu.findItem(R.id.addReprocessor);
 
             if (simulation_manager.getProcedureNum() > 0) {
                 addClient.setVisible(true);
@@ -268,6 +269,11 @@ public class SimulationActivity
                 addManualCleaningStation.setVisible(false);
             } else  {
                 addManualCleaningStation.setVisible(true);
+            }
+            if (simulation_manager.getReprocessorTypeNames().length <=0) {
+                addReprocessor.setVisible(false);
+            } else {
+                addReprocessor.setVisible(true);
             }
         }
 
