@@ -33,12 +33,12 @@ public class ActorCSV implements Simulation_Manager.CSVable, Serializable {
 
     @Override
     public String getCSV() {
-        return actorType + "," + procedures + "," + id;
+        return actorType + "," + procedures + "," + id + "," + actorType + " " + id;
     }
 
     @Override
     public String getCSVHeader() {
-        return "Type,Procedures,Serial Number";
+        return "Type,Procedures,Serial Number,Name";
     }
 
     public interface Actor {
