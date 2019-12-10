@@ -33,12 +33,12 @@ public class EquipmentCSV implements Simulation_Manager.CSVable, Serializable {
 
     @Override
     public String getCSV() {
-        return equipType + "," + model + "," + serialNum;
+        return equipType + "," + model + "," + serialNum + "," + equipType + " " + serialNum;
     }
 
     @Override
     public String getCSVHeader() {
-        return "Type,Model,Serial Number";
+        return "Type,Model,Serial Number,Name";
     }
 
     public interface Equipment {
