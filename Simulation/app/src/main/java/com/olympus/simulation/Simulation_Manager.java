@@ -263,6 +263,29 @@ public class Simulation_Manager {
         procedureManager.addProcedure(procedure);
     }
 
+    public void updateProcedure(String oldName, Procedure procedure){
+        procedureManager.deleteProcedure(oldName);
+        procedureManager.addProcedure(procedure);
+        for(int i = 0; i < clientManager.getClientNum(); i++){
+            for(int j = 0; j < clientManager.getClientByIndex(i).getProcedureList().size(); j++){
+                if(clientManager.getClientByIndex(i).getProcedureList().get(j).getName().equals(oldName)){
+                    clientManager.getClientByIndex(i).getProcedureList().get(j).setName(procedure.getName());
+                    clientManager.getClientByIndex(i).getProcedureList().get(j).setTime(procedure.getTime());
+                    clientManager.getClientByIndex(i).getProcedureList().get(j).setDoctorPostProcedureTime(procedure.getDoctorPostProcedureTime());
+                }
+            }
+        }
+        for(int i = 0; i < doctormanager.getDoctorNum(); i++){
+            for(int j = 0; j < doctormanager.getDoctorByIndex(i).getProcedures().size(); j++){
+                if(doctormanager.getDoctorByIndex(i).getProcedures().get(j).getName().equals(oldName)){
+                    doctormanager.getDoctorByIndex(i).getProcedures().get(j).setName(procedure.getName());
+                    doctormanager.getDoctorByIndex(i).getProcedures().get(j).setTime(procedure.getTime());
+                    doctormanager.getDoctorByIndex(i).getProcedures().get(j).setDoctorPostProcedureTime(procedure.getDoctorPostProcedureTime());
+                }
+            }
+        }
+    }
+
     //Returns the number of clients in the waiting room
     public int getClientNum() {
         return clientManager.getClientNum();
@@ -688,6 +711,16 @@ public class Simulation_Manager {
     public void addReprocessorType(Reprocessor_Type reprocessor_type) {
         reprocessorTypeManager.addType(reprocessor_type);
     }
+
+    public void updateReprocessorType(Reprocessor_Type reprocessor_type){
+        reprocessorTypeManager.addType(reprocessor_type);
+        for(int i = 0; i < reprocessorManager.getNumReprocessors(); i++){
+            if(reprocessorManager.getReprocessorByIndex(i).getType().getName() == reprocessor_type.getName()){
+                reprocessorManager.getReprocessorByIndex(i).setType(reprocessor_type);
+            }
+        }
+    }
+
     public void setReprocessorIds() {
         reprocessorManager.setIds();
     }

@@ -538,7 +538,7 @@ public class SimulationActivity
                     simulation_manager.removeReprocessorTypeByName(currentClicked.type);
                     //if editing add new one back in
                     if (reprocessor_type.validate()) {
-                        simulation_manager.addReprocessorType(reprocessor_type);
+                        simulation_manager.updateReprocessorType(reprocessor_type);
                     }
                 }
                 renderUIFromManager();
@@ -655,8 +655,10 @@ public class SimulationActivity
                     String oldName = data.getStringExtra("oldName");
                     simulation_manager.deleteProcedure(oldName);
                     simulation_manager.addProcedure(procedure);
-
-
+                    /*simulation_manager.deleteProcedure(oldName);
+                    simulation_manager.addProcedure(procedure);*/
+                    
+                    simulation_manager.updateProcedure(oldName, procedure);
                 }
                 //nothing to be done, represents just viewing or canceling an add to a procedure
             } else if (resultCode == RESULT_CANCELED) {
