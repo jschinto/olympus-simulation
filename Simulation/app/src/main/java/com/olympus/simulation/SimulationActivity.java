@@ -659,11 +659,6 @@ public class SimulationActivity
                     //editing a procedure
                 } else {
                     String oldName = data.getStringExtra("oldName");
-                    simulation_manager.deleteProcedure(oldName);
-                    simulation_manager.addProcedure(procedure);
-                    /*simulation_manager.deleteProcedure(oldName);
-                    simulation_manager.addProcedure(procedure);*/
-                    
                     simulation_manager.updateProcedure(oldName, procedure);
                 }
                 //nothing to be done, represents just viewing or canceling an add to a procedure
