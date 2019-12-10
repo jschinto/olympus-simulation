@@ -715,8 +715,11 @@ public class Simulation_Manager {
     public void updateReprocessorType(Reprocessor_Type reprocessor_type){
         reprocessorTypeManager.addType(reprocessor_type);
         for(int i = 0; i < reprocessorManager.getNumReprocessors(); i++){
-            if(reprocessorManager.getReprocessorByIndex(i).getType().getName() == reprocessor_type.getName()){
+            if(reprocessorManager.getReprocessorByIndex(i).getType().getName().equals(reprocessor_type.getName())){
+                System.out.println("Reprocessor the same!");
                 reprocessorManager.getReprocessorByIndex(i).setType(reprocessor_type);
+            } else {
+                System.out.println("Reprocessor Not the Same!");
             }
         }
     }
